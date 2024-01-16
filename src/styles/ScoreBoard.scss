@@ -1,0 +1,43 @@
+.score-board-container {
+  display: inline-block;
+  width: 500px;
+  height: 70px;
+  border: 5px white solid;
+
+  .score-board-wrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+
+    .team-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      div {
+        font-size: 40px;
+        color: white;
+      }
+    }
+
+    .team-a,
+    .team-b {
+      box-sizing: border-box;
+      width: 50%;
+    }
+
+    .team-a {
+      padding-left: 15%;
+      padding-right: 10px;
+      background-color: #da291c;
+      text-align: left;
+    }
+    .team-b {
+      padding-left: 10px;
+      padding-right: 15%;
+      background-color: #6cabdd;
+      text-align: right;
+    }
+  }
+}

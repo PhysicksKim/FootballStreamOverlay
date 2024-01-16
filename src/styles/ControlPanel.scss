@@ -1,0 +1,50 @@
+// input type=number 증감 화살표 제거
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.control-panel-container {
+  box-sizing: border-box;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 3px solid lightgray;
+  border-radius: 30px;
+  min-height: 300px;
+  min-width: 600px;
+  height: 100%;
+  width: 80%;
+  padding: 30px;
+
+  .timer-time-set-box {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: baseline;
+
+      label {
+        background-color: white;
+        padding: 0.1em;
+        border: 3px white solid;
+      }
+
+      input {
+        background-color: lightgray;
+        border-radius: 5px;
+        box-shadow: black 1px 1px;
+        padding-top: 5px;
+        padding-bottom: 3px;
+        margin: 0;
+        font-size: 30px;
+        text-align: center;
+        width: 2em;
+      }
+    }
+  }
+}
