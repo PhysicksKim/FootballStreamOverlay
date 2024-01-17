@@ -7,6 +7,7 @@ import {
   faPlus,
   faReply,
 } from '@fortawesome/free-solid-svg-icons';
+import { Time } from '@src/types/types';
 
 interface TimerControlPanelProps {
   updateTime: (time: { min: number; sec: number }) => void;
@@ -36,11 +37,8 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     setIsTimerRunning(true);
     updateTime({ min: minutes, sec: seconds });
   };
-
-  const startTimerWithTime: (time: { min: number; sec: number }) => void = ({
-    min,
-    sec,
-  }) => {
+  // time: { min: number; sec: number }
+  const startTimerWithTime: (time: Time) => void = ({ min, sec }) => {
     setIsTimerRunning(true);
     updateTime({ min: min, sec: sec });
   };
@@ -50,7 +48,11 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
       setMinutes(0);
       return;
     }
-    const newValue = parseInt(input, 10) || 0;
+
+    let newValue = parseInt(input, 10) || 0;
+    if (newValue > 120) {
+      newValue = 120;
+    }
     setMinutes(newValue);
   };
 
@@ -61,7 +63,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     }
 
     let newValue = parseInt(input, 10) || 0;
-
     if (newValue > 60) {
       newValue = 59;
     }

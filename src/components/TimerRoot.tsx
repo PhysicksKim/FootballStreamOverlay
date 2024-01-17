@@ -7,58 +7,22 @@ import '../styles/TimerRoot.scss';
 import useTimerHook from '@src/hooks/useTimerHook';
 
 const TimerRoot = () => {
-  const [mainTimer, setMainTimer] = useState(new Timer());
   const [mainTimeDisplay, setMainTimeDisplay] = useState('00:00');
-  const [minutes, setMinutes] = useState('');
-  const [seconds, setSeconds] = useState('');
-
-  const {
-    start,
-    stop,
-    resume,
-    pause,
-    getCurrentTime,
-    eventEmitter,
-    totalSeconds,
-  } = useTimerHook();
-
-  const totalSecondsRef = useRef(totalSeconds);
+  const [timer, eventEmitter] = useTimerHook();
 
   useEffect(() => {
-    totalSecondsRef.current = totalSeconds;
-  }, [totalSeconds]);
-
-  useEffect(() => {
-    eventEmitter.on('secondsUpdated', () => {
-      const time = getCurrentTime(totalSecondsRef.current);
-      const [mins, secs] = time.split(':');
-      setMainTimeDisplay(`${zeroFill(mins)}:${zeroFill(secs)}`);
-
-      console.log('event time :', time);
-    });
-
-    eventEmitter.on('timeExceeded', () => {
-      setMinutes('120');
-      setSeconds('0');
-      setMainTimeDisplay('120:00');
-
-      console.log('새 타이머 120분 초과');
-    });
-
-    return () => {
-      eventEmitter.removeAllListeners();
-      stop();
-    };
-  }, []);
+    setMainTimeDisplay(
+      `${zeroFill(timer.time.min.toString())}:${zeroFill(
+        timer.time.sec.toString(),
+      )}`,
+    );
+  }, [timer.time]);
 
   const startTimer = (min: number, sec: number) => {
-    console.log('startTimer() called!!');
-    setMinutes(min.toString());
-    setSeconds(sec.toString());
+    timer.start(min, sec);
     setMainTimeDisplay(
       `${zeroFill(min.toString())}:${zeroFill(sec.toString())}`,
     );
-    start(min, sec);
   };
 
   const updateTime = (time: { min: number; sec: number }) => {
@@ -66,11 +30,11 @@ const TimerRoot = () => {
   };
 
   const resumeTimer = () => {
-    resume();
+    timer.resume();
   };
 
   const pauseTimer = () => {
-    pause();
+    timer.pause();
   };
 
   const zeroFill = (numberString: string) => {
