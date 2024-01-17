@@ -5,22 +5,22 @@ import BoardControlPanel from './BoardControlPanel';
 
 interface ControlPanelProps {
   updateTime: (time: { min: number; sec: number }) => void;
-  stopTime: () => void;
-  restartTime: () => void;
+  pauseTimer: () => void;
+  resumeTimer: () => void;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
   updateTime,
-  stopTime,
-  restartTime,
+  pauseTimer,
+  resumeTimer,
 }) => {
   return (
     <div className='control-panel-container'>
       <div className='timer-control-wrapper'>
         <TimerControlPanel
           updateTime={updateTime}
-          stopTime={stopTime}
-          restartTime={restartTime}
+          pauseTimer={pauseTimer}
+          resumeTimer={resumeTimer}
         />
       </div>
       <div className='board-control-wrapper'>

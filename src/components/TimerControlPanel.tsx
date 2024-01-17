@@ -6,19 +6,18 @@ import {
   faPlay,
   faPlus,
   faReply,
-  faStop,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface TimerControlPanelProps {
   updateTime: (time: { min: number; sec: number }) => void;
-  stopTime: () => void;
-  restartTime: () => void;
+  pauseTimer: () => void;
+  resumeTimer: () => void;
 }
 
 const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   updateTime,
-  stopTime,
-  restartTime,
+  pauseTimer,
+  resumeTimer,
 }) => {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -26,9 +25,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   const toggleTimer = () => {
     if (isTimerRunning) {
-      stopTime();
+      pauseTimer();
     } else {
-      restartTime();
+      resumeTimer();
     }
     setIsTimerRunning(!isTimerRunning);
   };
