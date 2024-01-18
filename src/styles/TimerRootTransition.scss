@@ -1,0 +1,21 @@
+.injury-time-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.injury-time-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: opacity 500ms, transform 500ms;
+}
+
+.injury-time-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.injury-time-exit-active {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: opacity 500ms, transform 500ms;
+}

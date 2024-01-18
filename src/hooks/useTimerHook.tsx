@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EventEmitter } from 'events';
 import { Time } from '@src/types/types';
 
-interface TimerState {
+export interface TimerState {
   time: {
     min: number;
     sec: number;
@@ -12,6 +12,7 @@ interface TimerState {
   stop: () => void;
   resume: () => void;
   pause: () => void;
+  set: (minutes?: number, seconds?: number) => void;
 }
 
 const useTimerHook = (): [TimerState, EventEmitter] => {
@@ -75,6 +76,13 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     [timer],
   );
 
+  const set = useCallback(
+    (minutes: number, seconds: number) => {
+      setTotalSeconds(minutes * 60 + seconds);
+    },
+    [timer],
+  );
+
   const resume = useCallback(() => {
     timer.resume();
   }, [timer]);
@@ -86,13 +94,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   const pause = useCallback(() => {
     timer.pause();
   }, [timer]);
-
-  const getCurrentTime = useCallback((nowSec: number): Time => {
-    console.log('nowSec : ', nowSec);
-    const minutes = Math.floor(nowSec / 60);
-    const seconds = nowSec % 60;
-    return { min: minutes, sec: seconds };
-  }, []);
 
   const parseToTime = useCallback((nowSec: number): Time => {
     const minutes = Math.floor(nowSec / 60);
@@ -125,6 +126,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
       stop,
       resume,
       pause,
+      set,
     },
     eventEmitter,
   ];

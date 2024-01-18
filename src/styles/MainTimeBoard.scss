@@ -1,23 +1,24 @@
-.time-board-container {
+.main-time-container {
   display: block;
   position: relative;
   top: -10px;
   left: 0;
   padding: 0px;
   margin: 0px;
+  z-index: 2;
 
-  .flex-wrapper-1 {
+  .main-time-wrapper {
     display: flex;
     flex-direction: row;
 
-    .time-board {
-      padding-left: 1em;
-      padding-right: 1em;
+    .main-time-board {
+      padding-left: 0.6em;
+      padding-right: 0.6em;
       padding-top: 0.4em;
       padding-bottom: 0.2em;
       background-color: #1d7eb6;
 
-      border-radius: 15px;
+      // border-radius: 15px;
 
       font-family: 'TAEBAEKfont';
       color: white;
