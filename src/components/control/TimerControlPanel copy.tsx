@@ -261,203 +261,78 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   };
 
   return (
-    <div className='timer-control-panel-box'>
-      <div className='timer-time-set-box'>
-        <div className='timer-title-box'>
-          <div className='match-title-input-box'>
-            <div className='match-title-text-index index-text'>매치 타이틀</div>
-            <input
-              className='match-title-text-input'
-              type='text'
-              placeholder='ex 아시안컵 E조 조별 예선'
-              onChange={(e) => {
-                const title = e.target.value.trim();
-                if (!title) {
-                  setMatchName('아시안컵 E조 조별 예선');
-                } else {
-                  setMatchName(e.target.value);
-                }
-              }}
-            />
+    <div className='timer-time-set-box'>
+      <div className='main-timer-panel'>
+        <div className='input-group minutes-group'>
+          <div className='input-upper-group minutes-upper'>
+            <label htmlFor='minutes-input-id'>분</label>
+            <button
+              className='input-plus minutes-plus-btn'
+              onClick={(e) =>
+                setMainMinutes((prev) => (prev + 1 <= 120 ? prev + 1 : 0))
+              }
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <button
+              className='input-plus minutes-minus-btn'
+              onClick={(e) =>
+                setMainMinutes((prev) => (prev - 1 >= 0 ? prev - 1 : 120))
+              }
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
           </div>
-          <div className='given-injury-input-box'>
-            <div className='given-injury-input-index index-text'>추가 시간</div>
-            <input
-              className='given-injury-time-input'
-              type='number'
-              placeholder='추가시간'
-              onChange={(e) => changeGivenInjuryTime(e.target.value)}
-            />
-          </div>
+          <input
+            className='minutes-input'
+            id='minutes-input-id'
+            type='number'
+            placeholder='Minutes'
+            value={Number(mainMinutes).toString()}
+            onChange={(e) => updateMainMinutes(e.target.value)}
+          />
         </div>
-        <div className='main-timer-box'>
-          <div className='timer-box-index main-timer-box-index'>
-            메인 타이머
-          </div>
-          <div className='minsec-set-box minutes-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='minutes-input-id'>분</label>
-              <button
-                className='input-plus minutes-plus-btn'
-                onClick={(e) =>
-                  setMainMinutes((prev) => (prev + 1 <= 120 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus minutes-minus-btn'
-                onClick={(e) =>
-                  setMainMinutes((prev) => (prev - 1 >= 0 ? prev - 1 : 120))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                className='minutes-input'
-                id='minutes-input-id'
-                type='number'
-                placeholder='Minutes'
-                value={Number(mainMinutes).toString()}
-                onChange={(e) => updateMainMinutes(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='minsec-set-box seconds-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='seconds-input-id'>초</label>
-              <button
-                className='input-plus seconds-plus-btn'
-                onClick={(e) =>
-                  setMainSeconds((prev) => (prev + 1 <= 59 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus seconds-minus-btn'
-                onClick={(e) =>
-                  setMainSeconds((prev) => (prev - 1 >= 0 ? prev - 1 : 59))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                className='seconds-input'
-                id='seconds-input-id'
-                type='number'
-                placeholder='Seconds'
-                value={Number(mainSeconds).toString()}
-                onChange={(e) => updateMainSeconds(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='playbtn-set-box'>
-            <button onClick={startMainTimer}>
-              <FontAwesomeIcon icon={faPlay} />
+        <div className='input-group seconds-group'>
+          <div className='input-upper-group seconds-upper'>
+            <label htmlFor='seconds-input-id'>초</label>
+            <button
+              className='input-plus seconds-plus-btn'
+              onClick={(e) =>
+                setMainSeconds((prev) => (prev + 1 <= 59 ? prev + 1 : 0))
+              }
+            >
+              <FontAwesomeIcon icon={faPlus} />
             </button>
-            <button onClick={toggleMainTimerRunning}>
-              {isMainTimerRunning ? (
-                <FontAwesomeIcon icon={faPause} />
-              ) : (
-                <FontAwesomeIcon icon={faReply} />
-              )}
+            <button
+              className='input-plus seconds-minus-btn'
+              onClick={(e) =>
+                setMainSeconds((prev) => (prev - 1 >= 0 ? prev - 1 : 59))
+              }
+            >
+              <FontAwesomeIcon icon={faMinus} />
             </button>
           </div>
+          <input
+            className='seconds-input'
+            id='seconds-input-id'
+            type='number'
+            placeholder='Seconds'
+            value={Number(mainSeconds).toString()}
+            onChange={(e) => updateMainSeconds(e.target.value)}
+          />
         </div>
-        <div className='injury-timer-box'>
-          <div className='timer-box-index injury-timer-box-index'>
-            추가 타이머
-          </div>
-          <div className='minsec-set-box minutes-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='minutes-input-id'>분</label>
-              <button
-                className='input-plus minutes-plus-btn'
-                onClick={(e) =>
-                  setInjuryMinutes((prev) => (prev + 1 <= 120 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus minutes-minus-btn'
-                onClick={(e) =>
-                  setInjuryMinutes((prev) => (prev - 1 >= 0 ? prev - 1 : 120))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                className='minutes-input'
-                id='minutes-input-id'
-                type='number'
-                placeholder='Minutes'
-                value={Number(injuryMinutes).toString()}
-                onChange={(e) => updateInjuryMinutes(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='minsec-set-box seconds-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='seconds-input-id'>초</label>
-              <button
-                className='input-plus seconds-plus-btn'
-                onClick={(e) =>
-                  setInjurySeconds((prev) => (prev + 1 <= 59 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus seconds-minus-btn'
-                onClick={(e) =>
-                  setInjurySeconds((prev) => (prev - 1 >= 0 ? prev - 1 : 59))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                className='seconds-input'
-                id='seconds-input-id'
-                type='number'
-                placeholder='Seconds'
-                value={Number(injurySeconds).toString()}
-                onChange={(e) => updateInjurySeconds(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='playbtn-set-box'>
-            <button onClick={startInjuryTimerWithTime}>
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-            <button onClick={toggleInjuryTimerRunning}>
-              {isInjuryTimerRunning ? (
-                <FontAwesomeIcon icon={faPause} />
-              ) : (
-                <FontAwesomeIcon icon={faReply} />
-              )}
-            </button>
-            <button onClick={toggleShowInjuryTimer}>
-              {isShowInjuryTimer ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
-            </button>
-          </div>
+        <div className='timer-buttons'>
+          <button onClick={startMainTimer}>
+            <FontAwesomeIcon icon={faPlay} />
+          </button>
+          <button onClick={toggleMainTimerRunning}>
+            {isMainTimerRunning ? (
+              <FontAwesomeIcon icon={faPause} />
+            ) : (
+              <FontAwesomeIcon icon={faReply} />
+            )}
+          </button>
         </div>
-      </div>
-      <div className='timer-preset-set-box'>
-        <div className='timer-preset-index'># 타이머 프리셋</div>
         <div className='gametime-preset-buttons'>
           <div className='wait-buttons'>
             <button onClick={setWaitFirstHalf}>전반 대기</button>
@@ -479,6 +354,105 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
               연후 추가
             </button>
           </div>
+        </div>
+      </div>
+      {/* Injury Timer Panel */}
+      <div className='injury-timer-panel'>
+        <div className='input-group minutes-group'>
+          <div className='input-upper-group minutes-upper'>
+            <label htmlFor='minutes-input-id'>분</label>
+            <button
+              className='input-plus minutes-plus-btn'
+              onClick={(e) =>
+                setInjuryMinutes((prev) => (prev + 1 <= 120 ? prev + 1 : 0))
+              }
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <button
+              className='input-plus minutes-minus-btn'
+              onClick={(e) =>
+                setInjuryMinutes((prev) => (prev - 1 >= 0 ? prev - 1 : 120))
+              }
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
+          </div>
+          <input
+            className='minutes-input'
+            id='minutes-input-id'
+            type='number'
+            placeholder='Minutes'
+            value={Number(injuryMinutes).toString()}
+            onChange={(e) => updateInjuryMinutes(e.target.value)}
+          />
+        </div>
+        <div className='input-group seconds-group'>
+          <div className='input-upper-group seconds-upper'>
+            <label htmlFor='seconds-input-id'>초</label>
+            <button
+              className='input-plus seconds-plus-btn'
+              onClick={(e) =>
+                setInjurySeconds((prev) => (prev + 1 <= 59 ? prev + 1 : 0))
+              }
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <button
+              className='input-plus seconds-minus-btn'
+              onClick={(e) =>
+                setInjurySeconds((prev) => (prev - 1 >= 0 ? prev - 1 : 59))
+              }
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
+          </div>
+          <input
+            className='seconds-input'
+            id='seconds-input-id'
+            type='number'
+            placeholder='Seconds'
+            value={Number(injurySeconds).toString()}
+            onChange={(e) => updateInjurySeconds(e.target.value)}
+          />
+        </div>
+        <div className='timer-buttons'>
+          <button onClick={startInjuryTimerWithTime}>
+            <FontAwesomeIcon icon={faPlay} />
+          </button>
+          <button onClick={toggleInjuryTimerRunning}>
+            {isInjuryTimerRunning ? (
+              <FontAwesomeIcon icon={faPause} />
+            ) : (
+              <FontAwesomeIcon icon={faReply} />
+            )}
+          </button>
+          <button onClick={toggleShowInjuryTimer}>
+            {isShowInjuryTimer ? (
+              <FontAwesomeIcon icon={faEyeSlash} />
+            ) : (
+              <FontAwesomeIcon icon={faEye} />
+            )}
+          </button>
+          <input
+            className='given-injury-time-input'
+            type='number'
+            placeholder='추가시간'
+            onChange={(e) => changeGivenInjuryTime(e.target.value)}
+          ></input>
+          <input
+            className='match-title-text-input'
+            type='text'
+            placeholder='경기 타이틀'
+            onChange={(e) => {
+              const title = e.target.value.trim();
+              if (!title) {
+                setMatchName('아시안컵 E조 조별 예선');
+              } else {
+                setMatchName(e.target.value);
+              }
+            }}
+          ></input>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import '../../styles/BoardControlPanel.scss';
 import 'flag-icons/css/flag-icons.min.css';
 import { Team } from '../TimerRoot';
@@ -34,31 +34,31 @@ const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
   };
 
   // Team A 국가 코드 및 이름 변경
-  const handleCountryChangeA = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const selectedOption = event.target.options[event.target.selectedIndex];
+  const handleCountryChangeA = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedOptionValue = event.target.value;
+    const selectedOptionText = event.target.nextSibling.textContent; // 라디오 버튼 옆에 있는 label의 텍스트를 가져옵니다.
+
     setTeamA((prevTeam) => ({
       ...prevTeam,
-      code: event.target.value,
-      name: selectedOption.text,
+      code: selectedOptionValue,
+      name: selectedOptionText,
     }));
   };
 
   // Team B 국가 코드 및 이름 변경
-  const handleCountryChangeB = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const selectedOption = event.target.options[event.target.selectedIndex];
+  const handleCountryChangeB = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedOptionValue = event.target.value;
+    const selectedOptionText = event.target.nextSibling.textContent; // 라디오 버튼 옆에 있는 label의 텍스트를 가져옵니다.
+
     setTeamB((prevTeam) => ({
       ...prevTeam,
-      code: event.target.value,
-      name: selectedOption.text,
+      code: selectedOptionValue,
+      name: selectedOptionText,
     }));
   };
 
   // Team A 어웨이 상태 변경
-  const handleAwayCheckA = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAwayCheckA = (event: ChangeEvent<HTMLInputElement>) => {
     setTeamA((prevTeam) => ({
       ...prevTeam,
       isAway: event.target.checked,
@@ -66,7 +66,7 @@ const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
   };
 
   // Team B 어웨이 상태 변경
-  const handleAwayCheckB = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAwayCheckB = (event: ChangeEvent<HTMLInputElement>) => {
     setTeamB((prevTeam) => ({
       ...prevTeam,
       isAway: event.target.checked,
@@ -83,13 +83,21 @@ const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
             <button onClick={() => handleGoalChangeA(1)}>골+</button>
             <button onClick={() => handleGoalChangeA(-1)}>골-</button>
           </div>
-          <select name='country-a' onChange={handleCountryChangeA}>
+          <div className='team-radio-button-group'>
             {Object.entries(countries).map(([countryName, countryCode]) => (
-              <option key={countryCode} value={countryCode}>
-                {countryName}
-              </option>
+              <div key={`a-${countryCode}`}>
+                <input
+                  type='radio'
+                  id={`a-${countryCode}`}
+                  name='country-a'
+                  value={countryCode}
+                  onChange={handleCountryChangeA}
+                  checked={teamA.code === countryCode} // teamA의 code와 비교
+                />
+                <label htmlFor={`a-${countryCode}`}>{countryName}</label>
+              </div>
             ))}
-          </select>
+          </div>
           <div className='away-check-group'>
             <label className='away-check-label' htmlFor='awaycheck-a'>
               어웨이
@@ -111,13 +119,21 @@ const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
             <button onClick={() => handleGoalChangeB(1)}>골+</button>
             <button onClick={() => handleGoalChangeB(-1)}>골-</button>
           </div>
-          <select name='country-b' onChange={handleCountryChangeB}>
+          <div className='team-radio-button-group'>
             {Object.entries(countries).map(([countryName, countryCode]) => (
-              <option key={countryCode} value={countryCode}>
-                {countryName}
-              </option>
+              <div key={`b-${countryCode}`}>
+                <input
+                  type='radio'
+                  id={`b-${countryCode}`}
+                  name='country-b'
+                  value={countryCode}
+                  onChange={handleCountryChangeB}
+                  checked={teamB.code === countryCode} // teamB의 code와 비교
+                />
+                <label htmlFor={`b-${countryCode}`}>{countryName}</label>
+              </div>
             ))}
-          </select>
+          </div>
           <div className='away-check-group'>
             <label className='away-check-label' htmlFor='awaycheck-b'>
               어웨이
