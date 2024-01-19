@@ -34,6 +34,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
 
       if (newSeconds > 120 * 60) {
         eventEmitter.emit('timeExceeded');
+        return 120 * 60;
       }
       return newSeconds;
     });
@@ -53,7 +54,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   }, [totalSeconds]);
 
   useEffect(() => {
-    console.log('secondsUpdated event 등록됨');
     eventEmitter.on('secondsUpdated', () => {
       const time = parseToTime(totalSecondsRef.current);
       setTime(time);

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/InjuryTimeBoard.scss';
+import '../../styles/InjuryTimeBoard.scss';
 
 interface TimeBoardProps {
   timeDisplay: string;

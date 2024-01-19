@@ -1,0 +1,59 @@
+@use 'sass:map';
+@import 'TeamColorCodes';
+
+@mixin teamBColor($team, $status: 'home') {
+  $color: map.get($colors, $team, $status);
+
+  $colorAlpha08: append($color, 0.8);
+  $colorAlphaNo: append($color, 1);
+
+  background: $color;
+  background: linear-gradient(
+      270deg,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 0.3) 85%,
+      rgba(0, 0, 0, 0.3) 100%,
+      transparent
+    ),
+    linear-gradient(
+      270deg,
+      rgba($colorAlpha08...) 5%,
+      rgba($colorAlphaNo...) 50%
+    );
+
+  * {
+    color: white;
+  }
+}
+
+// 한국 kr
+.team-b-kr {
+  @include teamBColor('kr');
+}
+.team-b-kr-away {
+  @include teamBColor('kr', 'away');
+}
+
+// 바레인 bh
+.team-b-bh {
+  @include teamBColor('bh');
+}
+.team-b-bh-away {
+  @include teamBColor('bh', 'away');
+}
+
+// 요르단 jo
+.team-b-jo {
+  @include teamBColor('jo');
+}
+.team-b-jo-away {
+  @include teamBColor('jo', 'away');
+}
+
+// 말레이시아 my
+.team-b-my {
+  @include teamBColor('my');
+}
+.team-b-my-away {
+  @include teamBColor('my', 'away');
+}

@@ -1,48 +1,113 @@
-// input type=number 증감 화살표 제거
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 .timer-time-set-box {
   display: flex;
   flex-direction: column;
-  // align-items: flex-end;
+  align-items: flex-start;
+  padding: 10px;
+  background-color: #faf7df;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 5px beige solid;
 
-  .main-timer-panel {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-  }
-
+  .main-timer-panel,
   .injury-timer-panel {
     display: flex;
+    justify-content: flex-start;
     flex-direction: row;
     align-items: flex-end;
+    margin-bottom: 15px;
   }
 
   .input-group {
     display: flex;
     flex-direction: column;
     align-items: baseline;
+    margin-right: 10px;
+    flex-wrap: nowrap;
+
+    .input-upper-group > button {
+      margin: 0;
+    }
 
     label {
-      background-color: white;
-      padding: 0.1em;
-      border: 3px white solid;
+      background-color: #c4c4c4;
+      color: rgb(0, 0, 0);
+      padding: 5px 5px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      font-weight: bold;
     }
 
     input {
-      background-color: lightgray;
+      background-color: white;
+      border: 2px solid #ccc;
       border-radius: 5px;
-      box-shadow: black 1px 1px;
-      padding-top: 5px;
-      padding-bottom: 3px;
+      padding: 5px;
       margin: 0;
-      font-size: 30px;
+      font-size: 16px;
       text-align: center;
-      width: 2em;
+      width: 70px;
+    }
+
+    .input-plus {
+      background-color: #8a8a8a;
+      color: rgb(0, 0, 0);
+      border: none;
+      padding: 5px;
+      margin: 5px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #45a049;
+      }
     }
   }
+
+  .timer-buttons,
+  .wait-buttons,
+  .start-buttons,
+  .overtime-start-buttons {
+    display: flex;
+    justify-content: left;
+
+    button {
+      background-color: #008cba;
+      color: white;
+      padding: 10px 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #007b9a;
+      }
+    }
+
+    .given-injury-time-input {
+      width: 70px;
+    }
+    .match-title-text-input {
+      width: 220px;
+    }
+  }
+
+  .wait-buttons,
+  .start-buttons,
+  .overtime-start-buttons {
+    button {
+      background-color: #15576b;
+    }
+  }
+}
+
+// input type=number 증감 화살표 제거
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

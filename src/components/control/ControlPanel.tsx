@@ -2,13 +2,20 @@ import React, { useState } from 'react';
 import '../../styles/ControlPanel.scss';
 import TimerControlPanel from './TimerControlPanel';
 import BoardControlPanel from './BoardControlPanel';
-import { TimerWrapper } from '../TimerRoot';
+import { Team, TimerWrapper } from '../TimerRoot';
 
 interface ControlPanelProps {
   mainTimerWrapper: TimerWrapper;
   injuryTimerWrapper: TimerWrapper;
   showInjuryTimer: () => void;
   disappearInjuryTimer: () => void;
+  isShowInjuryTimer: boolean;
+  updateGivenInjuryTime: (min: number) => void;
+  setMatchName: React.Dispatch<React.SetStateAction<string>>;
+  teamA: Team;
+  teamB: Team;
+  setTeamA: React.Dispatch<React.SetStateAction<Team>>;
+  setTeamB: React.Dispatch<React.SetStateAction<Team>>;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -16,6 +23,13 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   injuryTimerWrapper,
   showInjuryTimer,
   disappearInjuryTimer,
+  isShowInjuryTimer,
+  updateGivenInjuryTime,
+  setMatchName,
+  teamA,
+  teamB,
+  setTeamA,
+  setTeamB,
 }) => {
   return (
     <div className='control-panel-container'>
@@ -25,10 +39,18 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
           injuryTimerWrapper={injuryTimerWrapper}
           showInjuryTimer={showInjuryTimer}
           disappearInjuryTimer={disappearInjuryTimer}
+          isShowInjuryTimer={isShowInjuryTimer}
+          updateGivenInjuryTime={updateGivenInjuryTime}
+          setMatchName={setMatchName}
         />
       </div>
       <div className='board-control-wrapper'>
-        <BoardControlPanel />
+        <BoardControlPanel
+          teamA={teamA}
+          teamB={teamB}
+          setTeamA={setTeamA}
+          setTeamB={setTeamB}
+        />
       </div>
     </div>
   );

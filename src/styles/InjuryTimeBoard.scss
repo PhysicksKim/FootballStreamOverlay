@@ -28,43 +28,47 @@
 }
 
 .injury-time-container {
+  box-sizing: border-box;
   display: block;
   position: relative;
   top: -10px;
   left: 0;
   padding: 0px;
   margin: 0px;
-  z-index: 1; // MainTimeBoard보다 낮은 z-index 설정
+  width: 130px;
+  z-index: -999; // MainTimeBoard보다 낮은 z-index 설정
+  background-color: white;
 
   .injury-time-wrapper {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    background-color: white;
 
     .injury-timer {
-      padding-left: 0.6em;
-      padding-right: 0.6em;
-      padding-top: 0.4em;
-      padding-bottom: 0.3em;
       background-color: #d9cdb5;
-
-      // border-radius: 3px;
-
-      font-family: 'TAEBAEKfont';
+      font-size: 20px;
       color: rgb(41, 33, 33);
-      font-size: 18px;
+
+      width: 65%;
+      padding-top: 10px;
+      padding-bottom: 6px;
+      padding-left: 3px;
+      text-align: center;
     }
     .given-injury-time {
-      padding-left: 0.4em;
-      padding-right: 0.6em;
-      padding-top: 0.4em;
-      padding-bottom: 0.3em;
-      background-color: #567759;
+      background-color: rgb(71, 71, 71);
+      font-size: 20px;
+      color: rgb(238, 238, 238);
 
-      // border-radius: 3px;
-
-      font-family: 'TAEBAEKfont';
-      color: rgba(238, 238, 238, 0.945);
-      font-size: 18px;
+      width: 35%;
+      padding-top: 10px;
+      padding-bottom: 6px;
+      padding-right: 2px;
+      text-align: center;
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/MainTimeBoard.scss';
+import '../../styles/MainTimeBoard.scss';
 
 interface TimeBoardProps {
   timeDisplay: string;
@@ -8,8 +8,8 @@ interface TimeBoardProps {
 const MainTimeBoard: React.FC<TimeBoardProps> = ({ timeDisplay }) => {
   return (
     <div className='main-time-container'>
-      <div className='main-time-wrapper'>
-        <div className='main-time-board'>{timeDisplay}</div>
+      <div className='main-time-board'>
+        <div className='main-time-text'>{timeDisplay}</div>
       </div>
     </div>
   );

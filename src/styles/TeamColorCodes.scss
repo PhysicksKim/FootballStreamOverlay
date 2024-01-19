@@ -1,0 +1,20 @@
+@use 'sass:color';
+
+$colors: (
+  'kr': (
+    'home': rgb(209, 45, 33),
+    'away': rgb(75, 72, 77),
+  ),
+  'bh': (
+    'home': rgb(195, 15, 16),
+    'away': rgb(200, 185, 185),
+  ),
+  'my': (
+    'home': rgb(160, 160, 50),
+    'away': rgb(77, 77, 77),
+  ),
+  'jo': (
+    'home': rgb(200, 185, 185),
+    'away': rgb(165, 0, 0),
+  ),
+);

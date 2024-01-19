@@ -1,43 +1,101 @@
 .score-board-container {
   display: inline-block;
-  width: 800px;
-  height: 70px;
-  border: 5px white solid;
+  box-sizing: border-box;
+  width: 700px;
+  height: 90px;
+  border: 3px white solid;
 
   .score-board-wrapper {
+    box-sizing: border-box;
     display: flex;
     height: 100%;
     flex-direction: row;
+
+    .team-flag-wrapper {
+      box-sizing: border-box;
+      position: absolute;
+      margin: 0;
+      padding: 0;
+      height: 90px;
+      width: 90px;
+
+      // 국기 이미지
+      span {
+        box-sizing: border-box;
+        background-size: 100%;
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        border: 5px white solid;
+      }
+    }
+
+    .team-a-flag-wrapper {
+      left: 0;
+      transform: translate(-50%, -3px);
+    }
+    .team-b-flag-wrapper {
+      right: 0;
+      transform: translate(50%, -3px);
+    }
 
     .team-section {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      height: 100%;
 
       div {
         font-size: 40px;
-        color: white;
+        text-align: center;
+      }
+
+      .team-text-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        align-items: center;
+      }
+
+      .team-score-wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 30px;
+        align-items: center;
       }
     }
 
-    .team-a,
-    .team-b {
+    .team-a-format,
+    .team-b-format {
       box-sizing: border-box;
       width: 50%;
+      text-wrap: nowrap;
     }
 
-    .team-a {
-      padding-left: 15%;
-      padding-right: 10px;
-      background-color: #da291c;
+    .team-a-format {
       text-align: left;
+
+      .team-text-wrapper {
+        justify-content: left;
+        padding-left: 60px;
+      }
+      .team-score-wrapper {
+        padding-right: 17px;
+      }
     }
-    .team-b {
-      padding-left: 10px;
-      padding-right: 15%;
-      background-color: #6cabdd;
+
+    .team-b-format {
       text-align: right;
+
+      .team-text-wrapper {
+        justify-content: right;
+        padding-right: 60px;
+      }
+      .team-score-wrapper {
+        padding-left: 17px;
+      }
     }
   }
 }
