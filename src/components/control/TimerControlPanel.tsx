@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Time } from '@src/types/types';
 import { TimerWrapper } from '../TimerRoot';
-import '../../styles/TimerControlPanel.scss';
+import '../../styles/control/TimerControlPanel.scss';
 
 interface TimerControlPanelProps {
   mainTimerWrapper: TimerWrapper;

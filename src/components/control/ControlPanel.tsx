@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/ControlPanel.scss';
+import '../../styles/control/ControlPanel.scss';
 import TimerControlPanel from './TimerControlPanel';
 import BoardControlPanel from './BoardControlPanel';
 import { Team, TimerWrapper } from '../TimerRoot';

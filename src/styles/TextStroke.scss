@@ -1,0 +1,16 @@
+.outside {
+  position: relative;
+  display: inline-block;
+}
+
+.outside {
+  &:after {
+    position: absolute;
+    left: 0px;
+    top: 0;
+    content: attr(data-text);
+    color: navy;
+    -webkit-text-stroke: 10px navy;
+    z-index: -1;
+  }
+}

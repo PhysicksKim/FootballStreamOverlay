@@ -1,8 +1,10 @@
 import React, { ChangeEvent } from 'react';
-import '../../styles/BoardControlPanel.scss';
-import 'flag-icons/css/flag-icons.min.css';
-import { Team } from '../TimerRoot';
 import countries from '@src/classes/CountryCodes';
+
+import '../../styles/control/BoardControlPanel.scss';
+import 'flag-icons/css/flag-icons.min.css';
+
+import { Team } from '../TimerRoot';
 
 interface BoardControlPanelProps {
   teamA: Team;

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/MainTimeBoard.scss';
+import '../../styles/board/MainTimeBoard.scss';
 
 interface TimeBoardProps {
   timeDisplay: string;

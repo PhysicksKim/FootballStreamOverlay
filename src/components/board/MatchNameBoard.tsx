@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/MatchNameBoard.scss';
+import '../../styles/board/MatchNameBoard.scss';
 import gyeHead from '../../images/gye_head.png';
 
 const MatchNameBoard: React.FC<{ matchName: string }> = ({ matchName }) => {

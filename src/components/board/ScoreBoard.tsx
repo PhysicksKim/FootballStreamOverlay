@@ -1,9 +1,11 @@
 import React from 'react';
-import 'flag-icons/css/flag-icons.min.css';
 import { parseFlagClassName } from '@src/classes/Utils';
-import '../../styles/ScoreBoard.scss';
-import '../../styles/TeamAStyles.scss';
-import '../../styles/TeamBStyles.scss';
+
+import 'flag-icons/css/flag-icons.min.css';
+import '../../styles/board/ScoreBoard.scss';
+import '../../styles/board/TeamAStyles.scss';
+import '../../styles/board/TeamBStyles.scss';
+
 import { Team } from '../TimerRoot';
 
 export interface ScoreBoardProps {
