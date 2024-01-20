@@ -19,12 +19,26 @@
       z-index: -1;
       color: rgb(11, 3, 12);
 
-      .gye-image {
+      .gye-head {
         position: absolute;
         box-sizing: border-box;
         height: 100px;
         left: -110px;
         top: -60px;
+        background-color: rgba(0, 0, 0, 0);
+        padding-left: 17px;
+        padding-right: 17px;
+        padding-top: 10px;
+        z-index: -1;
+        border-radius: 20px 20px 0 0;
+      }
+
+      .gye-football {
+        position: absolute;
+        box-sizing: border-box;
+        height: 170px;
+        left: -135px;
+        top: -100px;
         background-color: rgba(0, 0, 0, 0);
         padding-left: 17px;
         padding-right: 17px;
