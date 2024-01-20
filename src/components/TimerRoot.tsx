@@ -13,6 +13,8 @@ import '../styles/TimerRootTransition.scss';
 
 import { Time } from '@src/types/types';
 import { timeToZeroFillString } from '@src/classes/Utils';
+import GlobalStyle from './styledcomponents/GlobalStyle';
+import { useFont } from '@src/contexts/FontContext';
 
 export interface TimerWrapper {
   timer: TimerState;
@@ -30,6 +32,9 @@ export interface Team {
 }
 
 const TimerRoot = () => {
+  // 글로벌 폰트
+  const { fontInfo, updateGlobalFont } = useFont();
+
   // 대회 종류
   const [matchName, setMatchName] = useState('아시안컵 E조 조별 예선');
 
@@ -128,6 +133,7 @@ const TimerRoot = () => {
 
   return (
     <div className='timer-context-root'>
+      <GlobalStyle fontFamily={fontInfo.code} />
       <div className='board-container-fixer'>
         <div className='board-container'>
           <MatchNameBoard matchName={matchName} />

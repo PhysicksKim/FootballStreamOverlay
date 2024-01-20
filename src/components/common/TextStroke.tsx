@@ -1,5 +1,5 @@
 import React from 'react';
-import './TextStroke.scss';
+import '@styles/TextStroke.scss';
 
 interface TextStrokeProps {
   tag: keyof JSX.IntrinsicElements;

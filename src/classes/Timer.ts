@@ -21,7 +21,6 @@ class Timer extends EventEmitter {
   }
 
   tick = (): void => {
-    console.log('tick called');
     this.totalSeconds++;
     this.emit('secondsUpdated');
     this.checkForStopTime();
@@ -31,11 +30,11 @@ class Timer extends EventEmitter {
     }
   };
 
-  start(minutes: number = 0, seconds: number = 0): void {
+  start(minutes = 0, seconds = 0): void {
     this.stop();
     this.totalSeconds = minutes * 60 + seconds;
     this.timer.start(); // tick 콜백 함수 1초마다 실행
-    /* 
+    /*
     this.timerInterval = setInterval(() => {
       this.totalSeconds++;
       this.emit('secondsUpdated');
@@ -44,7 +43,7 @@ class Timer extends EventEmitter {
         this.emit('timeExceeded');
         this.stop();
       }
-    }, 1000); 
+    }, 1000);
     */
   }
 
@@ -64,7 +63,7 @@ class Timer extends EventEmitter {
     }
   }
 
-  reset(minutes: number = 0, seconds: number = 0): void {
+  reset(minutes = 0, seconds = 0): void {
     this.stop();
     this.start(minutes, seconds);
   }
@@ -91,7 +90,6 @@ class Timer extends EventEmitter {
   }
 
   getCurrentTime(): string {
-    console.log('getCurrentTime() called');
     const minutes = Math.floor(this.totalSeconds / 60);
     const seconds = this.totalSeconds % 60;
     return `${minutes}:${seconds}`;

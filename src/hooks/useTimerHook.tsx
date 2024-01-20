@@ -57,7 +57,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     eventEmitter.on('secondsUpdated', () => {
       const time = parseToTime(totalSecondsRef.current);
       setTime(time);
-      console.log('time update : ', time);
     });
 
     eventEmitter.on('timeExceeded', () => {

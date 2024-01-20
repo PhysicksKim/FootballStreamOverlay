@@ -12,6 +12,8 @@ import {
 import { Time } from '@src/types/types';
 import { TimerWrapper } from '../TimerRoot';
 import '../../styles/control/TimerControlPanel.scss';
+import { useFont } from '@src/contexts/FontContext';
+import { FontEnum, fontInfos } from '@src/classes/FontEnum';
 
 interface TimerControlPanelProps {
   mainTimerWrapper: TimerWrapper;
@@ -32,6 +34,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   updateGivenInjuryTime,
   setMatchName,
 }) => {
+  const { fontInfo, updateGlobalFont } = useFont();
   const [mainMinutes, setMainMinutes] = useState(0);
   const [mainSeconds, setMainSeconds] = useState(0);
   const [isMainTimerRunning, setIsMainTimerRunning] = useState(false);
@@ -288,6 +291,21 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
               placeholder='추가시간'
               onChange={(e) => changeGivenInjuryTime(e.target.value)}
             />
+          </div>
+          <div className='font-radio-button-box'>
+            {Object.entries(fontInfos).map(([fontCode, { name }]) => (
+              <div key={fontCode}>
+                <input
+                  type='radio'
+                  id={`font-${fontCode}`}
+                  name='font-choice'
+                  value={fontCode}
+                  onChange={() => updateGlobalFont(fontCode as FontEnum)}
+                  checked={fontInfo.code === fontCode} // 현재 선택된 폰트와 비교
+                />
+                <label htmlFor={`font-${fontCode}`}>{name}</label>
+              </div>
+            ))}
           </div>
         </div>
         <div className='main-timer-box'>
