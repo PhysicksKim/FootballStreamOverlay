@@ -115,6 +115,18 @@ const TimerRoot = () => {
     setGivenInjuryTime(min);
   };
 
+  const updateMatchName = (matchName: string) => {
+    setMatchName(matchName);
+  };
+
+  const updateTeamA = <K extends keyof Team>(key: K, value: Team[K]) => {
+    setTeamA((prevTeam) => ({ ...prevTeam, [key]: value }));
+  };
+
+  const updateTeamB = <K extends keyof Team>(key: K, value: Team[K]) => {
+    setTeamB((prevTeam) => ({ ...prevTeam, [key]: value }));
+  };
+
   const mainTimerWrapper: TimerWrapper = {
     timer: mainTimer,
     startTimer: startMainTimer,
@@ -161,11 +173,11 @@ const TimerRoot = () => {
           showInjuryTimer={showInjuryTimer}
           isShowInjuryTimer={isShowInjuryTimer}
           updateGivenInjuryTime={updateGivenInjuryTime}
-          setMatchName={setMatchName}
+          updateMatchName={updateMatchName}
           teamA={teamA}
           teamB={teamB}
-          setTeamA={setTeamA}
-          setTeamB={setTeamB}
+          updateTeamA={updateTeamA}
+          updateTeamB={updateTeamB}
         ></ControlPanel>
       </div>
     </div>

@@ -9,30 +9,24 @@ import { Team } from '../TimerRoot';
 interface BoardControlPanelProps {
   teamA: Team;
   teamB: Team;
-  setTeamA: React.Dispatch<React.SetStateAction<Team>>;
-  setTeamB: React.Dispatch<React.SetStateAction<Team>>;
+  updateTeamA: <K extends keyof Team>(key: K, value: Team[K]) => void;
+  updateTeamB: <K extends keyof Team>(key: K, value: Team[K]) => void;
 }
 
 const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
   teamA,
   teamB,
-  setTeamA,
-  setTeamB,
+  updateTeamA,
+  updateTeamB,
 }) => {
   // Team A 골 조작
   const handleGoalChangeA = (change: number) => {
-    setTeamA((prevTeam) => ({
-      ...prevTeam,
-      score: prevTeam.score + change >= 0 ? prevTeam.score + change : 0, // 골은 0 이하가 되지 않도록 조건 추가
-    }));
+    updateTeamA('score', teamA.score + change >= 0 ? teamA.score + change : 0); // 골은 0 이하가 되지 않도록 조건 추가
   };
 
   // Team B 골 조작
   const handleGoalChangeB = (change: number) => {
-    setTeamB((prevTeam) => ({
-      ...prevTeam,
-      score: prevTeam.score + change >= 0 ? prevTeam.score + change : 0,
-    }));
+    updateTeamB('score', teamB.score + change >= 0 ? teamB.score + change : 0); // 골은 0 이하가 되지 않도록 조건 추가
   };
 
   // Team A 국가 코드 및 이름 변경
@@ -40,11 +34,8 @@ const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
     const selectedOptionValue = event.target.value;
     const selectedOptionText = event.target.nextSibling.textContent; // 라디오 버튼 옆에 있는 label의 텍스트를 가져옵니다.
 
-    setTeamA((prevTeam) => ({
-      ...prevTeam,
-      code: selectedOptionValue,
-      name: selectedOptionText,
-    }));
+    updateTeamA('code', selectedOptionValue);
+    updateTeamA('name', selectedOptionText);
   };
 
   // Team B 국가 코드 및 이름 변경
@@ -52,27 +43,18 @@ const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
     const selectedOptionValue = event.target.value;
     const selectedOptionText = event.target.nextSibling.textContent; // 라디오 버튼 옆에 있는 label의 텍스트를 가져옵니다.
 
-    setTeamB((prevTeam) => ({
-      ...prevTeam,
-      code: selectedOptionValue,
-      name: selectedOptionText,
-    }));
+    updateTeamB('code', selectedOptionValue);
+    updateTeamB('name', selectedOptionText);
   };
 
   // Team A 어웨이 상태 변경
   const handleAwayCheckA = (event: ChangeEvent<HTMLInputElement>) => {
-    setTeamA((prevTeam) => ({
-      ...prevTeam,
-      isAway: event.target.checked,
-    }));
+    updateTeamA('isAway', event.target.checked);
   };
 
   // Team B 어웨이 상태 변경
   const handleAwayCheckB = (event: ChangeEvent<HTMLInputElement>) => {
-    setTeamB((prevTeam) => ({
-      ...prevTeam,
-      isAway: event.target.checked,
-    }));
+    updateTeamB('isAway', event.target.checked);
   };
 
   return (
@@ -86,6 +68,7 @@ const BoardControlPanel: React.FC<BoardControlPanelProps> = ({
             <button onClick={() => handleGoalChangeA(-1)}>골-</button>
           </div>
           <div className='team-radio-button-group'>
+            {/* TODO : epl 팀 나중에 추가해야 하니까 라디오 버튼으로 핸들링 하는거 구조와 기능 재사용성 검토 */}
             {Object.entries(countries).map(([countryName, countryCode]) => (
               <div key={`a-${countryCode}`}>
                 <input

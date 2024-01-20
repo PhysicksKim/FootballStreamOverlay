@@ -22,7 +22,7 @@ interface TimerControlPanelProps {
   disappearInjuryTimer: () => void;
   isShowInjuryTimer: boolean;
   updateGivenInjuryTime: (min: number) => void;
-  setMatchName: React.Dispatch<React.SetStateAction<string>>;
+  updateMatchName: (matchName: string) => void;
 }
 
 const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
@@ -32,7 +32,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   disappearInjuryTimer,
   isShowInjuryTimer,
   updateGivenInjuryTime,
-  setMatchName,
+  updateMatchName,
 }) => {
   const { fontInfo, updateGlobalFont } = useFont();
   const [mainMinutes, setMainMinutes] = useState(0);
@@ -276,9 +276,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
               onChange={(e) => {
                 const title = e.target.value.trim();
                 if (!title) {
-                  setMatchName('아시안컵 E조 조별 예선');
+                  updateMatchName('아시안컵 E조 조별 예선');
                 } else {
-                  setMatchName(e.target.value);
+                  updateMatchName(e.target.value);
                 }
               }}
             />
