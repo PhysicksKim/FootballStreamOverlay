@@ -1,3 +1,5 @@
+@import 'FontVariables';
+
 .main-time-container {
   display: flex; /* Flex 컨테이너 설정 */
   flex-direction: column; /* 아이템을 수직 방향으로 정렬 */
@@ -19,9 +21,6 @@
   flex-direction: column-reverse;
   flex-grow: 1; /* 부모 요소(main-time-container)의 남은 공간을 모두 채움 */
   text-align: center; /* 텍스트를 가운데 정렬 */
-  font-family: 'TAEBAEKfont';
-  // background-color: #f7f1e3;
-  // color: rgb(11, 3, 12);
   background-color: #f7f1e3;
   color: rgb(11, 3, 12);
   font-size: 30px;

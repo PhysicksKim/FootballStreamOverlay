@@ -1,3 +1,5 @@
+@import 'FontVariables';
+
 .timer-control-panel-box {
   display: flex;
   flex-direction: row;
@@ -73,7 +75,6 @@
 
     input {
       box-sizing: border-box;
-      font-family: 'TAEBAEKfont';
       background-color: rgb(120, 228, 147);
       border: 0;
       border-radius: 5px;
@@ -102,7 +103,6 @@
   .overtime-start-buttons {
     button {
       margin-left: 3px;
-      font-family: 'TAEBAEKfont';
       background-color: rgb(73, 75, 87);
       transition-property: background-color, border-radius;
       border-radius: 0;
