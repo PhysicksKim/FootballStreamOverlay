@@ -1,16 +1,17 @@
 import React from 'react';
-import '../styles/Application.scss';
+import '@styles/Application.scss';
 import TimerRoot from './TimerRoot';
 
 import { FontProvider, useFont } from '@src/contexts/FontContext';
-import GlobalStyle from '@src/components/styledcomponents/GlobalStyle';
-import { FontEnum } from '@src/classes/FontEnum';
+import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot';
 
 const Application: React.FC = () => {
   return (
-    <FontProvider>
-      <TimerRoot />
-    </FontProvider>
+    <MainTimerStateRoot>
+      <FontProvider>
+        <TimerRoot />
+      </FontProvider>
+    </MainTimerStateRoot>
   );
 };
 

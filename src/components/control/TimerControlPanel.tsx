@@ -14,6 +14,7 @@ import { TimerManager } from '../TimerRoot';
 import '../../styles/control/TimerControlPanel.scss';
 import TimerPresetButtons from './TimerPresetButtons';
 import TimerTitleBox from './TimerTitleBox';
+import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
 
 export interface TimerPresets {
   wait: {
@@ -47,7 +48,7 @@ interface TimerControlPanelProps {
 }
 
 const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
-  mainTimerWrapper,
+  mainTimerWrapper: mainTimerManager2, // 리팩토링을 위해 임시로 뒤에 2를 붙여서 변수명 수정
   injuryTimerWrapper,
   showInjuryTimer,
   disappearInjuryTimer,
@@ -55,6 +56,8 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   updateGivenInjuryTime,
   updateMatchName,
 }) => {
+  const mainTimerManager = useMainTimerManager();
+
   const [mainMinutes, setMainMinutes] = useState(0);
   const [mainSeconds, setMainSeconds] = useState(0);
   const [isMainTimerRunning, setIsMainTimerRunning] = useState(false);
@@ -62,12 +65,16 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   const [injurySeconds, setInjurySeconds] = useState(0);
   const [isInjuryTimerRunning, setIsInjuryTimerRunning] = useState(false);
 
+  useEffect(() => {
+    mainTimerManager2.startTimer({ min: 23, sec: 12 });
+  }, []);
+
   // --- Main Timer ---
   const toggleMainTimerRunning = () => {
     if (isMainTimerRunning) {
-      mainTimerWrapper.pauseTimer();
+      mainTimerManager.pauseTimer();
     } else {
-      mainTimerWrapper.resumeTimer();
+      mainTimerManager.resumeTimer();
     }
     setIsMainTimerRunning(!isMainTimerRunning);
   };
@@ -75,17 +82,17 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   const startMainTimer = () => {
     setIsMainTimerRunning(true);
     if (mainMinutes >= 120) {
-      mainTimerWrapper.startTimer({ min: 120, sec: 0 });
+      mainTimerManager.startTimer({ min: 120, sec: 0 });
       setMainMinutes(120);
       setMainSeconds(0);
     } else {
-      mainTimerWrapper.startTimer({ min: mainMinutes, sec: mainSeconds });
+      mainTimerManager.startTimer({ min: mainMinutes, sec: mainSeconds });
     }
   };
 
   const startMainTimerWithTime: (time: Time) => void = ({ min, sec }) => {
     setIsMainTimerRunning(true);
-    mainTimerWrapper.startTimer({ min: min, sec: sec });
+    mainTimerManager.startTimer({ min: min, sec: sec });
   };
 
   const updateMainMinutes = (input: string) => {
@@ -182,29 +189,29 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
         setMainMinutes(0);
         setMainSeconds(0);
         stopInjuryTimer();
-        mainTimerWrapper.setTimer({ min: 0, sec: 0 });
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer({ min: 0, sec: 0 });
+        mainTimerManager.pauseTimer();
       },
       SecondHalf: () => {
         setMainMinutes(45);
         setMainSeconds(0);
         stopInjuryTimer();
-        mainTimerWrapper.setTimer({ min: 45, sec: 0 });
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer({ min: 45, sec: 0 });
+        mainTimerManager.pauseTimer();
       },
       OverFirstHalf: () => {
         setMainMinutes(90);
         setMainSeconds(0);
         stopInjuryTimer();
-        mainTimerWrapper.setTimer({ min: 90, sec: 0 });
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer({ min: 90, sec: 0 });
+        mainTimerManager.pauseTimer();
       },
       OverSecondHalf: () => {
         setMainMinutes(105);
         setMainSeconds(0);
         stopInjuryTimer();
-        mainTimerWrapper.setTimer({ min: 105, sec: 0 });
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer({ min: 105, sec: 0 });
+        mainTimerManager.pauseTimer();
       },
     },
     start: {
@@ -236,29 +243,29 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     injury: {
       FirstHalf: () => {
         const time: Time = { min: 45, sec: 0 };
-        mainTimerWrapper.setTimer(time);
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer(time);
+        mainTimerManager.pauseTimer();
         startInjuryTimer();
         showInjuryTimer();
       },
       SecondHalf: () => {
         const time: Time = { min: 90, sec: 0 };
-        mainTimerWrapper.setTimer(time);
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer(time);
+        mainTimerManager.pauseTimer();
         startInjuryTimer();
         showInjuryTimer();
       },
       OverFirstHalf: () => {
         const time: Time = { min: 105, sec: 0 };
-        mainTimerWrapper.setTimer(time);
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer(time);
+        mainTimerManager.pauseTimer();
         startInjuryTimer();
         showInjuryTimer();
       },
       OverSecondHalf: () => {
         const time: Time = { min: 120, sec: 0 };
-        mainTimerWrapper.setTimer(time);
-        mainTimerWrapper.pauseTimer();
+        mainTimerManager.setTimer(time);
+        mainTimerManager.pauseTimer();
         startInjuryTimer();
         showInjuryTimer();
       },

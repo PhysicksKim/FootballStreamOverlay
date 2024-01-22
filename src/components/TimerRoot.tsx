@@ -15,6 +15,7 @@ import { Time } from '@src/types/types';
 import { timeToZeroFillString } from '@src/classes/Utils';
 import GlobalStyle from './styledcomponents/GlobalStyle';
 import { useFont } from '@src/contexts/FontContext';
+import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot';
 
 export interface TimerManager {
   timer: TimerState;
@@ -48,7 +49,6 @@ const TimerRoot = () => {
   const [injuryTimer, injuryEventEmitter] = useTimerHook();
   const [givenInjuryTime, setGivenInjuryTime] = useState(0);
   const [isShowInjuryTimer, setIsShowInjuryTimer] = useState(false);
-  const [isShownGivenInjuryTime, setIsShownGivenInjuryTime] = useState(true);
 
   // Team 속성
   const [teamA, setTeamA] = useState<Team>({
@@ -67,10 +67,6 @@ const TimerRoot = () => {
   });
 
   useEffect(() => {
-    setMainTimeDisplay(timeToZeroFillString(mainTimer.time));
-  }, [mainTimer.time]);
-
-  useEffect(() => {
     setInjuryTimeDisplay(timeToZeroFillString(injuryTimer.time));
   }, [injuryTimer.time]);
 
@@ -85,6 +81,7 @@ const TimerRoot = () => {
     return numberString.padStart(2, '0');
   };
 
+  // #region injury timer board methods
   const disappearInjuryTimer = () => {
     setIsShowInjuryTimer(false);
   };
@@ -96,6 +93,7 @@ const TimerRoot = () => {
   const updateGivenInjuryTime = (min: number) => {
     setGivenInjuryTime(min);
   };
+  // #endregion
 
   const updateMatchName = (matchName: string) => {
     setMatchName(matchName);
@@ -146,7 +144,7 @@ const TimerRoot = () => {
         <div className='board-container'>
           <MatchNameBoard matchName={matchName} />
           <ScoreBoard teamA={teamA} teamB={teamB} />
-          <MainTimeBoard timeDisplay={mainTimeDisplay}></MainTimeBoard>
+          <MainTimeBoard />
           <CSSTransition
             in={isShowInjuryTimer}
             timeout={1000}
@@ -156,7 +154,6 @@ const TimerRoot = () => {
             <InjuryTimeBoard
               timeDisplay={injuryTimeDisplay}
               givenInjuryTime={givenInjuryTime}
-              isShownGivenInjuryTime={isShownGivenInjuryTime}
             ></InjuryTimeBoard>
           </CSSTransition>
         </div>

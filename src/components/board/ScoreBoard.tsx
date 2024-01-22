@@ -47,4 +47,4 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ teamA, teamB }) => {
   );
 };
 
-export default React.memo(ScoreBoard);
+export default ScoreBoard;

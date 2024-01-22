@@ -16,4 +16,4 @@ const MatchNameBoard: React.FC<{ matchName: string }> = ({ matchName }) => {
   );
 };
 
-export default React.memo(MatchNameBoard);
+export default MatchNameBoard;
