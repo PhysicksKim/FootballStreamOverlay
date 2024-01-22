@@ -1,12 +1,16 @@
-import { TimerManager } from '@src/components/TimerRoot';
+import { TimerManager, Time } from '@src/types/types';
 import React, { ReactNode, createContext, useContext } from 'react';
 
 import { timeToZeroFillString } from '@src/classes/Utils';
 import { TimerState } from '@src/hooks/useTimerHook';
-import { Time } from '@src/types/types';
+import EventEmitter from 'events';
 
 const MainTimerContext = createContext<TimerManager | undefined>(undefined);
 
+/**
+ * { Timer, startTimer, pauseTimer, resumeTimer, setTimer, eventEmitter? }
+ * @returns { Timer, startTimer, pauseTimer, resumeTimer, setTimer, eventEmitter? }
+ */
 export const useMainTimerManager = () => {
   const context = useContext(MainTimerContext);
   if (!context) {
@@ -21,7 +25,13 @@ export const MainTimerManagerProvider: React.FC<{
   children: ReactNode;
   setMainTimeDisplay: (time: string) => void;
   timer: TimerState;
-}> = ({ children, setMainTimeDisplay, timer: mainTimer }) => {
+  eventEmitter: EventEmitter;
+}> = ({
+  children,
+  setMainTimeDisplay,
+  timer: mainTimer,
+  eventEmitter: mainEventEmitter,
+}) => {
   const mainTimerManager: TimerManager = {
     timer: mainTimer,
     startTimer: (time: Time) => {
@@ -34,6 +44,7 @@ export const MainTimerManagerProvider: React.FC<{
       mainTimer.set(time.min, time.sec);
       setMainTimeDisplay(timeToZeroFillString(time));
     },
+    eventEmitter: mainEventEmitter,
   };
 
   return (

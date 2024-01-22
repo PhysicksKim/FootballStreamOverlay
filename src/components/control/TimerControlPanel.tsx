@@ -9,12 +9,12 @@ import {
   faPlus,
   faReply,
 } from '@fortawesome/free-solid-svg-icons';
-import { Time } from '@src/types/types';
-import { TimerManager } from '../TimerRoot';
+import { Time, TimerManager } from '@src/types/types';
 import '../../styles/control/TimerControlPanel.scss';
 import TimerPresetButtons from './TimerPresetButtons';
 import TimerTitleBox from './TimerTitleBox';
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
+import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
 
 export interface TimerPresets {
   wait: {
@@ -38,8 +38,6 @@ export interface TimerPresets {
 }
 
 interface TimerControlPanelProps {
-  mainTimerWrapper: TimerManager;
-  injuryTimerWrapper: TimerManager;
   showInjuryTimer: () => void;
   disappearInjuryTimer: () => void;
   isShowInjuryTimer: boolean;
@@ -48,8 +46,6 @@ interface TimerControlPanelProps {
 }
 
 const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
-  mainTimerWrapper: mainTimerManager2, // 리팩토링을 위해 임시로 뒤에 2를 붙여서 변수명 수정
-  injuryTimerWrapper,
   showInjuryTimer,
   disappearInjuryTimer,
   isShowInjuryTimer,
@@ -57,17 +53,15 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   updateMatchName,
 }) => {
   const mainTimerManager = useMainTimerManager();
+  const injuryTimerManager = useInjuryTimerManager();
 
+  // control panel timer startTime states
   const [mainMinutes, setMainMinutes] = useState(0);
   const [mainSeconds, setMainSeconds] = useState(0);
   const [isMainTimerRunning, setIsMainTimerRunning] = useState(false);
   const [injuryMinutes, setInjuryMinutes] = useState(0);
   const [injurySeconds, setInjurySeconds] = useState(0);
   const [isInjuryTimerRunning, setIsInjuryTimerRunning] = useState(false);
-
-  useEffect(() => {
-    mainTimerManager2.startTimer({ min: 23, sec: 12 });
-  }, []);
 
   // --- Main Timer ---
   const toggleMainTimerRunning = () => {
@@ -124,9 +118,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   // --- Injury Timer ---
   const toggleInjuryTimerRunning = () => {
     if (isInjuryTimerRunning) {
-      injuryTimerWrapper.pauseTimer();
+      injuryTimerManager.pauseTimer();
     } else {
-      injuryTimerWrapper.resumeTimer();
+      injuryTimerManager.resumeTimer();
     }
     setIsInjuryTimerRunning(!isInjuryTimerRunning);
   };
@@ -142,12 +136,12 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   const startInjuryTimer = () => {
     setIsInjuryTimerRunning(true);
     showInjuryTimer();
-    injuryTimerWrapper.startTimer({ min: 0, sec: 0 });
+    injuryTimerManager.startTimer({ min: 0, sec: 0 });
   };
 
   const startInjuryTimerWithTime = () => {
     setIsInjuryTimerRunning(true);
-    injuryTimerWrapper.startTimer({ min: injuryMinutes, sec: injurySeconds });
+    injuryTimerManager.startTimer({ min: injuryMinutes, sec: injurySeconds });
   };
 
   const updateInjuryMinutes = (input: string) => {
@@ -177,7 +171,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   };
 
   const stopInjuryTimer = () => {
-    injuryTimerWrapper.timer.stop();
+    injuryTimerManager.timer.stop();
     setIsInjuryTimerRunning(false);
     disappearInjuryTimer();
   };

@@ -4,7 +4,7 @@ import countries from '@src/classes/CountryCodes';
 import '../../styles/control/BoardControlPanel.scss';
 import 'flag-icons/css/flag-icons.min.css';
 
-import { Team } from '../TimerRoot';
+import { Team } from '@src/types/types';
 
 interface BoardControlPanelProps {
   teamA: Team;

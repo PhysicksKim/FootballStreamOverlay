@@ -1,5 +1,5 @@
 import React from 'react';
-import { Team } from '../TimerRoot';
+import { Team } from '@src/types/types';
 import { Flag } from '../styledcomponents/TeamFlag';
 import '@styles/board/ScoreBoard.scss';
 import '@styles/board/TeamAStyles.scss';

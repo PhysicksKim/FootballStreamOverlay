@@ -19,6 +19,7 @@ export const MainTimerStateRoot: React.FC<{ children: ReactNode }> = ({
     <MainTimerManagerProvider
       setMainTimeDisplay={setMainTimeDisplay}
       timer={mainTimer}
+      eventEmitter={mainEventEmitter}
     >
       <MainTimeDisplayProvider
         mainTimeDisplay={mainTimeDisplay}

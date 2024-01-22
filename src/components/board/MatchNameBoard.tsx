@@ -1,6 +1,6 @@
 import React from 'react';
 import '@styles/board/MatchNameBoard.scss';
-import gyeFootball from '../../images/gye_football.png';
+import gyeFootball from '@assets/images/gye_football.png';
 
 const MatchNameBoard: React.FC<{ matchName: string }> = ({ matchName }) => {
   return (

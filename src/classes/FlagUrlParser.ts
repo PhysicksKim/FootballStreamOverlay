@@ -1,4 +1,4 @@
-import { Team } from '@src/components/TimerRoot';
+import { Team } from '@src/types/types';
 
 // #region flag imports
 import adFlag from '@assets/flags/country/1x1/ad.svg';

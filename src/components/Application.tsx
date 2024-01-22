@@ -4,13 +4,16 @@ import TimerRoot from './TimerRoot';
 
 import { FontProvider, useFont } from '@src/contexts/FontContext';
 import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot';
+import { InjuryTimerStateRoot } from '@src/contexts/timers/injury/InjuryTimerStateRoot';
 
 const Application: React.FC = () => {
   return (
     <MainTimerStateRoot>
-      <FontProvider>
-        <TimerRoot />
-      </FontProvider>
+      <InjuryTimerStateRoot>
+        <FontProvider>
+          <TimerRoot />
+        </FontProvider>
+      </InjuryTimerStateRoot>
     </MainTimerStateRoot>
   );
 };

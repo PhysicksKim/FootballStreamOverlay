@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import useTimerHook, { TimerState } from '@src/hooks/useTimerHook';
 
 import MainTimeBoard from './board/MainTimeBoard';
 import ScoreBoard from './board/ScoreBoard';
@@ -8,30 +7,14 @@ import ControlPanel from './control/ControlPanel';
 import InjuryTimeBoard from './board/InjuryTimeBoard';
 import MatchNameBoard from './board/MatchNameBoard';
 
-import '../styles/TimerRoot.scss';
-import '../styles/TimerRootTransition.scss';
+import '@styles/TimerRoot.scss';
+import '@styles/TimerRootTransition.scss';
 
-import { Time } from '@src/types/types';
-import { timeToZeroFillString } from '@src/classes/Utils';
+import { Team } from '@src/types/types';
 import GlobalStyle from './styledcomponents/GlobalStyle';
 import { useFont } from '@src/contexts/FontContext';
-import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot';
-
-export interface TimerManager {
-  timer: TimerState;
-  startTimer: (time: { min: number; sec: number }) => void;
-  pauseTimer: () => void;
-  resumeTimer: () => void;
-  setTimer: (time: { min: number; sec: number }) => void;
-}
-
-export interface Team {
-  category: string;
-  code: string;
-  name: string;
-  score: number;
-  isAway: boolean;
-}
+import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
+import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
 
 const TimerRoot = () => {
   // 글로벌 폰트
@@ -40,13 +23,11 @@ const TimerRoot = () => {
   // 대회 종류
   const [matchName, setMatchName] = useState('아시안컵 E조 조별 예선');
 
-  // 메인시간 타이머
-  const [mainTimeDisplay, setMainTimeDisplay] = useState('00:00');
-  const [mainTimer, mainEventEmitter] = useTimerHook();
+  // 타이머
+  const mainTimerManager = useMainTimerManager();
+  const injuryTimerManager = useInjuryTimerManager();
 
   // 추가시간 타이머
-  const [injuryTimeDisplay, setInjuryTimeDisplay] = useState('00:00');
-  const [injuryTimer, injuryEventEmitter] = useTimerHook();
   const [givenInjuryTime, setGivenInjuryTime] = useState(0);
   const [isShowInjuryTimer, setIsShowInjuryTimer] = useState(false);
 
@@ -67,19 +48,11 @@ const TimerRoot = () => {
   });
 
   useEffect(() => {
-    setInjuryTimeDisplay(timeToZeroFillString(injuryTimer.time));
-  }, [injuryTimer.time]);
-
-  useEffect(() => {
-    mainEventEmitter.on('halfTimeStop', () => {
+    mainTimerManager.eventEmitter.on('halfTimeStop', () => {
       setIsShowInjuryTimer(true);
-      injuryTimer.start();
+      injuryTimerManager.startTimer({ min: 0, sec: 0 });
     });
   }, []);
-
-  const zeroFill = (numberString: string) => {
-    return numberString.padStart(2, '0');
-  };
 
   // #region injury timer board methods
   const disappearInjuryTimer = () => {
@@ -107,36 +80,6 @@ const TimerRoot = () => {
     setTeamB((prevTeam) => ({ ...prevTeam, [key]: value }));
   };
 
-  const mainTimerWrapper: TimerManager = {
-    timer: mainTimer,
-    startTimer: (time: Time) => {
-      mainTimer.start(time.min, time.sec);
-      setMainTimeDisplay(timeToZeroFillString(time));
-    },
-    resumeTimer: mainTimer.resume,
-    pauseTimer: mainTimer.pause,
-    setTimer: (time: Time) => {
-      mainTimer.set(time.min, time.sec);
-      setMainTimeDisplay(timeToZeroFillString(time));
-    },
-  };
-
-  const injuryTimerWrapper: TimerManager = {
-    timer: injuryTimer,
-    startTimer: (time: Time) => {
-      injuryTimer.start(time.min, time.sec);
-      setInjuryTimeDisplay(
-        `${zeroFill(time.min.toString())}:${zeroFill(time.sec.toString())}`,
-      );
-    },
-    resumeTimer: injuryTimer.resume,
-    pauseTimer: injuryTimer.pause,
-    setTimer: (time: Time) => {
-      injuryTimer.set(time.min, time.sec);
-      setMainTimeDisplay(timeToZeroFillString(time));
-    },
-  };
-
   return (
     <div className='timer-context-root'>
       <GlobalStyle fontFamily={fontInfo.code} />
@@ -152,7 +95,6 @@ const TimerRoot = () => {
             unmountOnExit
           >
             <InjuryTimeBoard
-              timeDisplay={injuryTimeDisplay}
               givenInjuryTime={givenInjuryTime}
             ></InjuryTimeBoard>
           </CSSTransition>
@@ -160,13 +102,12 @@ const TimerRoot = () => {
       </div>
       <div className='control-container-fixer'>
         <ControlPanel
-          mainTimerWrapper={mainTimerWrapper}
-          injuryTimerWrapper={injuryTimerWrapper}
           disappearInjuryTimer={disappearInjuryTimer}
           showInjuryTimer={showInjuryTimer}
           isShowInjuryTimer={isShowInjuryTimer}
           updateGivenInjuryTime={updateGivenInjuryTime}
           updateMatchName={updateMatchName}
+          // -------------
           teamA={teamA}
           teamB={teamB}
           updateTeamA={updateTeamA}
