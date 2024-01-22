@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEye,
@@ -10,14 +10,35 @@ import {
   faReply,
 } from '@fortawesome/free-solid-svg-icons';
 import { Time } from '@src/types/types';
-import { TimerWrapper } from '../TimerRoot';
+import { TimerManager } from '../TimerRoot';
 import '../../styles/control/TimerControlPanel.scss';
-import { useFont } from '@src/contexts/FontContext';
-import { FontEnum, fontInfos } from '@src/classes/FontEnum';
+import TimerPresetButtons from './TimerPresetButtons';
+import TimerTitleBox from './TimerTitleBox';
+
+export interface TimerPresets {
+  wait: {
+    FirstHalf: () => void;
+    SecondHalf: () => void;
+    OverFirstHalf: () => void;
+    OverSecondHalf: () => void;
+  };
+  start: {
+    FirstHalf: () => void;
+    SecondHalf: () => void;
+    OverFirstHalf: () => void;
+    OverSecondHalf: () => void;
+  };
+  injury: {
+    FirstHalf: () => void;
+    SecondHalf: () => void;
+    OverFirstHalf: () => void;
+    OverSecondHalf: () => void;
+  };
+}
 
 interface TimerControlPanelProps {
-  mainTimerWrapper: TimerWrapper;
-  injuryTimerWrapper: TimerWrapper;
+  mainTimerWrapper: TimerManager;
+  injuryTimerWrapper: TimerManager;
   showInjuryTimer: () => void;
   disappearInjuryTimer: () => void;
   isShowInjuryTimer: boolean;
@@ -34,7 +55,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   updateGivenInjuryTime,
   updateMatchName,
 }) => {
-  const { fontInfo, updateGlobalFont } = useFont();
   const [mainMinutes, setMainMinutes] = useState(0);
   const [mainSeconds, setMainSeconds] = useState(0);
   const [isMainTimerRunning, setIsMainTimerRunning] = useState(false);
@@ -118,7 +138,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     injuryTimerWrapper.startTimer({ min: 0, sec: 0 });
   };
 
-  // injury timer 는 preset 을 쓰지 않으므로, 현재 사용처가 없음
   const startInjuryTimerWithTime = () => {
     setIsInjuryTimerRunning(true);
     injuryTimerWrapper.startTimer({ min: injuryMinutes, sec: injurySeconds });
@@ -157,97 +176,93 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   };
 
   // --- Main+Injury Timer Presets ---
-
-  // --- wait time preset ---
-  const setWaitFirstHalf = () => {
-    setMainMinutes(0);
-    setMainSeconds(0);
-    stopInjuryTimer();
-    mainTimerWrapper.setTimer({ min: 0, sec: 0 });
-    mainTimerWrapper.pauseTimer();
-  };
-
-  const setWaitSecondHalf = () => {
-    setMainMinutes(45);
-    setMainSeconds(0);
-    stopInjuryTimer();
-    mainTimerWrapper.setTimer({ min: 45, sec: 0 });
-    mainTimerWrapper.pauseTimer();
-  };
-
-  const setWaitOvertimeFirstHalf = () => {
-    setMainMinutes(90);
-    setMainSeconds(0);
-    stopInjuryTimer();
-    mainTimerWrapper.setTimer({ min: 90, sec: 0 });
-    mainTimerWrapper.pauseTimer();
-  };
-
-  const setWaitOvertimeSecondHalf = () => {
-    setMainMinutes(105);
-    setMainSeconds(0);
-    stopInjuryTimer();
-    mainTimerWrapper.setTimer({ min: 105, sec: 0 });
-    mainTimerWrapper.pauseTimer();
-  };
-
-  // --- start time presets ---
-  const setFirstHalf = () => {
-    setMainMinutes(0);
-    setMainSeconds(0);
-    startMainTimerWithTime({ min: 0, sec: 0 });
-    stopInjuryTimer();
-  };
-
-  const setSecondHalf = () => {
-    setMainMinutes(45);
-    setMainSeconds(0);
-    startMainTimerWithTime({ min: 45, sec: 0 });
-    stopInjuryTimer();
-  };
-
-  const setOvertimeFirstHalf = () => {
-    setMainMinutes(90);
-    setMainSeconds(0);
-    startMainTimerWithTime({ min: 90, sec: 0 });
-    stopInjuryTimer();
-  };
-
-  const setOvertimeSecondHalf = () => {
-    setMainMinutes(105);
-    setMainSeconds(0);
-    startMainTimerWithTime({ min: 105, sec: 0 });
-    stopInjuryTimer();
-  };
-
-  // --- injury time start preset ---
-  const setStartFirstHalfInjury = () => {
-    const time: Time = { min: 45, sec: 0 };
-    mainTimerWrapper.setTimer(time);
-    mainTimerWrapper.pauseTimer();
-    startInjuryTimer();
-    showInjuryTimer();
-  };
-  const setStartSecondHalfInjury = () => {
-    const time: Time = { min: 90, sec: 0 };
-    mainTimerWrapper.setTimer(time);
-    mainTimerWrapper.pauseTimer();
-    startInjuryTimer();
-    showInjuryTimer();
-  };
-  const setStartOvertimeFirstHalfInjury = () => {
-    const time: Time = { min: 105, sec: 0 };
-    mainTimerWrapper.setTimer(time);
-    mainTimerWrapper.pauseTimer();
-    startInjuryTimer();
-    showInjuryTimer();
-  };
-  const setStartOvertimeSecondHalfInjury = () => {
-    const time: Time = { min: 120, sec: 0 };
-    mainTimerWrapper.setTimer(time);
-    mainTimerWrapper.pauseTimer();
-    startInjuryTimer();
-    showInjuryTimer();
+  const presets: TimerPresets = {
+    wait: {
+      FirstHalf: () => {
+        setMainMinutes(0);
+        setMainSeconds(0);
+        stopInjuryTimer();
+        mainTimerWrapper.setTimer({ min: 0, sec: 0 });
+        mainTimerWrapper.pauseTimer();
+      },
+      SecondHalf: () => {
+        setMainMinutes(45);
+        setMainSeconds(0);
+        stopInjuryTimer();
+        mainTimerWrapper.setTimer({ min: 45, sec: 0 });
+        mainTimerWrapper.pauseTimer();
+      },
+      OverFirstHalf: () => {
+        setMainMinutes(90);
+        setMainSeconds(0);
+        stopInjuryTimer();
+        mainTimerWrapper.setTimer({ min: 90, sec: 0 });
+        mainTimerWrapper.pauseTimer();
+      },
+      OverSecondHalf: () => {
+        setMainMinutes(105);
+        setMainSeconds(0);
+        stopInjuryTimer();
+        mainTimerWrapper.setTimer({ min: 105, sec: 0 });
+        mainTimerWrapper.pauseTimer();
+      },
+    },
+    start: {
+      FirstHalf: () => {
+        setMainMinutes(0);
+        setMainSeconds(0);
+        startMainTimerWithTime({ min: 0, sec: 0 });
+        stopInjuryTimer();
+      },
+      SecondHalf: () => {
+        setMainMinutes(45);
+        setMainSeconds(0);
+        startMainTimerWithTime({ min: 45, sec: 0 });
+        stopInjuryTimer();
+      },
+      OverFirstHalf: () => {
+        setMainMinutes(90);
+        setMainSeconds(0);
+        startMainTimerWithTime({ min: 90, sec: 0 });
+        stopInjuryTimer();
+      },
+      OverSecondHalf: () => {
+        setMainMinutes(105);
+        setMainSeconds(0);
+        startMainTimerWithTime({ min: 105, sec: 0 });
+        stopInjuryTimer();
+      },
+    },
+    injury: {
+      FirstHalf: () => {
+        const time: Time = { min: 45, sec: 0 };
+        mainTimerWrapper.setTimer(time);
+        mainTimerWrapper.pauseTimer();
+        startInjuryTimer();
+        showInjuryTimer();
+      },
+      SecondHalf: () => {
+        const time: Time = { min: 90, sec: 0 };
+        mainTimerWrapper.setTimer(time);
+        mainTimerWrapper.pauseTimer();
+        startInjuryTimer();
+        showInjuryTimer();
+      },
+      OverFirstHalf: () => {
+        const time: Time = { min: 105, sec: 0 };
+        mainTimerWrapper.setTimer(time);
+        mainTimerWrapper.pauseTimer();
+        startInjuryTimer();
+        showInjuryTimer();
+      },
+      OverSecondHalf: () => {
+        const time: Time = { min: 120, sec: 0 };
+        mainTimerWrapper.setTimer(time);
+        mainTimerWrapper.pauseTimer();
+        startInjuryTimer();
+        showInjuryTimer();
+      },
+    },
   };
 
   const changeGivenInjuryTime = (value: string) => {
@@ -256,7 +271,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
       updateGivenInjuryTime(0);
       return;
     }
-
     if (val < 0) {
       val = 0;
     }
@@ -266,48 +280,10 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   return (
     <div className='timer-control-panel-box'>
       <div className='timer-time-set-box'>
-        <div className='timer-title-box'>
-          <div className='match-title-input-box'>
-            <div className='match-title-text-index index-text'>매치 타이틀</div>
-            <input
-              className='match-title-text-input'
-              type='text'
-              placeholder='ex 아시안컵 E조 조별 예선'
-              onChange={(e) => {
-                const title = e.target.value.trim();
-                if (!title) {
-                  updateMatchName('아시안컵 E조 조별 예선');
-                } else {
-                  updateMatchName(e.target.value);
-                }
-              }}
-            />
-          </div>
-          <div className='given-injury-input-box'>
-            <div className='given-injury-input-index index-text'>추가 시간</div>
-            <input
-              className='given-injury-time-input'
-              type='number'
-              placeholder='추가시간'
-              onChange={(e) => changeGivenInjuryTime(e.target.value)}
-            />
-          </div>
-          <div className='font-radio-button-box'>
-            {Object.entries(fontInfos).map(([fontCode, { name }]) => (
-              <div key={fontCode}>
-                <input
-                  type='radio'
-                  id={`font-${fontCode}`}
-                  name='font-choice'
-                  value={fontCode}
-                  onChange={() => updateGlobalFont(fontCode as FontEnum)}
-                  checked={fontInfo.code === fontCode} // 현재 선택된 폰트와 비교
-                />
-                <label htmlFor={`font-${fontCode}`}>{name}</label>
-              </div>
-            ))}
-          </div>
-        </div>
+        <TimerTitleBox
+          updateMatchName={updateMatchName}
+          changeGivenInjuryTime={changeGivenInjuryTime}
+        />
         <div className='main-timer-box'>
           <div className='timer-box-index main-timer-box-index'>
             메인 타이머
@@ -476,28 +452,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
       </div>
       <div className='timer-preset-set-box'>
         <div className='timer-preset-index'># 타이머 프리셋</div>
-        <div className='gametime-preset-buttons'>
-          <div className='wait-buttons'>
-            <button onClick={setWaitFirstHalf}>전반 대기</button>
-            <button onClick={setWaitSecondHalf}>후반 대기</button>
-            <button onClick={setWaitOvertimeFirstHalf}>연전 대기</button>
-            <button onClick={setWaitOvertimeSecondHalf}>연후 대기</button>
-          </div>
-          <div className='start-buttons'>
-            <button onClick={setFirstHalf}>전반 시작</button>
-            <button onClick={setSecondHalf}>후반 시작</button>
-            <button onClick={setOvertimeFirstHalf}>연전 시작</button>
-            <button onClick={setOvertimeSecondHalf}>연후 시작</button>
-          </div>
-          <div className='overtime-start-buttons'>
-            <button onClick={setStartFirstHalfInjury}>전반 추가</button>
-            <button onClick={setStartSecondHalfInjury}>후반 추가</button>
-            <button onClick={setStartOvertimeFirstHalfInjury}>연전 추가</button>
-            <button onClick={setStartOvertimeSecondHalfInjury}>
-              연후 추가
-            </button>
-          </div>
-        </div>
+        <TimerPresetButtons presets={presets} />
       </div>
     </div>
   );

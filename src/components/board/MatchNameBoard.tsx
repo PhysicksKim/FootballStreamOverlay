@@ -1,6 +1,5 @@
 import React from 'react';
-import '../../styles/board/MatchNameBoard.scss';
-import gyeHead from '../../images/gye_head.png';
+import '@styles/board/MatchNameBoard.scss';
 import gyeFootball from '../../images/gye_football.png';
 
 const MatchNameBoard: React.FC<{ matchName: string }> = ({ matchName }) => {
@@ -17,4 +16,4 @@ const MatchNameBoard: React.FC<{ matchName: string }> = ({ matchName }) => {
   );
 };
 
-export default MatchNameBoard;
+export default React.memo(MatchNameBoard);

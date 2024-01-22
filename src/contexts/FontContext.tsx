@@ -16,11 +16,9 @@ export const useFont = () => {
   return context;
 };
 
-interface FontProviderProps {
-  children: ReactNode;
-}
-
-export const FontProvider: React.FC<FontProviderProps> = ({ children }) => {
+export const FontProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [fontInfo, setFontInfo] = useState<FontInfo>(
     fontInfos[FontEnum.ONE_MOBILE_TITLE],
   );

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import '@styles/control/ControlPanel.scss';
 import TimerControlPanel from './TimerControlPanel';
 import BoardControlPanel from './BoardControlPanel';
-import { Team, TimerWrapper } from '../TimerRoot';
+import { Team, TimerManager } from '../TimerRoot';
 
 interface ControlPanelProps {
-  mainTimerWrapper: TimerWrapper;
-  injuryTimerWrapper: TimerWrapper;
+  mainTimerWrapper: TimerManager;
+  injuryTimerWrapper: TimerManager;
   showInjuryTimer: () => void;
   disappearInjuryTimer: () => void;
   isShowInjuryTimer: boolean;

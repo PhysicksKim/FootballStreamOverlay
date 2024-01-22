@@ -16,7 +16,7 @@ import { timeToZeroFillString } from '@src/classes/Utils';
 import GlobalStyle from './styledcomponents/GlobalStyle';
 import { useFont } from '@src/contexts/FontContext';
 
-export interface TimerWrapper {
+export interface TimerManager {
   timer: TimerState;
   startTimer: (time: { min: number; sec: number }) => void;
   pauseTimer: () => void;
@@ -25,6 +25,7 @@ export interface TimerWrapper {
 }
 
 export interface Team {
+  category: string;
   code: string;
   name: string;
   score: number;
@@ -51,12 +52,14 @@ const TimerRoot = () => {
 
   // Team 속성
   const [teamA, setTeamA] = useState<Team>({
+    category: 'country',
     code: 'kr',
     name: '대한민국',
     score: 0,
     isAway: false,
   });
-  const [teamB, setTeamB] = useState({
+  const [teamB, setTeamB] = useState<Team>({
+    category: 'country',
     code: 'bh',
     name: '바레인',
     score: 0,
@@ -80,27 +83,6 @@ const TimerRoot = () => {
 
   const zeroFill = (numberString: string) => {
     return numberString.padStart(2, '0');
-  };
-
-  const startMainTimer = (time: Time) => {
-    mainTimer.start(time.min, time.sec);
-    setMainTimeDisplay(timeToZeroFillString(time));
-  };
-
-  const setMainTimer = (time: Time) => {
-    mainTimer.set(time.min, time.sec);
-    setMainTimeDisplay(timeToZeroFillString(time));
-  };
-
-  const startInjuryTimer = (time: Time) => {
-    injuryTimer.start(time.min, time.sec);
-    setInjuryTimeDisplay(
-      `${zeroFill(time.min.toString())}:${zeroFill(time.sec.toString())}`,
-    );
-  };
-  const setInjuryTimer = (time: Time) => {
-    injuryTimer.set(time.min, time.sec);
-    setMainTimeDisplay(timeToZeroFillString(time));
   };
 
   const disappearInjuryTimer = () => {
@@ -127,20 +109,34 @@ const TimerRoot = () => {
     setTeamB((prevTeam) => ({ ...prevTeam, [key]: value }));
   };
 
-  const mainTimerWrapper: TimerWrapper = {
+  const mainTimerWrapper: TimerManager = {
     timer: mainTimer,
-    startTimer: startMainTimer,
+    startTimer: (time: Time) => {
+      mainTimer.start(time.min, time.sec);
+      setMainTimeDisplay(timeToZeroFillString(time));
+    },
     resumeTimer: mainTimer.resume,
     pauseTimer: mainTimer.pause,
-    setTimer: setMainTimer,
+    setTimer: (time: Time) => {
+      mainTimer.set(time.min, time.sec);
+      setMainTimeDisplay(timeToZeroFillString(time));
+    },
   };
 
-  const injuryTimerWrapper: TimerWrapper = {
+  const injuryTimerWrapper: TimerManager = {
     timer: injuryTimer,
-    startTimer: startInjuryTimer,
+    startTimer: (time: Time) => {
+      injuryTimer.start(time.min, time.sec);
+      setInjuryTimeDisplay(
+        `${zeroFill(time.min.toString())}:${zeroFill(time.sec.toString())}`,
+      );
+    },
     resumeTimer: injuryTimer.resume,
     pauseTimer: injuryTimer.pause,
-    setTimer: setInjuryTimer,
+    setTimer: (time: Time) => {
+      injuryTimer.set(time.min, time.sec);
+      setMainTimeDisplay(timeToZeroFillString(time));
+    },
   };
 
   return (
