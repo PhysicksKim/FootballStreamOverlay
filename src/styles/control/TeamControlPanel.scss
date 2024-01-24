@@ -1,0 +1,68 @@
+.team-control-container {
+  box-sizing: border-box;
+  min-height: 300px;
+  min-width: 800px;
+  height: 100%;
+  width: 80%;
+  padding: 0;
+
+  display: flex;
+  flex-direction: row;
+
+  > * {
+    flex: 1;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    box-sizing: border-box;
+  }
+
+  .category-select-box,
+  .team-select-box,
+  .uniform-select-box {
+    display: flex;
+    flex-direction: column;
+
+    .select-box-title {
+      flex-grow: 0;
+      background-color: rgb(247, 247, 194);
+      font-size: 16px;
+      padding: 10px;
+      padding-left: 20px;
+      margin-bottom: 3px;
+      border: 1px solid rgba(152, 152, 135, 0.456);
+      border-radius: 3px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.278);
+    }
+
+    > select {
+      flex: 1;
+      box-sizing: border-box;
+      width: 100%;
+      background-color: rgb(243, 243, 226);
+      padding: 5px;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid rgba(152, 152, 135, 0.456);
+
+      > option {
+        padding: 5px;
+        font-size: 18px;
+        margin: 10px;
+        margin-left: 5px;
+        padding-left: 15px;
+        border-radius: 5px;
+      }
+
+      > option:hover {
+        transition: 0.1s ease-in-out background-color;
+        background-color: rgb(156, 194, 236);
+      }
+
+      > option:checked {
+        transition: 0.1s ease-in-out background-color;
+        background-color: rgb(156, 194, 236);
+      }
+    }
+  }
+}

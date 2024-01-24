@@ -1,0 +1,35 @@
+.control-links-container {
+  position: fixed;
+  top: -37px;
+  overflow: visible;
+  width: 400px;
+}
+
+.timer-link,
+.teams-link {
+  background-color: beige;
+  box-sizing: border-box;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 0px 10px 0 0;
+  cursor: pointer;
+  border-bottom: 3px rgb(168, 168, 158) solid;
+}
+
+.active-link {
+  transition: 0.1s ease-in-out background-color;
+  background-color: rgb(227, 227, 227);
+  color: rgb(0, 0, 0);
+  border-bottom: 3px rgb(64, 49, 231) solid;
+}
+
+.not-active-link {
+  transition: 0.1s ease-in-out background-color;
+  background-color: rgb(72, 72, 72);
+  color: rgb(198, 191, 191);
+}
