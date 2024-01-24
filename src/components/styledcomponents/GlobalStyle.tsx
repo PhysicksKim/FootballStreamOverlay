@@ -8,8 +8,10 @@ const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
   body,
   button,
   input,
-  textarea {
-    font-family: ${props => props.fontFamily}, sans-serif;
+  textarea,
+  select,
+  option {
+    font-family: ${(props) => props.fontFamily}, sans-serif;
   }
 `;
 

@@ -73,7 +73,7 @@ const TimerRoot = () => {
 
   return (
     <div className='timer-context-root'>
-      <GlobalStyle fontFamily={fontInfo.code} />
+      <GlobalStyle key='font-family-style-provide' fontFamily={fontInfo.code} />
       <div className='board-container-fixer'>
         <div className='board-container'>
           <MatchNameBoard matchName={matchName} />
