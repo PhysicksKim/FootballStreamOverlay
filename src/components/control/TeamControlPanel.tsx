@@ -5,6 +5,7 @@ import {
   categoryStringToTitle,
   categoryStringToTeamCodes,
   teamCodeToTeamName,
+  isValidCategoryAndTeamCode,
 } from '@src/classes/team/Category';
 import { Team } from '@src/types/types';
 
@@ -17,9 +18,9 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
   team,
   updateTeam,
 }) => {
-  const [category, setCategory] = React.useState<string>(Categories.Asiancup);
-  const [teamCode, setTeamCode] = React.useState<string>('kr');
-  const [teamName, setTeamName] = React.useState<string>('대한민국');
+  const [category, setCategory] = React.useState<string>('asiancup');
+  const [teamCode, setTeamCode] = React.useState<string>('');
+  const [teamName, setTeamName] = React.useState<string>('');
   const [uniformType, setUniformType] = React.useState<string>('home');
   const [isShowUniform, setIsShowUniform] = React.useState<boolean>(true);
 
@@ -28,14 +29,21 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
   }, [category]);
 
   useEffect(() => {
-    updateTeam('category', category);
-    updateTeam('code', teamCode);
-    setIsShowUniform(true);
+    // 카테고리와 팀코드가 유효한 경우에만 team 객체를 업데이트한다.
+    if (isValidCategoryAndTeamCode(category, teamCode)) {
+      updateTeam('category', category);
+      updateTeam('code', teamCode);
+      setIsShowUniform(true);
+    }
   }, [teamCode]);
 
   useEffect(() => {
-    updateTeam('name', teamName);
+    if (isValidCategoryAndTeamCode(category, teamCode)) {
+      updateTeam('name', teamName);
+    }
   }, [teamName]);
+
+  // -----------
 
   useEffect(() => {
     if (team.category === category) {

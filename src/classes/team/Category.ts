@@ -27,7 +27,7 @@ export const categoryStringToTitle = (category: string) => {
     case Categories.Asiancup:
       return '아시안컵';
     default:
-      throw new Error('Invalid category');
+      return '';
   }
 };
 
@@ -38,6 +38,22 @@ export const categoryStringToTeamCodes = (category: string) => {
     case Categories.Asiancup:
       return CategoryCodes.Asiancup;
     default:
-      throw new Error('Invalid category');
+      return {};
   }
+};
+
+export const isValidCategoryAndTeamCode = (
+  category: string,
+  teamCode: string,
+) => {
+  console.log('isValid method : ', category, teamCode);
+
+  if (!category || !teamCode) return false;
+
+  const teamCodesAndNames = categoryStringToTeamCodes(category);
+
+  const codes = Object.values(teamCodesAndNames).map((team) => team.code);
+  console.log(codes);
+
+  return codes.includes(teamCode);
 };

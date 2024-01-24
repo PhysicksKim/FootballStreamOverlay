@@ -1,7 +1,7 @@
 {
-  "name": "football-stream-overlay",
-  "version": "1.0.0",
-  "description": "score and match time board for streaming overlay",
+  "name": "football-score-board",
+  "version": "1.1.0",
+  "description": "score and match time board for streaming overlay - gyechunhoe theme",
   "license": "MIT",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve --config tools/webpack/webpack.config.dev.js",

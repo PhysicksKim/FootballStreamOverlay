@@ -7,7 +7,6 @@ import '@styles/board/TeamBStyles.scss';
 import '@styles/board/TeamFlag';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
-import { teamCodeToTeamName } from '@src/classes/team/Category';
 
 const ScoreBoard: React.FC<Record<string, never>> = () => {
   const { teamA, updateTeamA } = useTeamA();
