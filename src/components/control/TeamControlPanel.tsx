@@ -18,10 +18,10 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
   team,
   updateTeam,
 }) => {
-  const [category, setCategory] = React.useState<string>('asiancup');
-  const [teamCode, setTeamCode] = React.useState<string>('');
-  const [teamName, setTeamName] = React.useState<string>('');
-  const [uniformType, setUniformType] = React.useState<string>('home');
+  const [category, setCategory] = React.useState<string>(team.category);
+  const [teamCode, setTeamCode] = React.useState<string>(team.code);
+  const [teamName, setTeamName] = React.useState<string>(team.name);
+  const [uniformType, setUniformType] = React.useState<string>(team.uniform);
   const [isShowUniform, setIsShowUniform] = React.useState<boolean>(true);
 
   useEffect(() => {
@@ -43,10 +43,8 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
     }
   }, [teamName]);
 
-  // -----------
-
   useEffect(() => {
-    if (team.category === category) {
+    if (uniformType && team.category === category) {
       updateTeam('uniform', uniformType);
     }
   }, [uniformType]);
@@ -90,7 +88,7 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
         >
           {Object.entries(categoryStringToTeamCodes(category)).map(
             ([_, codeAndName]) => (
-              <option key={codeAndName.code} value={codeAndName.code}>
+              <option key={codeAndName.code} value={codeAndName.code} selected>
                 {codeAndName.name}
               </option>
             ),

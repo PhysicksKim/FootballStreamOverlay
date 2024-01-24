@@ -100,6 +100,7 @@ const TimerRoot = () => {
               path=''
               element={
                 <LiveControlTab
+                  key='livetab'
                   disappearInjuryTimer={disappearInjuryTimer}
                   showInjuryTimer={showInjuryTimer}
                   isShowInjuryTimer={isShowInjuryTimer}
@@ -110,11 +111,23 @@ const TimerRoot = () => {
             ></Route>
             <Route
               path='team-a'
-              element={<TeamControlTab team={teamA} updateTeam={updateTeamA} />}
+              element={
+                <TeamControlTab
+                  key='teamAtab'
+                  team={teamA}
+                  updateTeam={updateTeamA}
+                />
+              }
             ></Route>
             <Route
               path='team-b'
-              element={<TeamControlTab team={teamB} updateTeam={updateTeamB} />}
+              element={
+                <TeamControlTab
+                  key='teamBtab'
+                  team={teamB}
+                  updateTeam={updateTeamB}
+                />
+              }
             ></Route>
           </Routes>
         </HashRouter>
