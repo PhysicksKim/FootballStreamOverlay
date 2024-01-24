@@ -9,7 +9,7 @@ import {
   faPlus,
   faReply,
 } from '@fortawesome/free-solid-svg-icons';
-import { Time, TimerManager } from '@src/types/types';
+import { Time } from '@src/types/types';
 import '../../styles/control/TimerControlPanel.scss';
 import TimerPresetButtons from './TimerPresetButtons';
 import TimerTitleBox from './TimerTitleBox';
@@ -52,10 +52,11 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   updateGivenInjuryTime,
   updateMatchName,
 }) => {
+  // Timer Contexts
   const mainTimerManager = useMainTimerManager();
   const injuryTimerManager = useInjuryTimerManager();
 
-  // control panel timer startTime states
+  // 타이머 시작 시간 설정을 위한 input태그 state 값들
   const [mainMinutes, setMainMinutes] = useState(0);
   const [mainSeconds, setMainSeconds] = useState(0);
   const [isMainTimerRunning, setIsMainTimerRunning] = useState(false);
@@ -63,7 +64,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   const [injurySeconds, setInjurySeconds] = useState(0);
   const [isInjuryTimerRunning, setIsInjuryTimerRunning] = useState(false);
 
-  // --- Main Timer ---
+  // #region Main Timer
   const toggleMainTimerRunning = () => {
     if (isMainTimerRunning) {
       mainTimerManager.pauseTimer();
@@ -114,8 +115,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     }
     setMainSeconds(newValue);
   };
+  // #endregion
 
-  // --- Injury Timer ---
+  // #region Injury Timer
   const toggleInjuryTimerRunning = () => {
     if (isInjuryTimerRunning) {
       injuryTimerManager.pauseTimer();
@@ -176,7 +178,20 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     disappearInjuryTimer();
   };
 
-  // --- Main+Injury Timer Presets ---
+  const changeGivenInjuryTime = (value: string) => {
+    let val = Number.parseInt(value);
+    if (!val) {
+      updateGivenInjuryTime(0);
+      return;
+    }
+    if (val < 0) {
+      val = 0;
+    }
+    updateGivenInjuryTime(val);
+  };
+  // #endregion
+
+  // #region Main/Injury Timer Presets button methods
   const presets: TimerPresets = {
     wait: {
       FirstHalf: () => {
@@ -265,18 +280,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
       },
     },
   };
-
-  const changeGivenInjuryTime = (value: string) => {
-    let val = Number.parseInt(value);
-    if (!val) {
-      updateGivenInjuryTime(0);
-      return;
-    }
-    if (val < 0) {
-      val = 0;
-    }
-    updateGivenInjuryTime(val);
-  };
+  // #endregion
 
   return (
     <div className='timer-control-panel-box'>

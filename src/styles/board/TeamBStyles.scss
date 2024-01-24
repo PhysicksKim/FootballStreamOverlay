@@ -27,33 +27,258 @@
 }
 
 // 한국 kr
-.team-b-kr {
-  @include teamBColor('kr');
+.team-b-asiancup-kr-home {
+  @include teamBColor('asiancup-kr');
 }
-.team-b-kr-away {
-  @include teamBColor('kr', 'away');
+.team-b-asiancup-kr-away,
+.team-b-asiancup-kr-third {
+  @include teamBColor('asiancup-kr', 'away');
 }
 
 // 바레인 bh
-.team-b-bh {
-  @include teamBColor('bh');
+.team-b-asiancup-bh-home {
+  @include teamBColor('asiancup-bh');
 }
-.team-b-bh-away {
-  @include teamBColor('bh', 'away');
+.team-b-asiancup-bh-away,
+.team-b-asiancup-bh-third {
+  @include teamBColor('asiancup-bh', 'away');
 }
 
 // 요르단 jo
-.team-b-jo {
-  @include teamBColor('jo');
+.team-b-asiancup-jo-home {
+  @include teamBColor('asiancup-jo');
 }
-.team-b-jo-away {
-  @include teamBColor('jo', 'away');
+.team-b-asiancup-jo-away,
+.team-b-asiancup-jo-third {
+  @include teamBColor('asiancup-jo', 'away');
 }
 
 // 말레이시아 my
-.team-b-my {
-  @include teamBColor('my');
+.team-b-asiancup-my-home {
+  @include teamBColor('asiancup-my');
 }
-.team-b-my-away {
-  @include teamBColor('my', 'away');
+.team-b-asiancup-my-away,
+.team-b-asiancup-my-third {
+  @include teamBColor('asiancup-my', 'away');
+}
+
+// ----- EPL -----
+// 아스날
+.team-b-epl2324-ars-home {
+  @include teamBColor('epl2324-ars');
+}
+.team-b-epl2324-ars-away {
+  @include teamBColor('epl2324-ars', 'away');
+}
+.team-b-epl2324-ars-third {
+  @include teamBColor('epl2324-ars', 'third');
+}
+
+// 아스톤빌라
+.team-b-epl2324-ava-home {
+  @include teamBColor('epl2324-ava');
+}
+.team-b-epl2324-ava-away {
+  @include teamBColor('epl2324-ava', 'away');
+}
+.team-b-epl2324-ava-third {
+  @include teamBColor('epl2324-ava', 'third');
+}
+
+// 본머스
+.team-b-epl2324-bou-home {
+  @include teamBColor('epl2324-bou');
+}
+.team-b-epl2324-bou-away {
+  @include teamBColor('epl2324-bou', 'away');
+}
+.team-b-epl2324-bou-third {
+  @include teamBColor('epl2324-bou', 'third');
+}
+
+// 브래트포드
+.team-b-epl2324-bre-home {
+  @include teamBColor('epl2324-bre');
+}
+.team-b-epl2324-bre-away {
+  @include teamBColor('epl2324-bre', 'away');
+}
+.team-b-epl2324-bre-third {
+  @include teamBColor('epl2324-bre', 'third');
+}
+
+// 브라이튼
+.team-b-epl2324-brh-home {
+  @include teamBColor('epl2324-brh');
+}
+.team-b-epl2324-brh-away {
+  @include teamBColor('epl2324-brh', 'away');
+}
+.team-b-epl2324-brh-third {
+  @include teamBColor('epl2324-brh', 'third');
+}
+
+// 번리
+.team-b-epl2324-bur-home {
+  @include teamBColor('epl2324-bur');
+}
+.team-b-epl2324-bur-away {
+  @include teamBColor('epl2324-bur', 'away');
+}
+.team-b-epl2324-bur-third {
+  @include teamBColor('epl2324-bur', 'third');
+}
+
+// 첼시
+.team-b-epl2324-che-home {
+  @include teamBColor('epl2324-che');
+}
+.team-b-epl2324-che-away {
+  @include teamBColor('epl2324-che', 'away');
+}
+.team-b-epl2324-che-third {
+  @include teamBColor('epl2324-che', 'third');
+}
+
+// 크리스탈펠리스
+.team-b-epl2324-cry-home {
+  @include teamBColor('epl2324-cry');
+}
+.team-b-epl2324-cry-away {
+  @include teamBColor('epl2324-cry', 'away');
+}
+.team-b-epl2324-cry-third {
+  @include teamBColor('epl2324-cry', 'third');
+}
+
+// 에버튼
+.team-b-epl2324-eve-home {
+  @include teamBColor('epl2324-eve');
+}
+.team-b-epl2324-eve-away {
+  @include teamBColor('epl2324-eve', 'away');
+}
+.team-b-epl2324-eve-third {
+  @include teamBColor('epl2324-eve', 'third');
+}
+
+// 풀햄
+.team-b-epl2324-ful-home {
+  @include teamBColor('epl2324-ful');
+}
+.team-b-epl2324-ful-away {
+  @include teamBColor('epl2324-ful', 'away');
+}
+.team-b-epl2324-ful-third {
+  @include teamBColor('epl2324-ful', 'third');
+}
+
+// 리버풀
+.team-b-epl2324-liv-home {
+  @include teamBColor('epl2324-liv');
+}
+.team-b-epl2324-liv-away {
+  @include teamBColor('epl2324-liv', 'away');
+}
+.team-b-epl2324-liv-third {
+  @include teamBColor('epl2324-liv', 'third');
+}
+
+// 루턴타운
+.team-b-epl2324-lut-home {
+  @include teamBColor('epl2324-lut');
+}
+.team-b-epl2324-lut-away {
+  @include teamBColor('epl2324-lut', 'away');
+}
+.team-b-epl2324-lut-third {
+  @include teamBColor('epl2324-lut', 'third');
+}
+
+// 맨시티
+.team-b-epl2324-mci-home {
+  @include teamBColor('epl2324-mci');
+}
+.team-b-epl2324-mci-away {
+  @include teamBColor('epl2324-mci', 'away');
+}
+.team-b-epl2324-mci-third {
+  @include teamBColor('epl2324-mci', 'third');
+}
+
+// 맨유
+.team-b-epl2324-mun-home {
+  @include teamBColor('epl2324-mun');
+}
+.team-b-epl2324-mun-away {
+  @include teamBColor('epl2324-mun', 'away');
+}
+.team-b-epl2324-mun-third {
+  @include teamBColor('epl2324-mun', 'third');
+}
+
+// 뉴캐슬
+.team-b-epl2324-new-home {
+  @include teamBColor('epl2324-new');
+}
+.team-b-epl2324-new-away {
+  @include teamBColor('epl2324-new', 'away');
+}
+.team-b-epl2324-new-third {
+  @include teamBColor('epl2324-new', 'third');
+}
+
+// 노팅엄
+.team-b-epl2324-ntg-home {
+  @include teamBColor('epl2324-ntg');
+}
+.team-b-epl2324-ntg-away {
+  @include teamBColor('epl2324-ntg', 'away');
+}
+.team-b-epl2324-ntg-third {
+  @include teamBColor('epl2324-ntg', 'third');
+}
+
+// 셰필드
+.team-b-epl2324-shu-home {
+  @include teamBColor('epl2324-shu');
+}
+.team-b-epl2324-shu-away {
+  @include teamBColor('epl2324-shu', 'away');
+}
+.team-b-epl2324-shu-third {
+  @include teamBColor('epl2324-shu', 'third');
+}
+
+// 토트넘
+.team-b-epl2324-tot-home {
+  @include teamBColor('epl2324-tot');
+}
+.team-b-epl2324-tot-away {
+  @include teamBColor('epl2324-tot', 'away');
+}
+.team-b-epl2324-tot-third {
+  @include teamBColor('epl2324-tot', 'third');
+}
+
+// 웨스트햄
+.team-b-epl2324-whu-home {
+  @include teamBColor('epl2324-whu');
+}
+.team-b-epl2324-whu-away {
+  @include teamBColor('epl2324-whu', 'away');
+}
+.team-b-epl2324-whu-third {
+  @include teamBColor('epl2324-whu', 'third');
+}
+
+// 울브스
+.team-b-epl2324-wlv-home {
+  @include teamBColor('epl2324-wlv');
+}
+.team-b-epl2324-wlv-away {
+  @include teamBColor('epl2324-wlv', 'away');
+}
+.team-b-epl2324-wlv-third {
+  @include teamBColor('epl2324-wlv', 'third');
 }

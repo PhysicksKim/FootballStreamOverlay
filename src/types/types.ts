@@ -15,10 +15,21 @@ export interface TimerManager {
   eventEmitter?: EventEmitter;
 }
 
+export enum UniformEnum {
+  HOME = 'HOME',
+  AWAY = 'AWAY',
+  THIRD = 'THIRD',
+}
+
 export interface Team {
   category: string;
   code: string;
   name: string;
   score: number;
-  isAway: boolean;
+  isAway?: boolean;
+  uniform: string;
+}
+
+export interface TeamCodesAndNames {
+  [key: string]: { code: string; name: string };
 }

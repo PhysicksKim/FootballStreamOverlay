@@ -15,7 +15,12 @@
 .control-container-fixer {
   position: fixed;
   box-sizing: border-box;
+  width: 820px;
+  height: 360px;
   left: 0;
   bottom: 0;
+  padding: 10px;
+  border-radius: 10px;
   transform: translate(10px, -10px);
+  background-color: rgb(240, 240, 238);
 }

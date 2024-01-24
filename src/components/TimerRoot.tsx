@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  MemoryRouter,
+  HashRouter,
+} from 'react-router-dom';
+
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 import MainTimeBoard from './board/MainTimeBoard';
 import ScoreBoard from './board/ScoreBoard';
-import ControlPanel from './control/ControlPanel';
+import LiveControlTab from './control/LiveControlTab';
 import InjuryTimeBoard from './board/InjuryTimeBoard';
 import MatchNameBoard from './board/MatchNameBoard';
+import TeamControlTab from './control/TeamControlTab';
 
+import GlobalStyle from './styledcomponents/GlobalStyle';
 import '@styles/TimerRoot.scss';
 import '@styles/TimerRootTransition.scss';
 
-import { Team } from '@src/types/types';
-import GlobalStyle from './styledcomponents/GlobalStyle';
 import { useFont } from '@src/contexts/FontContext';
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
 import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
+import RouteControlPanels from './RouteControlPanels';
+import { useTeamA } from '@src/contexts/teams/TeamAProvider';
+import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 
 const TimerRoot = () => {
   // 글로벌 폰트
@@ -32,20 +43,8 @@ const TimerRoot = () => {
   const [isShowInjuryTimer, setIsShowInjuryTimer] = useState(false);
 
   // Team 속성
-  const [teamA, setTeamA] = useState<Team>({
-    category: 'country',
-    code: 'kr',
-    name: '대한민국',
-    score: 0,
-    isAway: false,
-  });
-  const [teamB, setTeamB] = useState<Team>({
-    category: 'country',
-    code: 'bh',
-    name: '바레인',
-    score: 0,
-    isAway: true,
-  });
+  const { teamA, updateTeamA } = useTeamA();
+  const { teamB, updateTeamB } = useTeamB();
 
   useEffect(() => {
     mainTimerManager.eventEmitter.on('halfTimeStop', () => {
@@ -72,21 +71,13 @@ const TimerRoot = () => {
     setMatchName(matchName);
   };
 
-  const updateTeamA = <K extends keyof Team>(key: K, value: Team[K]) => {
-    setTeamA((prevTeam) => ({ ...prevTeam, [key]: value }));
-  };
-
-  const updateTeamB = <K extends keyof Team>(key: K, value: Team[K]) => {
-    setTeamB((prevTeam) => ({ ...prevTeam, [key]: value }));
-  };
-
   return (
     <div className='timer-context-root'>
       <GlobalStyle fontFamily={fontInfo.code} />
       <div className='board-container-fixer'>
         <div className='board-container'>
           <MatchNameBoard matchName={matchName} />
-          <ScoreBoard teamA={teamA} teamB={teamB} />
+          <ScoreBoard />
           <MainTimeBoard />
           <CSSTransition
             in={isShowInjuryTimer}
@@ -101,18 +92,32 @@ const TimerRoot = () => {
         </div>
       </div>
       <div className='control-container-fixer'>
-        <ControlPanel
-          disappearInjuryTimer={disappearInjuryTimer}
-          showInjuryTimer={showInjuryTimer}
-          isShowInjuryTimer={isShowInjuryTimer}
-          updateGivenInjuryTime={updateGivenInjuryTime}
-          updateMatchName={updateMatchName}
-          // -------------
-          teamA={teamA}
-          teamB={teamB}
-          updateTeamA={updateTeamA}
-          updateTeamB={updateTeamB}
-        ></ControlPanel>
+        {/* /#/ , /#/team-b 같은 식으로 hash(#) 를 사용해서 새로고침에도 대응되도록 함 */}
+        <HashRouter>
+          <RouteControlPanels></RouteControlPanels>
+          <Routes>
+            <Route
+              path=''
+              element={
+                <LiveControlTab
+                  disappearInjuryTimer={disappearInjuryTimer}
+                  showInjuryTimer={showInjuryTimer}
+                  isShowInjuryTimer={isShowInjuryTimer}
+                  updateGivenInjuryTime={updateGivenInjuryTime}
+                  updateMatchName={updateMatchName}
+                ></LiveControlTab>
+              }
+            ></Route>
+            <Route
+              path='team-a'
+              element={<TeamControlTab team={teamA} updateTeam={updateTeamA} />}
+            ></Route>
+            <Route
+              path='team-b'
+              element={<TeamControlTab team={teamB} updateTeam={updateTeamB} />}
+            ></Route>
+          </Routes>
+        </HashRouter>
       </div>
     </div>
   );

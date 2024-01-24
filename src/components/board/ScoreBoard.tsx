@@ -1,19 +1,20 @@
-import React from 'react';
-import { Team } from '@src/types/types';
-import { Flag } from '../styledcomponents/TeamFlag';
+import React, { useEffect } from 'react';
+import { Flag } from '@src/components/styledcomponents/TeamFlag';
+
 import '@styles/board/ScoreBoard.scss';
 import '@styles/board/TeamAStyles.scss';
 import '@styles/board/TeamBStyles.scss';
 import '@styles/board/TeamFlag';
+import { useTeamA } from '@src/contexts/teams/TeamAProvider';
+import { useTeamB } from '@src/contexts/teams/TeamBProvider';
+import { teamCodeToTeamName } from '@src/classes/team/Category';
 
-export interface ScoreBoardProps {
-  teamA: Team;
-  teamB: Team;
-}
+const ScoreBoard: React.FC<Record<string, never>> = () => {
+  const { teamA, updateTeamA } = useTeamA();
+  const { teamB, updateTeamB } = useTeamB();
 
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ teamA, teamB }) => {
-  const teamAStyle = `team-a-${teamA.code}${teamA.isAway ? '-away' : ''}`;
-  const teamBStyle = `team-b-${teamB.code}${teamB.isAway ? '-away' : ''}`;
+  const teamAStyle = `team-a-${teamA.category}-${teamA.code}-${teamA.uniform}`;
+  const teamBStyle = `team-b-${teamB.category}-${teamB.code}-${teamB.uniform}`;
 
   return (
     <div className='score-board-container'>
@@ -24,7 +25,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ teamA, teamB }) => {
         {/* 팀 A */}
         <div className={`team-section team-a-format ${teamAStyle}`}>
           <div className='team-text-wrapper'>
-            <div className='team-text'>{teamA.name}</div>
+            <div className='team-text'>
+              {/* {teamCodeToTeamName(teamA.category, teamA.code)} */}
+              {teamA.name}
+            </div>
           </div>
           <div className='team-score-wrapper'>
             <div className='score-text'>{teamA.score}</div>

@@ -1,8 +1,16 @@
 .control-panel-container {
   box-sizing: border-box;
-  min-height: 300px;
-  min-width: 800px;
   height: 100%;
-  width: 80%;
+  width: 100%;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.timer-control-wrapper {
+  flex: 1;
+}
+
+.board-control-wrapper {
+  flex: 1;
 }

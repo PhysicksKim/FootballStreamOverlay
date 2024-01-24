@@ -1,20 +1,121 @@
 @use 'sass:color';
 
 $colors: (
-  'kr': (
+  'asiancup-kr': (
     'home': rgb(209, 45, 33),
     'away': rgb(75, 72, 77),
   ),
-  'bh': (
+  'asiancup-bh': (
     'home': rgb(195, 15, 16),
     'away': rgb(200, 185, 185),
   ),
-  'my': (
+  'asiancup-my': (
     'home': rgb(160, 160, 50),
     'away': rgb(77, 77, 77),
   ),
-  'jo': (
+  'asiancup-jo': (
     'home': rgb(200, 185, 185),
     'away': rgb(165, 0, 0),
+  ),
+
+  'epl2324-ars': (
+    'home': rgb(168, 25, 25),
+    'away': rgb(174, 180, 101),
+    'third': rgb(56, 103, 62),
+  ),
+  'epl2324-ava': (
+    'home': rgb(151, 49, 90),
+    'away': rgb(152, 151, 152),
+    'third': rgb(88, 138, 171),
+  ),
+  'epl2324-bou': (
+    'home': rgb(160, 31, 31),
+    'away': rgb(72, 175, 212),
+    'third': rgb(211, 200, 37),
+  ),
+  'epl2324-bre': (
+    'home': rgb(206, 16, 16),
+    'away': rgb(64, 171, 206),
+    'third': rgb(30, 28, 123),
+  ),
+  'epl2324-brh': (
+    'home': rgb(40, 17, 215),
+    'away': rgb(47, 149, 93),
+    'third': rgb(225, 110, 33),
+  ),
+  'epl2324-bur': (
+    'home': rgb(112, 39, 39),
+    'away': rgb(155, 160, 13),
+    'third': rgb(68, 89, 156),
+  ),
+  'epl2324-che': (
+    'home': rgb(36, 70, 191),
+    'away': rgb(32, 35, 134),
+    'third': rgb(98, 168, 206),
+  ),
+  'epl2324-cry': (
+    'home': rgb(172, 69, 69),
+    'away': rgb(139, 157, 177),
+    'third': rgb(75, 75, 79),
+  ),
+  'epl2324-eve': (
+    'home': rgb(54, 75, 142),
+    'away': rgb(238, 77, 71),
+    'third': rgb(130, 131, 156),
+  ),
+  'epl2324-ful': (
+    'home': rgb(157, 154, 154),
+    'away': rgb(186, 16, 149),
+    'third': rgb(87, 62, 90),
+  ),
+  'epl2324-liv': (
+    'home': rgb(228, 48, 48),
+    'away': rgb(144, 159, 144),
+    'third': rgb(161, 95, 197),
+  ),
+  'epl2324-lut': (
+    'home': rgb(219, 60, 35),
+    'away': rgb(158, 156, 155),
+    'third': rgb(42, 33, 93),
+  ),
+  'epl2324-mci': (
+    'home': rgb(90, 156, 200),
+    'away': rgb(201, 201, 207),
+    'third': rgb(14, 45, 72),
+  ),
+  'epl2324-mun': (
+    'home': rgb(205, 18, 18),
+    'away': rgb(51, 102, 90),
+    'third': rgb(206, 206, 206),
+  ),
+  'epl2324-new': (
+    'home': rgb(59, 59, 59),
+    'away': rgb(26, 157, 148),
+    'third': rgb(39, 24, 180),
+  ),
+  'epl2324-ntg': (
+    'home': rgb(188, 25, 25),
+    'away': rgb(62, 159, 194),
+    'third': rgb(48, 40, 196),
+  ),
+  'epl2324-shu': (
+    'home': rgb(206, 68, 68),
+    'away': rgb(206, 203, 52),
+    'third': rgb(170, 173, 170),
+  ),
+  'epl2324-tot': (
+    'home': rgb(183, 186, 193),
+    'away': rgb(21, 26, 178),
+    'third': rgb(138, 112, 91),
+  ),
+  'epl2324-whu': (
+    'home': rgb(166, 54, 97),
+    'away': rgb(162, 163, 164),
+    'third': rgb(34, 54, 183),
+  ),
+  'epl2324-wlv': (
+    'home': rgb(197, 172, 63),
+    'away': rgb(205, 53, 43),
+    'third': rgb(22, 146, 199),
   ),
 );
