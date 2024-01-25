@@ -46,14 +46,11 @@ export const isValidCategoryAndTeamCode = (
   category: string,
   teamCode: string,
 ) => {
-  console.log('isValid method : ', category, teamCode);
-
   if (!category || !teamCode) return false;
 
   const teamCodesAndNames = categoryStringToTeamCodes(category);
 
   const codes = Object.values(teamCodesAndNames).map((team) => team.code);
-  console.log(codes);
 
   return codes.includes(teamCode);
 };

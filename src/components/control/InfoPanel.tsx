@@ -10,7 +10,6 @@ const InfoPanel: React.FC<Record<string, never>> = () => {
   const { teamB, updateTeamB } = useTeamB();
 
   const handleTeamANameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     updateTeamA('name', e.target.value);
   };
   const handleTeamBNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

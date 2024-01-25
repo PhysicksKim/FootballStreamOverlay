@@ -25,7 +25,6 @@ export const FontProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateGlobalFont = (font: FontEnum) => {
     setFontInfo(fontInfos[font]);
-    console.log('font 변경 ', font);
   };
 
   return (

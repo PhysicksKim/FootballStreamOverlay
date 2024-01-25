@@ -24,10 +24,6 @@ export const TeamAProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [teamA, setTeamA] = useState<Team>(teamAInitialValue);
 
-  useEffect(() => {
-    console.log('teamA', teamA);
-  }, [teamA]);
-
   const updateTeamA = <K extends keyof Team>(key: K, value: Team[K]) => {
     setTeamA((prevTeam: Team) => ({ ...prevTeam, [key]: value }));
   };
