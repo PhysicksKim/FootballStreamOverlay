@@ -1,0 +1,27 @@
+.backend-status-box {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  border: 3px rgb(107, 107, 103) solid;
+
+  > div {
+    margin-right: 10px;
+  }
+
+  .server-on {
+    color: green;
+  }
+  .server-off {
+    color: red;
+  }
+
+  .ws-try {
+    color: rgb(255, 163, 43);
+  }
+  .ws-connect {
+    color: green;
+  }
+  .ws-disconnect {
+    color: red;
+  }
+}
