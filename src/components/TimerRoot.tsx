@@ -26,6 +26,7 @@ import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerMa
 import RouteControlPanels from './RouteControlPanels';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
+import SettingTab from './settingtab/SettingTab';
 
 const TimerRoot = () => {
   // 글로벌 폰트
@@ -129,6 +130,7 @@ const TimerRoot = () => {
                 />
               }
             ></Route>
+            <Route path='settings' element={<SettingTab />}></Route>
           </Routes>
         </HashRouter>
       </div>
