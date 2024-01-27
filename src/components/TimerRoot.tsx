@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  MemoryRouter,
-  HashRouter,
-} from 'react-router-dom';
+import { Route, Routes, HashRouter } from 'react-router-dom';
 
 import CSSTransition from 'react-transition-group/CSSTransition';
 
