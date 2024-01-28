@@ -62,6 +62,15 @@
   @include teamBColor('asiancup-my', 'away');
 }
 
+// 사우디아라비아 sa
+.team-b-asiancup-sa-home {
+  @include teamBColor('asiancup-sa');
+}
+.team-b-asiancup-sa-away,
+.team-b-asiancup-sa-third {
+  @include teamBColor('asiancup-sa', 'away');
+}
+
 // ----- EPL -----
 // 아스날
 .team-b-epl2324-ars-home {

@@ -46,25 +46,17 @@
       align-items: center;
       justify-content: space-between;
       height: 100%;
-
-      div {
-        font-size: 40px;
-        text-align: center;
-        padding-top: 2px;
-      }
+      padding-top: 2px;
 
       .team-text-wrapper {
         display: flex;
-        flex-direction: row;
-        flex: 1;
         align-items: center;
-      }
+        width: 500px;
 
-      .team-score-wrapper {
-        display: flex;
-        flex-direction: row;
-        width: 30px;
-        align-items: center;
+        .team-text {
+          text-wrap: nowrap;
+          overflow: hidden;
+        }
       }
     }
 
@@ -73,30 +65,51 @@
       box-sizing: border-box;
       width: 50%;
       text-wrap: nowrap;
-    }
-
-    .team-a-format {
-      text-align: left;
-
-      .team-text-wrapper {
-        justify-content: left;
-        padding-left: 70px;
-      }
-      .team-score-wrapper {
-        padding-right: 17px;
-      }
-    }
-
-    .team-b-format {
-      text-align: right;
-
-      .team-text-wrapper {
-        justify-content: right;
-        padding-right: 70px;
-      }
-      .team-score-wrapper {
-        padding-left: 17px;
-      }
+      overflow: hidden;
     }
   }
+}
+
+.score-text {
+  font-size: 40px;
+}
+.team-text {
+  font-size: 30px;
+}
+
+.team-a-score-wrapper,
+.team-b-score-wrapper {
+  display: flex;
+  box-sizing: border-box;
+  flex-basis: 44px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.team-a-score-wrapper {
+  flex-direction: row;
+}
+
+.team-b-score-wrapper {
+  flex-direction: row-reverse;
+}
+
+.team-a-text-wrapper,
+.team-b-text-wrapper {
+  box-sizing: border-box;
+  flex-basis: 297px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow-x: hidden;
+}
+
+.team-a-text-wrapper {
+  flex-direction: row;
+  padding-left: 62px;
+  padding-right: 13px;
+}
+.team-b-text-wrapper {
+  flex-direction: row-reverse;
+  padding-left: 13px;
+  padding-right: 62px;
 }

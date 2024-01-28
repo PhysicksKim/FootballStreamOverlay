@@ -7,6 +7,8 @@ import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot
 import { InjuryTimerStateRoot } from '@src/contexts/timers/injury/InjuryTimerStateRoot';
 import { TeamAProvider } from '@src/contexts/teams/TeamAProvider';
 import { TeamBProvider } from '@src/contexts/teams/TeamBProvider';
+import { TeamAStyleProvider } from '@src/contexts/teams/TeamAStyleProvider';
+import { TeamBStyleProvider } from '@src/contexts/teams/TeamBStyleProvider';
 
 const Application: React.FC = () => {
   return (
@@ -14,9 +16,13 @@ const Application: React.FC = () => {
       <InjuryTimerStateRoot>
         <TeamAProvider>
           <TeamBProvider>
-            <FontProvider>
-              <TimerRoot />
-            </FontProvider>
+            <TeamAStyleProvider>
+              <TeamBStyleProvider>
+                <FontProvider>
+                  <TimerRoot />
+                </FontProvider>
+              </TeamBStyleProvider>
+            </TeamAStyleProvider>
           </TeamBProvider>
         </TeamAProvider>
       </InjuryTimerStateRoot>

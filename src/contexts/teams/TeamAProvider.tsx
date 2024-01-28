@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Team, UniformEnum } from '@src/types/types';
+import React, { createContext, useContext, useState } from 'react';
+import { Team } from '@src/types/types';
 import CountryCodes from '@src/classes/team/AsiancupCodes';
 
 const TeamAContext = createContext(
