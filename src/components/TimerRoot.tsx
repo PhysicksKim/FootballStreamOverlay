@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  MemoryRouter,
-  HashRouter,
-} from 'react-router-dom';
+import { Route, Routes, HashRouter } from 'react-router-dom';
 
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -26,7 +20,7 @@ import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerMa
 import RouteControlPanels from './RouteControlPanels';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
-import SettingTab from './settingtab/SettingTab';
+import RemoteTab from './settingtab/RemoteTab';
 
 const TimerRoot = () => {
   // 글로벌 폰트
@@ -130,7 +124,7 @@ const TimerRoot = () => {
                 />
               }
             ></Route>
-            <Route path='settings' element={<SettingTab />}></Route>
+            <Route path='remote' element={<RemoteTab />}></Route>
           </Routes>
         </HashRouter>
       </div>
