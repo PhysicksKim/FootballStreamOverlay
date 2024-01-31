@@ -33,3 +33,31 @@ export interface Team {
 export interface TeamCodesAndNames {
   [key: string]: { code: string; name: string };
 }
+
+interface WsBaseMessage {
+  type: string;
+  metadata: {
+    timestamp: number;
+    messageId: string;
+  };
+}
+
+export interface WsScoreMessage extends WsBaseMessage {
+  data: {
+    teamA: number;
+    teamB: number;
+  };
+}
+
+export interface WsUniformMessage extends WsBaseMessage {
+  data: {
+    teamA: 'HOME' | 'AWAY' | 'THIRD';
+    teamB: 'HOME' | 'AWAY' | 'THIRD';
+  };
+}
+
+export interface WsGivenInjuryMessage extends WsBaseMessage {
+  data: {
+    givenInjury: number;
+  };
+}

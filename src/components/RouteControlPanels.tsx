@@ -34,7 +34,7 @@ const RouteControlPanels: React.FC<Record<string, never>> = () => {
           className={({ isActive }) =>
             'teams-link ' + (isActive ? 'active-link' : 'not-active-link')
           }
-          to={'/settings'}
+          to={'/remote'}
         >
           <div className='link-title'>설정</div>
         </NavLink>
