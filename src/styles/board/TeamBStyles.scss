@@ -71,6 +71,15 @@
   @include teamBColor('asiancup-sa', 'away');
 }
 
+// 호주 au
+.team-b-asiancup-au-home {
+  @include teamBColor('asiancup-au');
+}
+.team-b-asiancup-au-away,
+.team-b-asiancup-au-third {
+  @include teamBColor('asiancup-au', 'away');
+}
+
 // ----- EPL -----
 // 아스날
 .team-b-epl2324-ars-home {

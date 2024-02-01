@@ -6,6 +6,7 @@ const AsiancupCodes: TeamCodesAndNames = {
   요르단: { code: 'jo', name: '요르단' },
   말레이시아: { code: 'my', name: '말레이시아' },
   사우디아라비아: { code: 'sa', name: '사우디아라비아' },
+  호주: { code: 'au', name: '호주' },
 };
 
 export default AsiancupCodes;
