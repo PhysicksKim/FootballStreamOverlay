@@ -1,50 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import '@styles/settingtab/RemoteTab.scss';
-import { useTeamA } from '@src/contexts/teams/TeamAProvider';
-import { useTeamB } from '@src/contexts/teams/TeamBProvider';
-import { WsScoreMessage } from '@src/types/types';
+import StompJs, { Client } from '@stomp/stompjs';
 
 type WebSocketStatus = '연결시도' | '연결됨' | '끊어짐';
 
 const RemoteTab = () => {
   const [serverStatus, setServerStatus] = useState(false);
-  const [wsStatus, setWsStatus] = useState<WebSocketStatus>('연결시도'); // WebSocket 연결 상태
-  const [rawMessage, setRawMessage] = useState<string>('');
-  const webSocket = useRef<WebSocket | null>(null);
-
-  const { teamA, updateTeamA } = useTeamA();
-  const { teamB, updateTeamB } = useTeamB();
-
-  useEffect(() => {
-    handleWsMessage(rawMessage);
-  }, [rawMessage]);
-
-  const handleWsMessage = (rawMessage: string) => {
-    let _message;
-    try {
-      _message = JSON.parse(rawMessage);
-    } catch (e) {
-      console.log('JSON parse error : ', e);
-      return;
-    }
-    const message = _message;
-
-    if (message.type === 'score') {
-      const scoreMessage = message as WsScoreMessage;
-      handleScoreChange(scoreMessage.data.teamA, scoreMessage.data.teamB);
-    }
-  };
-
-  const handleScoreChange = (teamAScore: number, teamBScore: number) => {
-    updateTeamA('score', teamAScore);
-    updateTeamB('score', teamBScore);
-  };
+  const [stompStatus, setStompStatus] = useState<WebSocketStatus>('연결시도');
+  const [stompMessage, setStompMessage] = useState<string>('');
+  const stompClient = useRef<StompJs.Client>();
 
   // 백엔드 서버 연결 테스트
   const serverCheckCb = () =>
     axios
-      .get('https://localhost:8443/api/test')
+      .get('https://localhost:8083/api/test')
       .then((res) => {
         console.log('axios get : ', res.data);
         setServerStatus(true);
@@ -62,38 +32,52 @@ const RemoteTab = () => {
     return () => clearInterval(serverCheckInterval);
   }, []);
 
-  const webSocketInit = () => {
-    webSocket.current = new WebSocket('wss://localhost:8443/ws-scoreboard');
-    webSocket.current.onopen = () => {
-      console.log('WebSocket 연결!');
-      setWsStatus('연결됨');
-    };
-    webSocket.current.onclose = (error) => {
-      console.log(error);
-      setWsStatus('끊어짐');
-    };
-    webSocket.current.onerror = (error) => {
-      console.log(error);
-      setWsStatus('끊어짐');
-    };
-    webSocket.current.onmessage = (event: MessageEvent) => {
-      console.log('receive ws message : ', event.data);
-      setRawMessage(event.data);
-    };
-  };
-
+  // STOMP 웹소켓 연결
   useEffect(() => {
-    webSocketInit();
-
-    return () => {
-      webSocket.current?.close();
-    };
+    try {
+      const url = 'wss://localhost:8083/ws';
+      stompClient.current = new Client({
+        brokerURL: url,
+        connectHeaders: {
+          recipientId: 'gyechunhoe',
+        },
+        onConnect: () => {
+          console.log('stomp connected');
+          setStompStatus('연결됨');
+          console.log('onConnect');
+          stompClient.current.subscribe('/topic/greetings', (message: any) => {
+            console.log('stomp message : ', message);
+            setStompMessage(JSON.stringify(message)); // 메시지 내용 업데이트
+          });
+        },
+        onDisconnect: () => {
+          console.log('stomp disconnected');
+          setStompStatus('끊어짐');
+        },
+        onWebSocketError: (error) => {
+          console.error('Error with websocket', error);
+        },
+        onStompError: (frame) => {
+          console.error('Broker reported error: ' + frame.headers['message']);
+          console.error('Additional details: ' + frame.body);
+        },
+      });
+      stompClient.current.activate();
+      stompClient.current.subscribe('/topic/greetings', (message: any) => {
+        console.log('stomp message : ', message);
+        const greeting = JSON.parse(message.body); // JSON 파싱
+        setStompMessage(greeting.content); // 메시지 내용 업데이트
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
-  const sendMessage = (message: string) => {
-    if (webSocket.current.readyState === WebSocket.OPEN) {
-      webSocket.current.send(message);
-    }
+  const sendMessage = () => {
+    stompClient.current.publish({
+      destination: '/app/hello',
+      body: JSON.stringify({ name: 'gyechunhoe' }),
+    });
   };
 
   return (
@@ -103,21 +87,10 @@ const RemoteTab = () => {
         <div className={serverStatus ? 'server-on' : 'server-off'}>
           {serverStatus ? '연결됨' : '끊어짐'}
         </div>
-        <div>웹 소켓 상태</div>
-        <div
-          className={
-            wsStatus === '연결시도'
-              ? 'ws-try'
-              : wsStatus === '연결됨'
-              ? 'ws-connect'
-              : 'ws-disconnect'
-          }
-        >
-          {wsStatus}
-        </div>
-      </div>
-      <div>
-        <div>wsRawMessage : {rawMessage}</div>
+        <div>웹소켓 연결</div>
+        <div>상태 : {stompStatus}</div>
+        <button onClick={sendMessage}>메시지 보내기</button>
+        <div>메세지 : {stompMessage}</div>
       </div>
     </div>
   );
