@@ -59,7 +59,7 @@ const InfoPanel: React.FC<Record<string, never>> = () => {
         </div>
         <div className='team-font-color-change-box'>
           <div className='team-font-color-change-box-wrapper'>
-            <div className='font-is-black-title'>색상 변경</div>
+            <div className='font-is-black-title'>검은색 폰트</div>
             <input
               className='font-is-black-checkbox'
               type='checkbox'
@@ -90,7 +90,7 @@ const InfoPanel: React.FC<Record<string, never>> = () => {
         </div>
         <div className='team-font-color-change-box'>
           <div className='team-font-color-change-box-wrapper'>
-            <div className='font-is-black-title'>색상 변경</div>
+            <div className='font-is-black-title'>검은색 폰트</div>
             <input
               className='font-is-black-checkbox'
               type='checkbox'

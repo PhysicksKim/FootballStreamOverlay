@@ -71,6 +71,33 @@
   @include teamBColor('asiancup-sa', 'away');
 }
 
+// 호주 au
+.team-b-asiancup-au-home {
+  @include teamBColor('asiancup-au');
+}
+.team-b-asiancup-au-away,
+.team-b-asiancup-au-third {
+  @include teamBColor('asiancup-au', 'away');
+}
+
+// 일본 jp
+.team-b-asiancup-jp-home {
+  @include teamBColor('asiancup-jp');
+}
+.team-b-asiancup-jp-away,
+.team-b-asiancup-jp-third {
+  @include teamBColor('asiancup-jp', 'away');
+}
+
+// 이란 ir
+.team-b-asiancup-ir-home {
+  @include teamBColor('asiancup-ir');
+}
+.team-b-asiancup-ir-away,
+.team-b-asiancup-ir-third {
+  @include teamBColor('asiancup-ir', 'away');
+}
+
 // ----- EPL -----
 // 아스날
 .team-b-epl2324-ars-home {
