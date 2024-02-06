@@ -295,7 +295,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
           </div>
           <div className='minsec-set-box minutes-set-box'>
             <div className='minsec-button-box'>
-              <label htmlFor='minutes-input-id'>분</label>
+              <label htmlFor='main-minutes-input'>분</label>
               <button
                 className='input-plus minutes-plus-btn'
                 onClick={(e) =>
@@ -315,8 +315,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
             </div>
             <div className='minsec-input-box'>
               <input
+                key='main-minutes-input'
+                id='main-minutes-input'
                 className='minutes-input'
-                id='minutes-input-id'
                 type='number'
                 placeholder='Minutes'
                 value={Number(mainMinutes).toString()}
@@ -326,7 +327,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
           </div>
           <div className='minsec-set-box seconds-set-box'>
             <div className='minsec-button-box'>
-              <label htmlFor='seconds-input-id'>초</label>
+              <label htmlFor='main-seconds-input'>초</label>
               <button
                 className='input-plus seconds-plus-btn'
                 onClick={(e) =>
@@ -346,8 +347,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
             </div>
             <div className='minsec-input-box'>
               <input
+                key='main-seconds-input'
+                id='main-seconds-input'
                 className='seconds-input'
-                id='seconds-input-id'
                 type='number'
                 placeholder='Seconds'
                 value={Number(mainSeconds).toString()}
@@ -374,7 +376,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
           </div>
           <div className='minsec-set-box minutes-set-box'>
             <div className='minsec-button-box'>
-              <label htmlFor='minutes-input-id'>분</label>
+              <label htmlFor='injury-minutes-input'>분</label>
               <button
                 className='input-plus minutes-plus-btn'
                 onClick={(e) =>
@@ -394,8 +396,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
             </div>
             <div className='minsec-input-box'>
               <input
+                key='injury-minutes-input'
+                id='injury-minutes-input'
                 className='minutes-input'
-                id='minutes-input-id'
                 type='number'
                 placeholder='Minutes'
                 value={Number(injuryMinutes).toString()}
@@ -405,7 +408,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
           </div>
           <div className='minsec-set-box seconds-set-box'>
             <div className='minsec-button-box'>
-              <label htmlFor='seconds-input-id'>초</label>
+              <label htmlFor='injury-seconds-input'>초</label>
               <button
                 className='input-plus seconds-plus-btn'
                 onClick={(e) =>
@@ -425,8 +428,9 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
             </div>
             <div className='minsec-input-box'>
               <input
+                key='injury-seconds-input'
+                id='injury-seconds-input'
                 className='seconds-input'
-                id='seconds-input-id'
                 type='number'
                 placeholder='Seconds'
                 value={Number(injurySeconds).toString()}

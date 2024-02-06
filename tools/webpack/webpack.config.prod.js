@@ -1,3 +1,7 @@
+const webpack = require('webpack');
+const fs = require('fs');
+const path = require('path');
+
 module.exports = {
   mode: 'production',
   entry: ['./src/main.tsx'],
@@ -9,8 +13,18 @@ module.exports = {
     chunkFilename: '[name].[chunkhash].chunk.js',
     clean: true,
     publicPath: process.env.PUBLIC_URL || '',
+    // apiPath: 'https://localhost:8083',
+    // websocketPath: 'wss://localhost:8083',
   },
-  plugins: [...require('./webpack.plugins')],
+  plugins: [
+    ...require('./webpack.plugins'),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://production-server.com'),
+      'process.env.WEBSOCKET_URL': JSON.stringify(
+        'wss://production-server.com',
+      ),
+    }),
+  ],
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.scss'],
     alias: {

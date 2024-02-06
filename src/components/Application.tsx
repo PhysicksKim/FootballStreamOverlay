@@ -7,6 +7,7 @@ import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot
 import { InjuryTimerStateRoot } from '@src/contexts/timers/injury/InjuryTimerStateRoot';
 import { TeamAProvider } from '@src/contexts/teams/TeamAProvider';
 import { TeamBProvider } from '@src/contexts/teams/TeamBProvider';
+import { StompClientProvider } from '@src/contexts/StompClientContext';
 
 const Application: React.FC = () => {
   return (
@@ -15,7 +16,9 @@ const Application: React.FC = () => {
         <TeamAProvider>
           <TeamBProvider>
             <FontProvider>
-              <TimerRoot />
+              <StompClientProvider>
+                <TimerRoot />
+              </StompClientProvider>
             </FontProvider>
           </TeamBProvider>
         </TeamAProvider>

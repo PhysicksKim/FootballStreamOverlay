@@ -17,6 +17,7 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
       <div className='match-title-input-box'>
         <div className='match-title-text-index index-text'>매치 타이틀</div>
         <input
+          id='match-title-text-input'
           className='match-title-text-input'
           type='text'
           placeholder='ex 아시안컵 E조 조별 예선'
@@ -33,6 +34,7 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
       <div className='given-injury-input-box'>
         <div className='given-injury-input-index index-text'>추가 시간</div>
         <input
+          id='given-injury-time-input'
           className='given-injury-time-input'
           type='number'
           placeholder='추가시간'

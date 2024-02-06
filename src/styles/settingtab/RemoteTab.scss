@@ -1,8 +1,23 @@
+.setting-tab-container {
+  > * {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 3px rgb(107, 107, 103) solid;
+    > * {
+      margin-right: 5px;
+    }
+  }
+}
+
 .backend-status-box {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  border: 3px rgb(107, 107, 103) solid;
+  flex-direction: row;
+
+  > * {
+    margin-right: 10px;
+  }
 
   > div {
     margin-right: 10px;

@@ -1,3 +1,7 @@
+const webpack = require('webpack');
+const fs = require('fs');
+const path = require('path');
+
 module.exports = {
   mode: 'development',
   entry: ['./src/main.tsx'],
@@ -8,7 +12,13 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },
-  plugins: require('./webpack.plugins'),
+  plugins: [
+    ...require('./webpack.plugins'),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://localhost:8083'),
+      'process.env.WEBSOCKET_URL': JSON.stringify('wss://localhost:8083'),
+    }),
+  ],
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.scss'],
     alias: require('./webpack.aliases'),
@@ -17,6 +27,12 @@ module.exports = {
   devtool: 'cheap-module-source-map',
   devServer: {
     open: true,
+    https: {
+      key: fs.readFileSync(
+        path.resolve(__dirname, '../../localhost+1-key.pem'),
+      ), // 개인 키 경로
+      cert: fs.readFileSync(path.resolve(__dirname, '../../localhost+1.pem')), // 인증서 경로
+    },
   },
   optimization: {
     splitChunks: {
