@@ -7,7 +7,7 @@ import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot
 import { InjuryTimerStateRoot } from '@src/contexts/timers/injury/InjuryTimerStateRoot';
 import { TeamAProvider } from '@src/contexts/teams/TeamAProvider';
 import { TeamBProvider } from '@src/contexts/teams/TeamBProvider';
-import { StompClientProvider } from '@src/contexts/StompClientContext';
+import { StompClientProvider } from '@src/contexts/stomp/StompClientContext';
 
 const Application: React.FC = () => {
   return (

@@ -2,21 +2,28 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import '@styles/settingtab/RemoteTab.scss';
 import StompJs, { Client, IMessage, ActivationState } from '@stomp/stompjs';
-import { useStompClient } from '@src/contexts/StompClientContext';
+import { useStompClient } from '@src/contexts/stomp/StompClientContext';
 
 type ConnectStatus = '연결됨' | '끊어짐';
 
 const RemoteTab = () => {
+  const {
+    clientRef,
+    remoteSubInfo,
+    remotePubInfo,
+    isConnected,
+    remoteControlMsg,
+  } = useStompClient();
+
   const [serverStatus, setServerStatus] = useState(false);
-  const [websocketStatus, setWebsocketStatus] =
-    useState<ConnectStatus>('연결됨');
-  const { clientRef, wsCode, isConnected } = useStompClient();
+  const [stompStatus, setStompStatus] = useState<ConnectStatus>('연결됨');
+  const [remotecodeInput, setRemotecodeInput] = useState('');
 
   useEffect(() => {
     if (isConnected) {
-      setWebsocketStatus('연결됨');
+      setStompStatus('연결됨');
     } else {
-      setWebsocketStatus('끊어짐');
+      setStompStatus('끊어짐');
     }
   }, [isConnected]);
 
@@ -53,12 +60,6 @@ const RemoteTab = () => {
     }
   };
 
-  const issueCodeHandler = () => {
-    clientRef.current.publish({
-      destination: '/app/board/code.issue',
-    });
-  };
-
   const helloHandler = () => {
     if (isNotReadyWebsocket()) return;
 
@@ -73,10 +74,41 @@ const RemoteTab = () => {
     clientRef.current.unsubscribe('hello');
   };
 
-  const publishCodePath = () => {
-    if (isNotReadyWebsocket()) return;
+  const issueCodeHandler = () => {
     clientRef.current.publish({
-      destination: `/app/board/code/${wsCode}`,
+      destination: '/app/board/remotecode.expire/' + remoteSubInfo.remoteCode,
+    });
+    clientRef.current.publish({
+      destination: '/app/board/remotecode.issue',
+    });
+  };
+
+  const remoteConnectHandler = () => {
+    if (!remotecodeInput) {
+      console.log('input is empty');
+      return;
+    }
+
+    if (isNotReadyWebsocket()) {
+      console.log('websocket is not ready');
+      return;
+    }
+
+    clientRef.current.publish({
+      destination: '/app/remote.connect',
+      body: JSON.stringify({ remoteCode: remotecodeInput }),
+    });
+  };
+
+  const remoteControlTestHandler = () => {
+    if (isNotReadyWebsocket()) {
+      console.log('websocket is not ready');
+      return;
+    }
+
+    clientRef.current.publish({
+      destination: `/app/remote/${remoteSubInfo.remoteCode}`,
+      body: JSON.stringify({ hello: 'RemoteCode based control test' }),
     });
   };
 
@@ -95,16 +127,30 @@ const RemoteTab = () => {
         <button onClick={() => clientRef.current?.deactivate()}>
           연결종료
         </button>
-        <div className='websocket-status'>{websocketStatus}</div>
+        <div className='websocket-status'>{stompStatus}</div>
       </div>
       <div>
         <div>코드 발급</div>
         <button onClick={helloHandler}>hello</button>
         <button onClick={unSubHellos}>unsub hello</button>
         <button onClick={issueCodeHandler}>발급</button>
-        <button onClick={publishCodePath}>code path</button>
         <div>코드 값</div>
-        <div> : [ {wsCode} ]</div>
+        <div> : [ {remoteSubInfo.remoteCode} ]</div>
+        <div>subPath</div>
+        <div> : [ {remoteSubInfo.subPath} ]</div>
+      </div>
+      <div>
+        <div>원격 연결</div>
+        <input
+          type='text'
+          id='remote-connect-code-input'
+          onChange={(e) => setRemotecodeInput(e.target.value)}
+        />
+        <button onClick={remoteConnectHandler}>연결</button>
+        <button onClick={remoteControlTestHandler}>원격컨트롤테스트</button>
+        <div>pubPath</div>
+        <div> : [ {remotePubInfo.pubPath} ]</div>
+        {/* <button onClick={}>테스트 메세지</button> */}
       </div>
     </div>
   );
