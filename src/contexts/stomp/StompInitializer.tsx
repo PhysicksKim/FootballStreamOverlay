@@ -1,14 +1,12 @@
 import { Client, IMessage, StompConfig } from '@stomp/stompjs';
 import React from 'react';
 import {
-  RemoteCodeIssueMessage,
-  RemoteConnectMessage,
-} from '@src/types/stompTypes';
-import {
-  RemoteControlMsg,
   BoardRemoteConnectInfos,
   ControlRemoteConnectInfos,
-} from './StompClientContext';
+  RemoteCodeIssueMessage,
+  RemoteConnectMessage,
+  RemoteControlMsg,
+} from '@src/types/stompTypes';
 
 class StompInitializer {
   private clientRef: React.MutableRefObject<Client>;
@@ -50,10 +48,8 @@ class StompInitializer {
         let remoteMsg: RemoteConnectMessage;
         try {
           remoteMsg = this.parseControlRemoteMessage(message);
-          setRemotePubInfo((prev) => {
-            return {
-              pubPath: remoteMsg.pubPath,
-            };
+          setRemotePubInfo({
+            pubPath: remoteMsg.pubPath,
           });
         } catch (e) {
           console.log('remote message error: ', e);
@@ -150,12 +146,10 @@ class StompInitializer {
       // this.clientRef.current.commit('remoteControlChennelTransaction');
 
       console.log('remote control channel sub : ', nextSubId);
-      setRemoteInfo((prev) => {
-        return {
-          remoteCode: remoteCode,
-          subPath: remoteSubPath,
-          subId: nextSubId,
-        };
+      setRemoteInfo({
+        remoteCode: remoteCode,
+        subPath: remoteSubPath,
+        subId: nextSubId,
       });
     }
     console.log('remote control channel unsub : ', prevSubId);

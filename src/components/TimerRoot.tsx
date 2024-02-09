@@ -20,7 +20,8 @@ import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerMa
 import RouteControlPanels from './RouteControlPanels';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
-import RemoteTab from './settingtab/RemoteTab';
+import RemoteReceiveTab from './remote/RemoteReceiveTab';
+import RemoteControlTab from './remote/RemoteControlTab';
 
 const TimerRoot = () => {
   // 글로벌 폰트
@@ -124,7 +125,8 @@ const TimerRoot = () => {
                 />
               }
             ></Route>
-            <Route path='remote' element={<RemoteTab />}></Route>
+            <Route path='remotereceive' element={<RemoteReceiveTab />}></Route>
+            <Route path='remotecontrol' element={<RemoteControlTab />}></Route>
           </Routes>
         </HashRouter>
       </div>

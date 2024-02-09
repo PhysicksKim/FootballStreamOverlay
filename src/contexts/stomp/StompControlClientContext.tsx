@@ -8,80 +8,59 @@ import React, {
 } from 'react';
 import { Client, StompConfig } from '@stomp/stompjs';
 import StompInitializer from './StompInitializer';
+import {
+  ControlRemoteConnectInfos,
+  RemoteControlMsg,
+  StompClientRef,
+} from '@src/types/stompTypes';
 
 // API 서버 환경변수 (개발/서비스 환경)
 const apiUrl = process.env.API_URL;
 const websocketUrl = process.env.WEBSOCKET_URL + '/ws';
 
-export type StompClientRef = React.MutableRefObject<Client>;
-
 // Provider 의 value 로 사용될 타입
-export interface StompClient {
+export interface StompControlClient {
   clientRef: StompClientRef;
-  remoteSubInfo: BoardRemoteConnectInfos;
   remotePubInfo: ControlRemoteConnectInfos;
   isConnected: boolean;
-  remoteControlMsg: RemoteControlMsg; // TODO : 타입 정의 필요
+  controlMsgToPub: RemoteControlMsg;
+  setControlMsgToPub: React.Dispatch<React.SetStateAction<RemoteControlMsg>>;
 }
 
-const StompClientContext = createContext<StompClient | undefined>(undefined);
+const StompControlClientContext = createContext<StompControlClient | undefined>(
+  undefined,
+);
 
-export const useStompClient = () => {
-  const context = useContext(StompClientContext);
+/**
+ * 원격 제어를 발신하는 측에서 사용하는 StompClient 입니다.
+ * @returns StompControlClient { clientRef, remotePubInfo, isConnected, controlMsgToPub, setControlMsgToPub }
+ * @throws Provider 외부에서 사용 시 에러
+ */
+export const useStompControlClient = () => {
+  const context = useContext(StompControlClientContext);
   if (!context) {
-    throw new Error('useFont must be used within a StompClientProvider');
+    throw new Error('useStompControlClient must be used within a Provider');
   }
   return context;
 };
 
-export interface BoardRemoteConnectInfos {
-  remoteCode: string;
-  subPath: string;
-  subId: string;
-}
-
-export interface ControlRemoteConnectInfos {
-  pubPath: string;
-}
-
-export interface RemoteControlMsg {
-  code: number;
-  message: string;
-  data: { [key: string]: any };
-}
-
-/**
- * stompConfig 를 주입해줘야 합니다.
- * beforeConnect 옵션을 사용하여 사전 유저 정보 등록 http 요청을 성공한 뒤 activate 하도록 할 수 있습니다.
- */
-export const StompClientProvider: React.FC<{
+export const StompControlClientProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const clientRef = useRef<Client>();
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [remoteSubInfo, setRemoteSubInfo] = useState<BoardRemoteConnectInfos>({
-    remoteCode: '',
-    subPath: '',
-    subId: '',
-  });
-  const [remoteControlMsg, setRemoteControlMsg] = useState<RemoteControlMsg>();
+  const [controlMsgToPub, setControlMsgToPub] = useState<RemoteControlMsg>();
   const [remotePubInfo, setRemotePubInfo] = useState<ControlRemoteConnectInfos>(
     {
       pubPath: '',
     },
   );
 
-  // TODO : 타입 정의 필요
-
   const stompInitRef = useRef(new StompInitializer(clientRef));
 
   const subChannels = () => {
     stompInitRef.current.subscribeTestHello();
     stompInitRef.current.subscribeControlRemote(setRemotePubInfo);
-    stompInitRef.current.subscribeScoreBoardRemote(
-      setRemoteSubInfo,
-      setRemoteControlMsg,
-    );
   };
 
   const stompConfig: StompConfig = {
@@ -115,16 +94,16 @@ export const StompClientProvider: React.FC<{
   }, []);
 
   return (
-    <StompClientContext.Provider
+    <StompControlClientContext.Provider
       value={{
         clientRef,
-        remoteSubInfo,
         remotePubInfo,
         isConnected,
-        remoteControlMsg,
+        controlMsgToPub,
+        setControlMsgToPub,
       }}
     >
       {children}
-    </StompClientContext.Provider>
+    </StompControlClientContext.Provider>
   );
 };

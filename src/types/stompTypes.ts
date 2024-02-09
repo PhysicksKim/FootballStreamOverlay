@@ -1,3 +1,5 @@
+import { Client } from '@stomp/stompjs';
+
 export type RemoteCodeIssueMessage = {
   /**
    * 원격 연결에 사용되는 코드
@@ -18,3 +20,23 @@ export type RemoteCodeIssueMessage = {
 export type RemoteConnectMessage = {
   pubPath: string;
 };
+
+export type StompClientRef = React.MutableRefObject<Client>;
+
+export interface BoardRemoteConnectInfos {
+  remoteCode: string;
+  subPath: string;
+  subId: string;
+}
+
+export interface ControlRemoteConnectInfos {
+  pubPath: string;
+}
+
+export interface RemoteControlMsg {
+  code: number;
+  message: string;
+  data: { [key: string]: any };
+}
+
+export type ConnectStatus = '연결됨' | '끊어짐';

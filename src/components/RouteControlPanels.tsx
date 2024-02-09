@@ -34,9 +34,17 @@ const RouteControlPanels: React.FC<Record<string, never>> = () => {
           className={({ isActive }) =>
             'teams-link ' + (isActive ? 'active-link' : 'not-active-link')
           }
-          to={'/remote'}
+          to={'/remotereceive'}
         >
-          <div className='link-title'>설정</div>
+          <div className='link-title'>원격수신</div>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            'teams-link ' + (isActive ? 'active-link' : 'not-active-link')
+          }
+          to={'/remotecontrol'}
+        >
+          <div className='link-title'>원격송신</div>
         </NavLink>
       </div>
     </>
