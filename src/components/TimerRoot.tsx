@@ -22,6 +22,7 @@ import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import RemoteReceiveTab from './remote/RemoteReceiveTab';
 import RemoteControlTab from './remote/RemoteControlTab';
+import RemoteMessageManager from './manager/RemoteMessageManager';
 
 const TimerRoot = () => {
   // 글로벌 폰트
@@ -69,6 +70,15 @@ const TimerRoot = () => {
 
   return (
     <div className='timer-context-root'>
+      <RemoteMessageManager
+        givenInjuryTime={givenInjuryTime}
+        matchName={matchName}
+        disappearInjuryTimer={disappearInjuryTimer}
+        showInjuryTimer={showInjuryTimer}
+        isShowInjuryTimer={isShowInjuryTimer}
+        updateGivenInjuryTime={updateGivenInjuryTime}
+        updateMatchName={updateMatchName}
+      />
       <GlobalStyle key='font-family-style-provide' fontFamily={fontInfo.code} />
       <div className='board-container-fixer'>
         <div className='board-container'>

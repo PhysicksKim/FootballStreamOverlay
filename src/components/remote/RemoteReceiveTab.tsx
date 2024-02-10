@@ -3,21 +3,27 @@ import axios from 'axios';
 import '@styles/remote/RemoteTab.scss';
 import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
 import { ConnectStatus } from '@src/types/stompTypes';
+import { useStompControlClient } from '@src/contexts/stomp/StompControlClientContext';
 
 const RemoteReceiveTab = () => {
-  const { clientRef, remoteSubInfo, isConnected, receiveRemoteMsg } =
-    useStompBoardClient();
+  const {
+    clientRef,
+    remoteSubInfo,
+    isConnected: isBoardConnected,
+    receiveRemoteMsg,
+  } = useStompBoardClient();
+  const { isConnected: isControlConnected } = useStompControlClient();
 
   const [serverStatus, setServerStatus] = useState(false);
   const [stompStatus, setStompStatus] = useState<ConnectStatus>('연결됨');
 
   useEffect(() => {
-    if (isConnected) {
+    if (isBoardConnected) {
       setStompStatus('연결됨');
     } else {
       setStompStatus('끊어짐');
     }
-  }, [isConnected]);
+  }, [isBoardConnected]);
 
   useEffect(() => {
     console.log('receiveRemoteMsg : ', receiveRemoteMsg);
@@ -32,7 +38,7 @@ const RemoteReceiveTab = () => {
   };
 
   // 백엔드 서버 연결 테스트
-  const serverCheckCb = () =>
+  const serverCheckCb = () => {
     axios
       .get('https://localhost:8083/server/status', { withCredentials: true })
       .then((res) => {
@@ -44,10 +50,18 @@ const RemoteReceiveTab = () => {
         console.log('axios get error : ', err);
         setServerStatus(false);
       });
+  };
 
   const connectSocketHandler = () => {
     if (!clientRef.current) {
       console.error('clientRef is not set');
+      return;
+    }
+
+    if (isControlConnected) {
+      console.log(
+        'controlClient is already connected. please disconnect controlClient first.',
+      );
       return;
     }
 

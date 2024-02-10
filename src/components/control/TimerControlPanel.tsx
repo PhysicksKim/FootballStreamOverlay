@@ -59,34 +59,35 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   // 타이머 시작 시간 설정을 위한 input태그 state 값들
   const [mainMinutes, setMainMinutes] = useState(0);
   const [mainSeconds, setMainSeconds] = useState(0);
-  const [isMainTimerRunning, setIsMainTimerRunning] = useState(false);
+  // const [isMainTimerRunning, setIsMainTimerRunning] = useState(false);
   const [injuryMinutes, setInjuryMinutes] = useState(0);
   const [injurySeconds, setInjurySeconds] = useState(0);
-  const [isInjuryTimerRunning, setIsInjuryTimerRunning] = useState(false);
+  // const [isInjuryTimerRunning, setIsInjuryTimerRunning] = useState(false);
 
   // #region Main Timer
   const toggleMainTimerRunning = () => {
-    if (isMainTimerRunning) {
+    if (mainTimerManager.timer.isRunning) {
       mainTimerManager.pauseTimer();
     } else {
       mainTimerManager.resumeTimer();
     }
-    setIsMainTimerRunning(!isMainTimerRunning);
+    // setIsMainTimerRunning(!isMainTimerRunning);
   };
 
   const startMainTimer = () => {
-    setIsMainTimerRunning(true);
+    // setIsMainTimerRunning(true);
     if (mainMinutes >= 120) {
       mainTimerManager.startTimer({ min: 120, sec: 0 });
-      setMainMinutes(120);
-      setMainSeconds(0);
+      // // 120분 이상은 120분으로 설정
+      // setMainMinutes(120);
+      // setMainSeconds(0);
     } else {
       mainTimerManager.startTimer({ min: mainMinutes, sec: mainSeconds });
     }
   };
 
   const startMainTimerWithTime: (time: Time) => void = ({ min, sec }) => {
-    setIsMainTimerRunning(true);
+    // setIsMainTimerRunning(true);
     mainTimerManager.startTimer({ min: min, sec: sec });
   };
 
@@ -119,12 +120,13 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   // #region Injury Timer
   const toggleInjuryTimerRunning = () => {
-    if (isInjuryTimerRunning) {
+    // if (isInjuryTimerRunning) {
+    if (mainTimerManager.timer.isRunning) {
       injuryTimerManager.pauseTimer();
     } else {
       injuryTimerManager.resumeTimer();
     }
-    setIsInjuryTimerRunning(!isInjuryTimerRunning);
+    // setIsInjuryTimerRunning(!isInjuryTimerRunning);
   };
 
   const toggleShowInjuryTimer = () => {
@@ -136,13 +138,13 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   };
 
   const startInjuryTimer = () => {
-    setIsInjuryTimerRunning(true);
+    // setIsInjuryTimerRunning(true);
     showInjuryTimer();
     injuryTimerManager.startTimer({ min: 0, sec: 0 });
   };
 
   const startInjuryTimerWithTime = () => {
-    setIsInjuryTimerRunning(true);
+    // setIsInjuryTimerRunning(true);
     injuryTimerManager.startTimer({ min: injuryMinutes, sec: injurySeconds });
   };
 
@@ -174,7 +176,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   const stopInjuryTimer = () => {
     injuryTimerManager.timer.stop();
-    setIsInjuryTimerRunning(false);
+    // setIsInjuryTimerRunning(false);
     disappearInjuryTimer();
   };
 
@@ -362,7 +364,8 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
               <FontAwesomeIcon icon={faPlay} />
             </button>
             <button onClick={toggleMainTimerRunning}>
-              {isMainTimerRunning ? (
+              {/* {isMainTimerRunning ? ( */}
+              {mainTimerManager.timer.isRunning ? (
                 <FontAwesomeIcon icon={faPause} />
               ) : (
                 <FontAwesomeIcon icon={faReply} />
@@ -443,7 +446,8 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
               <FontAwesomeIcon icon={faPlay} />
             </button>
             <button onClick={toggleInjuryTimerRunning}>
-              {isInjuryTimerRunning ? (
+              {/* {isInjuryTimerRunning ? ( */}
+              {injuryTimerManager.timer.isRunning ? (
                 <FontAwesomeIcon icon={faPause} />
               ) : (
                 <FontAwesomeIcon icon={faReply} />

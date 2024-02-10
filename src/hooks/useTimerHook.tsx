@@ -13,12 +13,15 @@ export interface TimerState {
   resume: () => void;
   pause: () => void;
   set: (minutes?: number, seconds?: number) => void;
+  isRunning: boolean;
 }
 
 const useTimerHook = (): [TimerState, EventEmitter] => {
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [eventEmitter] = useState(new EventEmitter());
   const [time, setTime] = useState<Time>({ min: 0, sec: 0 });
+  const [isRunning, setIsRunning] = useState(false);
+
   // eventListener 에서는 state 변수가 업데이트 안되니까, ref 로 넘겨줘야함
   const totalSecondsRef = useRef(totalSeconds);
 
@@ -48,6 +51,12 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     },
     tick,
   );
+
+  useEffect(() => {
+    setIsRunning(timer.isRunning());
+    console.log('useEffect[timer.isRunning] called');
+    console.log('timer.isRunning: ', timer.isRunning());
+  }, [timer.isRunning()]);
 
   useEffect(() => {
     totalSecondsRef.current = totalSeconds;
@@ -126,6 +135,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
       resume,
       pause,
       set,
+      isRunning,
     },
     eventEmitter,
   ];

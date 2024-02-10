@@ -1,4 +1,4 @@
-import { Client, IMessage, StompConfig } from '@stomp/stompjs';
+import { Client, IMessage } from '@stomp/stompjs';
 import React from 'react';
 import {
   BoardRemoteConnectInfos,
@@ -125,7 +125,6 @@ class StompInitializer {
 
     // 이전에 존재하는 원격 메세지를 받는 채널 구독을 unSubscribe 합니다.
     if (this.clientRef.current) {
-      // this.clientRef.current.begin('remoteControlChennelTransaction');
       this.clientRef.current.unsubscribe(prevSubId);
 
       this.clientRef.current.subscribe(
@@ -142,8 +141,6 @@ class StompInitializer {
         },
         { id: nextSubId },
       );
-
-      // this.clientRef.current.commit('remoteControlChennelTransaction');
 
       console.log('remote control channel sub : ', nextSubId);
       setRemoteInfo({

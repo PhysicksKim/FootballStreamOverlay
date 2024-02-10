@@ -9,6 +9,7 @@ import { TeamAProvider } from '@src/contexts/teams/TeamAProvider';
 import { TeamBProvider } from '@src/contexts/teams/TeamBProvider';
 import { StompBoardClientProvider } from '@src/contexts/stomp/StompBoardClientContext';
 import { StompControlClientProvider } from '@src/contexts/stomp/StompControlClientContext';
+import RemoteMessageManager from './manager/RemoteMessageManager';
 
 const Application: React.FC = () => {
   return (
