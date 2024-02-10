@@ -21,12 +21,14 @@
     flex-direction: row;
     justify-content: left;
     align-items: end;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     padding-left: 20px;
     height: 100%;
     background-color: #fcffed;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #ccc;
 
     .team-name-change-input-box {
       display: flex;
@@ -35,6 +37,7 @@
       > input {
         padding: 3px;
         margin-bottom: 3px;
+        width: 120px;
       }
     }
 
@@ -53,6 +56,25 @@
 
         &:hover {
           background-color: #12785b;
+        }
+      }
+    }
+
+    .team-font-color-change-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+      margin-left: 20px;
+      height: 100%;
+
+      .team-font-color-change-box-wrapper {
+        display: flex;
+        flex-direction: row;
+        padding-top: 5px;
+
+        .font-is-black-checkbox {
+          margin-left: 10px;
         }
       }
     }

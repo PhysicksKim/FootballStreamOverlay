@@ -7,4 +7,11 @@
   > div {
     flex-grow: 1;
   }
+
+  .score-control-panel-box,
+  .info-panel-box {
+    width: 50%;
+    box-sizing: border-box;
+    height: 100%;
+  }
 }

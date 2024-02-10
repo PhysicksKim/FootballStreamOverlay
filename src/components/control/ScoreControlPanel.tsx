@@ -23,22 +23,22 @@ const ScoreControlPanel: React.FC<Record<string, never>> = () => {
     <div className='board-control-container'>
       {/* Team A Control */}
       <div className='board-control-team-a'>
-        <div className='score-control'>
+        <div className='score-control-title'>
           <h3>Team A</h3>
-          <div className='score-adjust-button-group'>
-            <button onClick={() => handleGoalChangeA(1)}>골+</button>
-            <button onClick={() => handleGoalChangeA(-1)}>골-</button>
-          </div>
+        </div>
+        <div className='score-adjust-button-group'>
+          <button onClick={() => handleGoalChangeA(1)}>골+</button>
+          <button onClick={() => handleGoalChangeA(-1)}>골-</button>
         </div>
       </div>
       {/* Team B Control */}
       <div className='board-control-team-b'>
-        <div className='score-control'>
+        <div className='score-control-title'>
           <h3>Team B</h3>
-          <div className='score-adjust-button-group'>
-            <button onClick={() => handleGoalChangeB(1)}>골+</button>
-            <button onClick={() => handleGoalChangeB(-1)}>골-</button>
-          </div>
+        </div>
+        <div className='score-adjust-button-group'>
+          <button onClick={() => handleGoalChangeB(1)}>골+</button>
+          <button onClick={() => handleGoalChangeB(-1)}>골-</button>
         </div>
       </div>
     </div>
