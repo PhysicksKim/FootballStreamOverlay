@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Team } from '@src/types/types';
 import CountryCodes from '@src/classes/team/AsiancupCodes';
+import EPL2324Codes from '@src/classes/team/EPLCodes';
 
 const TeamAContext = createContext(
   {} as {
@@ -15,9 +16,9 @@ export const TeamAProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const teamAInitialValue: Team = {
-    category: 'asiancup',
-    code: CountryCodes.대한민국.code,
-    name: '대한민국',
+    category: 'epl2324',
+    code: EPL2324Codes.맨시티.code,
+    name: EPL2324Codes.맨시티.name,
     score: 0,
     uniform: 'home',
   };

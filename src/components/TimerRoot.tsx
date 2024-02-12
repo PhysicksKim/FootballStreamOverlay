@@ -26,7 +26,9 @@ const TimerRoot = () => {
   const { fontInfo, updateGlobalFont } = useFont();
 
   // 대회 종류
-  const [matchName, setMatchName] = useState('아시안컵 E조 조별 예선');
+  const [matchName, setMatchName] = useState(
+    '2023-24 잉글랜드 프리미어리그 25R',
+  );
 
   // 타이머
   const mainTimerManager = useMainTimerManager();
