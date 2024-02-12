@@ -15,13 +15,6 @@ const RemoteMessageSubscriber = () => {
     isConnected: isBoardConnected,
     receiveRemoteMsg,
   } = useStompBoardClient();
-  // const {
-  //   clientRef: controlClientRef,
-  //   remotePubInfo,
-  //   isConnected: isControlConnected,
-  //   controlMsgToPub,
-  //   setControlMsgToPub,
-  // } = useStompControlClient();
 
   // TODO : 메세지 수신에 따라서 state 변화 해야함
   useEffect(() => {
@@ -42,6 +35,7 @@ const RemoteMessageSubscriber = () => {
     setTimer: setMainTimer,
     eventEmitter: mainEventEmitter,
   } = useMainTimerManager();
+
   const { injuryTimeDisplay, setInjuryTimeDisplay } = useInjuryTimeDisplay();
   const {
     timer: injuryTimer,
@@ -58,6 +52,10 @@ const RemoteMessageSubscriber = () => {
       mainTimer.isRunning,
     );
   }, [mainTimer.isRunning]);
+
+  const solveMessage = (message: string) => {
+    return message;
+  };
 
   return <div>RemoteMessageSubscriber</div>;
 };

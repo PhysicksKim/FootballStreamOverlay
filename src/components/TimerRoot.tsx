@@ -17,27 +17,33 @@ import '@styles/TimerRootTransition.scss';
 import { useFont } from '@src/contexts/FontContext';
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
 import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
-import RouteControlPanels from './RouteControlPanels';
+import RouteTabs from './RouteControlPanels';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
-import RemoteReceiveTab from './remote/RemoteReceiveTab';
-import RemoteControlTab from './remote/RemoteControlTab';
 import RemoteMessageManager from './manager/RemoteMessageManager';
+import RemoteTab from './remote/RemoteTab';
+import { useMatchName } from '@src/contexts/MatchNameContext';
+import { useInjuryTimeInfo } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
 
 const TimerRoot = () => {
   // 글로벌 폰트
   const { fontInfo, updateGlobalFont } = useFont();
 
   // 대회 종류
-  const [matchName, setMatchName] = useState('아시안컵 E조 조별 예선');
+  const { matchName, updateMatchName } = useMatchName();
 
   // 타이머
   const mainTimerManager = useMainTimerManager();
   const injuryTimerManager = useInjuryTimerManager();
 
   // 추가시간 타이머
-  const [givenInjuryTime, setGivenInjuryTime] = useState(0);
-  const [isShowInjuryTimer, setIsShowInjuryTimer] = useState(false);
+  const {
+    givenInjuryTime,
+    isShowInjuryTimer,
+    updateGivenInjuryTime,
+    showInjuryTimer,
+    disappearInjuryTimer,
+  } = useInjuryTimeInfo();
 
   // Team 속성
   const { teamA, updateTeamA } = useTeamA();
@@ -45,38 +51,20 @@ const TimerRoot = () => {
 
   useEffect(() => {
     mainTimerManager.eventEmitter.on('halfTimeStop', () => {
-      setIsShowInjuryTimer(true);
+      showInjuryTimer();
       injuryTimerManager.startTimer({ min: 0, sec: 0 });
     });
   }, []);
-
-  // #region injury timer board methods
-  const disappearInjuryTimer = () => {
-    setIsShowInjuryTimer(false);
-  };
-
-  const showInjuryTimer = () => {
-    setIsShowInjuryTimer(true);
-  };
-
-  const updateGivenInjuryTime = (min: number) => {
-    setGivenInjuryTime(min);
-  };
-  // #endregion
-
-  const updateMatchName = (matchName: string) => {
-    setMatchName(matchName);
-  };
 
   return (
     <div className='timer-context-root'>
       <RemoteMessageManager
         givenInjuryTime={givenInjuryTime}
-        matchName={matchName}
-        disappearInjuryTimer={disappearInjuryTimer}
-        showInjuryTimer={showInjuryTimer}
         isShowInjuryTimer={isShowInjuryTimer}
         updateGivenInjuryTime={updateGivenInjuryTime}
+        showInjuryTimer={showInjuryTimer}
+        disappearInjuryTimer={disappearInjuryTimer}
+        matchName={matchName}
         updateMatchName={updateMatchName}
       />
       <GlobalStyle key='font-family-style-provide' fontFamily={fontInfo.code} />
@@ -100,7 +88,7 @@ const TimerRoot = () => {
       <div className='control-container-fixer'>
         {/* /#/ , /#/team-b 같은 식으로 hash(#) 를 사용해서 새로고침에도 대응되도록 함 */}
         <HashRouter>
-          <RouteControlPanels></RouteControlPanels>
+          <RouteTabs></RouteTabs>
           <Routes>
             <Route
               path=''
@@ -135,8 +123,10 @@ const TimerRoot = () => {
                 />
               }
             ></Route>
-            <Route path='remotereceive' element={<RemoteReceiveTab />}></Route>
-            <Route path='remotecontrol' element={<RemoteControlTab />}></Route>
+            <Route
+              path='remote'
+              element={<RemoteTab key='remotetab' />}
+            ></Route>
           </Routes>
         </HashRouter>
       </div>

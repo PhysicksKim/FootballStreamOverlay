@@ -16,26 +16,15 @@ export interface RemoteMessageManagerProps {
 
 const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
   givenInjuryTime,
-  matchName,
   disappearInjuryTimer,
   showInjuryTimer,
   isShowInjuryTimer,
   updateGivenInjuryTime,
+  matchName,
   updateMatchName,
 }) => {
-  const {
-    clientRef: boardClientRef,
-    remoteSubInfo,
-    isConnected: isBoardConnected,
-    receiveRemoteMsg,
-  } = useStompBoardClient();
-  const {
-    clientRef: controlClientRef,
-    remotePubInfo,
-    isConnected: isControlConnected,
-    controlMsgToPub,
-    setControlMsgToPub,
-  } = useStompControlClient();
+  const { isConnected: isBoardConnected } = useStompBoardClient();
+  const { isConnected: isControlConnected } = useStompControlClient();
 
   // TODO : 모든 ScoreBoard 변화 사항들을 파악해서 STOMP 메세지 맵핑해야함
   // 주어진 추가시간, 추가시간 show/hide, 메인/추가 타이머 이벤트들,

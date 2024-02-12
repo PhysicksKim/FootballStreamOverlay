@@ -8,9 +8,18 @@
     flex-grow: 1;
   }
 
-  .score-control-panel-box,
+  .score-control-panel-box {
+    width: 40%;
+    box-sizing: border-box;
+    height: 100%;
+  }
   .info-panel-box {
-    width: 50%;
+    width: 55%;
+    box-sizing: border-box;
+    height: 100%;
+  }
+  .remote-pub-box {
+    width: 20%;
     box-sizing: border-box;
     height: 100%;
   }

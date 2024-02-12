@@ -1,25 +1,10 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { FontEnum, FontInfo, fontInfos } from '@src/classes/FontEnum';
-
-type FontColorOptions = 'default' | 'black';
-type TeamSelect = 'teamA' | 'teamB';
-type TeamElement = 'name' | 'score';
-
-type TeamFontColor = {
-  teamAColor: {
-    name: FontColorOptions;
-    score: FontColorOptions;
-  };
-  teamBColor: {
-    name: FontColorOptions;
-    score: FontColorOptions;
-  };
-  updateTeamFontColor: (
-    team: TeamSelect,
-    element: TeamElement,
-    color: FontColorOptions,
-  ) => void;
-};
+import {
+  TeamFontColor,
+  FontColorOptions,
+  TeamSelect,
+  TeamElement,
+} from '@src/types/types';
 
 const TeamFontColorContext = createContext<TeamFontColor | undefined>(
   undefined,

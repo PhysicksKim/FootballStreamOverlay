@@ -65,6 +65,14 @@ export const StompBoardClientProvider: React.FC<{
     );
   };
 
+  const codeStateExpiredHandler = () => {
+    setRemoteSubInfo({
+      remoteCode: '',
+      subPath: '',
+      subId: '',
+    });
+  };
+
   const stompConfig: StompConfig = {
     brokerURL: websocketUrl,
     onConnect: () => {
@@ -73,14 +81,17 @@ export const StompBoardClientProvider: React.FC<{
     },
     onDisconnect: () => {
       setIsConnected(false);
+      codeStateExpiredHandler();
     },
     onWebSocketError: (error) => {
       setIsConnected(false);
       clientRef.current.deactivate();
+      codeStateExpiredHandler();
     },
     onStompError: (frame) => {
       setIsConnected(false);
       clientRef.current.deactivate();
+      codeStateExpiredHandler();
     },
   };
 

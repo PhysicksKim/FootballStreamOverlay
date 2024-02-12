@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '@styles/remote/RemoteTab.scss';
 import { useStompControlClient } from '@src/contexts/stomp/StompControlClientContext';
 import { ConnectStatus } from '@src/types/stompTypes';
 import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
+
+import '@styles/remote/RemoteControlBox.scss';
 
 const RemoteControlTab = () => {
   const {
     clientRef,
     remotePubInfo,
     isConnected: isControlConnected,
-    controlMsgToPub,
-    setControlMsgToPub,
   } = useStompControlClient();
   const { isConnected: isBoardConnected } = useStompBoardClient();
 
@@ -87,37 +86,34 @@ const RemoteControlTab = () => {
     });
   };
 
-  const remoteControlTestHandler = () => {
-    if (isNotReadyWebsocket()) {
-      console.log('websocket is not ready');
-      return;
-    }
+  const disconnectHandler = () => {
+    if (isNotReadyWebsocket()) return;
 
-    clientRef.current.publish({
-      destination: remotePubInfo.pubPath,
-      body: JSON.stringify({ hello: 'RemoteCode based control test' }),
-    });
+    clientRef.current.deactivate();
   };
 
+  // const remoteControlTestHandler = () => {
+  //   if (isNotReadyWebsocket()) {
+  //     console.log('websocket is not ready');
+  //     return;
+  //   }
+
+  //   clientRef.current.publish({
+  //     destination: remotePubInfo.pubPath,
+  //     body: JSON.stringify({ hello: 'RemoteCode based control test' }),
+  //   });
+  // };
+
   return (
-    <div className='setting-tab-container'>
+    <div className='remote-control-tab-container'>
       <h2>원격 컨트롤 탭</h2>
-      <div className='backend-status-box'>
-        <div>백엔드 서버 상태</div>
-        <button onClick={serverCheckCb}>서버 체크</button>
-        <div className={serverStatus ? 'server-on' : 'server-off'}>
-          {serverStatus ? '연결됨' : '끊어짐'}
-        </div>
-      </div>
-      <div>
+      <div className='group-box'>
         <div>웹소켓 상태</div>
         <button onClick={connectSocketHandler}>연결</button>
-        <button onClick={() => clientRef.current?.deactivate()}>
-          연결종료
-        </button>
+        <button onClick={disconnectHandler}>연결종료</button>
         <div className='websocket-status'>{stompStatus}</div>
       </div>
-      <div>
+      <div className='group-box'>
         <div>원격 연결</div>
         <input
           type='text'
@@ -125,29 +121,10 @@ const RemoteControlTab = () => {
           onChange={(e) => setRemotecodeInput(e.target.value)}
         />
         <button onClick={remoteConnectHandler}>연결</button>
-        <button onClick={remoteControlTestHandler}>원격컨트롤테스트</button>
+      </div>
+      <div className='group-box'>
         <div>pubPath</div>
         <div> : [ {remotePubInfo.pubPath} ]</div>
-        {/* <button onClick={}>테스트 메세지</button> */}
-      </div>
-      <div>
-        <div>메세지 전송</div>
-        <div>
-          <div>scoreTeamA</div>
-          <input
-            id='team-a-score'
-            type='number'
-            placeholder='TeamA 점수'
-          ></input>
-        </div>
-        <div>
-          <div>scoreTeamB</div>
-          <input
-            id='team-b-score'
-            type='number'
-            placeholder='TeamB 점수'
-          ></input>
-        </div>
       </div>
     </div>
   );

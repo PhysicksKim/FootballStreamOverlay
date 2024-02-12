@@ -3,6 +3,19 @@ export enum FontEnum {
   TAEBEAK = 'TAEBAEKfont',
 }
 
+/**
+ * ```
+ * code: FontEnum
+ * name: string
+ * ```
+ *
+ * ```
+ * FontEnum {
+ *  ONE_MOBILE_TITLE = 'ONE-Mobile-Title',
+ *  TAEBEAK = 'TAEBAEKfont',
+ * }
+ * ```
+ */
 export interface FontInfo {
   code: FontEnum;
   name: string;

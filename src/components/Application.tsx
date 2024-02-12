@@ -12,26 +12,32 @@ import { StompControlClientProvider } from '@src/contexts/stomp/StompControlClie
 import RemoteMessageManager from './manager/RemoteMessageManager';
 import { TeamAStyleProvider } from '@src/contexts/teams/TeamAStyleProvider';
 import { TeamBStyleProvider } from '@src/contexts/teams/TeamBStyleProvider';
+import { MatchNameProvider } from '@src/contexts/MatchNameContext';
+import { InjuryTimeInfoProvider } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
 
 const Application: React.FC = () => {
   return (
     <MainTimerStateRoot>
       <InjuryTimerStateRoot>
-        <TeamAProvider>
-          <TeamBProvider>
-            <TeamAStyleProvider>
-              <TeamBStyleProvider>
-                <FontProvider>
-                  <StompBoardClientProvider>
-                    <StompControlClientProvider>
-                      <TimerRoot />
-                    </StompControlClientProvider>
-                  </StompBoardClientProvider>
-                </FontProvider>
-              </TeamBStyleProvider>
-            </TeamAStyleProvider>
-          </TeamBProvider>
-        </TeamAProvider>
+        <InjuryTimeInfoProvider>
+          <TeamAProvider>
+            <TeamBProvider>
+              <TeamAStyleProvider>
+                <TeamBStyleProvider>
+                  <FontProvider>
+                    <MatchNameProvider>
+                      <StompBoardClientProvider>
+                        <StompControlClientProvider>
+                          <TimerRoot />
+                        </StompControlClientProvider>
+                      </StompBoardClientProvider>
+                    </MatchNameProvider>
+                  </FontProvider>
+                </TeamBStyleProvider>
+              </TeamAStyleProvider>
+            </TeamBProvider>
+          </TeamAProvider>
+        </InjuryTimeInfoProvider>
       </InjuryTimerStateRoot>
     </MainTimerStateRoot>
   );

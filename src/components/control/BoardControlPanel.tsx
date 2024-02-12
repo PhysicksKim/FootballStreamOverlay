@@ -5,6 +5,7 @@ import '@styles/control/BoardControlPanel.scss';
 import 'flag-icons/css/flag-icons.min.css';
 import ScoreControlPanel from './ScoreControlPanel';
 import InfoPanel from './InfoPanel';
+import RemotePubPanel from './RemotePubPanel';
 
 const BoardControlPanel: React.FC<Record<string, never>> = () => {
   return (
@@ -14,6 +15,9 @@ const BoardControlPanel: React.FC<Record<string, never>> = () => {
       </div>
       <div className='info-panel-box'>
         <InfoPanel />
+      </div>
+      <div className='remote-pub-box'>
+        <RemotePubPanel />
       </div>
     </div>
   );

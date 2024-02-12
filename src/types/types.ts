@@ -21,6 +21,16 @@ export enum UniformEnum {
   THIRD = 'THIRD',
 }
 
+/**
+ * ```typescript
+ * category: string;
+ * code: string;
+ * name: string;
+ * score: number;
+ * isAway?: boolean;
+ * uniform: string;
+ * ```
+ */
 export interface Team {
   category: string;
   code: string;
@@ -61,3 +71,28 @@ export interface WsGivenInjuryMessage extends WsBaseMessage {
     givenInjury: number;
   };
 }
+
+export type TeamStyles = {
+  fontColor: 'white' | 'black';
+  fontWeight: 'normal' | 'bold';
+};
+
+export type FontColorOptions = 'default' | 'black';
+export type TeamSelect = 'teamA' | 'teamB';
+export type TeamElement = 'name' | 'score';
+
+export type TeamFontColor = {
+  teamAColor: {
+    name: FontColorOptions;
+    score: FontColorOptions;
+  };
+  teamBColor: {
+    name: FontColorOptions;
+    score: FontColorOptions;
+  };
+  updateTeamFontColor: (
+    team: TeamSelect,
+    element: TeamElement,
+    color: FontColorOptions,
+  ) => void;
+};

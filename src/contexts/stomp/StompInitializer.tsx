@@ -150,7 +150,7 @@ class StompInitializer {
       });
     }
     console.log('remote control channel unsub : ', prevSubId);
-    console.log('remote control channel sub : ', nextSubId);
+    // console.log('remote control channel sub : ', nextSubId);
   };
 }
 
