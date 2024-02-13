@@ -34,17 +34,6 @@ class Timer extends EventEmitter {
     this.stop();
     this.totalSeconds = minutes * 60 + seconds;
     this.timer.start(); // tick 콜백 함수 1초마다 실행
-    /*
-    this.timerInterval = setInterval(() => {
-      this.totalSeconds++;
-      this.emit('secondsUpdated');
-      this.checkForStopTime();
-      if (this.totalSeconds > 120 * 60) {
-        this.emit('timeExceeded');
-        this.stop();
-      }
-    }, 1000);
-    */
   }
 
   restart(): void {

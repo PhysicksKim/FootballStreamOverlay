@@ -88,7 +88,7 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
         >
           {Object.entries(categoryStringToTeamCodes(category)).map(
             ([_, codeAndName]) => (
-              <option key={codeAndName.code} value={codeAndName.code} selected>
+              <option key={codeAndName.code} value={codeAndName.code}>
                 {codeAndName.name}
               </option>
             ),

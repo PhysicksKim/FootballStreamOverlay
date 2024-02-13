@@ -9,6 +9,7 @@ import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useTeamAStyle } from '@src/contexts/teams/TeamAStyleProvider';
 import { useTeamBStyle } from '@src/contexts/teams/TeamBStyleProvider';
+import isNeedToBlackFontColor from '@src/classes/team/TeamFontColorNeedToChange';
 
 const calculateSpace = (name: string) => {
   const singleSpaceChars = /^[a-zA-Z0-9 !^*()[\]{}.,/|]$/;
@@ -50,9 +51,20 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
     const teamBFontSize = getFontSize(teamB.name);
     setTeamAFontSize(teamAFontSize);
     setTeamBFontSize(teamBFontSize);
-    console.log('teamAFontSize: ', teamAFontSize);
-    console.log('teamBFontSize: ', teamBFontSize);
   }, [teamA, teamB]);
+
+  useEffect(() => {
+    if (isNeedToBlackFontColor(teamA)) {
+      updateTeamAStyle('fontColor', 'black');
+    } else {
+      updateTeamAStyle('fontColor', 'white');
+    }
+    if (isNeedToBlackFontColor(teamB)) {
+      updateTeamBStyle('fontColor', 'black');
+    } else {
+      updateTeamBStyle('fontColor', 'white');
+    }
+  }, [teamA.code, teamA.uniform, teamB.code, teamB.uniform]);
 
   return (
     <div className='score-board-container'>
@@ -64,14 +76,19 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
         <div className={`team-section team-a-format ${teamAStyleClassName}`}>
           <div className='team-text-wrapper team-a-text-wrapper'>
             <div
-              className='team-text'
+              className='team-text text-outstroke'
+              data-text={teamA.name}
               style={{ fontSize: teamAFontSize, color: teamAStyle.fontColor }} // 폰트 크기 조정
             >
               {teamA.name}
             </div>
           </div>
           <div className='team-score-wrapper team-a-score-wrapper'>
-            <div className='score-text' style={{ color: teamAStyle.fontColor }}>
+            <div
+              className='score-text text-outstroke'
+              data-text={teamA.score}
+              style={{ color: teamAStyle.fontColor }}
+            >
               {teamA.score}
             </div>
           </div>
@@ -79,13 +96,18 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
         {/* 팀 B */}
         <div className={`team-section team-b-format ${teamBStyleClassName}`}>
           <div className='team-score-wrapper team-b-score-wrapper'>
-            <div className='score-text' style={{ color: teamBStyle.fontColor }}>
+            <div
+              className='score-text text-outstroke'
+              data-text={teamB.score}
+              style={{ color: teamBStyle.fontColor }}
+            >
               {teamB.score}
             </div>
           </div>
           <div className='team-text-wrapper team-b-text-wrapper'>
             <div
-              className='team-text'
+              className='team-text text-outstroke'
+              data-text={teamB.name}
               style={{ fontSize: teamBFontSize, color: teamBStyle.fontColor }} // 폰트 크기 조정
             >
               {teamB.name}

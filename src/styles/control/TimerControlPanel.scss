@@ -10,25 +10,6 @@
   }
 }
 
-.match-title-input-box,
-.given-injury-input-box,
-.font-radio-button-box {
-  display: flex;
-  flex-direction: row;
-
-  .index-text {
-    width: 100px;
-  }
-  margin-bottom: 3px;
-  border: 1px rgba(0, 0, 0, 0.267) dotted;
-  padding: 1px;
-  border-radius: 3px;
-}
-
-.given-injury-time-input {
-  box-sizing: border-box;
-}
-
 .timer-time-set-box {
   display: flex;
   flex-direction: column;

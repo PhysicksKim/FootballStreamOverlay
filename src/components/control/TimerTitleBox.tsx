@@ -1,6 +1,8 @@
 import { FontEnum, fontInfos } from '@src/classes/FontEnum';
 import { useFont } from '@src/contexts/FontContext';
 import React from 'react';
+import '@styles/control/TimerTitleBox.scss';
+import { defaultMatchName } from '@src/classes/team/DefaultScoreBoardValue';
 
 export interface TimerTitleBoxProps {
   updateMatchName: (matchName: string) => void;
@@ -19,11 +21,11 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
         <input
           className='match-title-text-input'
           type='text'
-          placeholder='ex 아시안컵 E조 조별 예선'
+          placeholder={defaultMatchName}
           onChange={(e) => {
             const title = e.target.value.trim();
             if (!title) {
-              updateMatchName('아시안컵 E조 조별 예선');
+              updateMatchName(defaultMatchName);
             } else {
               updateMatchName(e.target.value);
             }

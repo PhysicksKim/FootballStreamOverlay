@@ -83,6 +83,10 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     } else {
       mainTimerManager.startTimer({ min: mainMinutes, sec: mainSeconds });
     }
+    if (isShowInjuryTimer) {
+      stopInjuryTimer();
+      disappearInjuryTimer();
+    }
   };
 
   const startMainTimerWithTime: (time: Time) => void = ({ min, sec }) => {
@@ -143,6 +147,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   const startInjuryTimerWithTime = () => {
     setIsInjuryTimerRunning(true);
+    showInjuryTimer();
     injuryTimerManager.startTimer({ min: injuryMinutes, sec: injurySeconds });
   };
 
@@ -174,6 +179,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   const stopInjuryTimer = () => {
     injuryTimerManager.timer.stop();
+    injuryTimerManager.setTimer({ min: 0, sec: 0 });
     setIsInjuryTimerRunning(false);
     disappearInjuryTimer();
   };
