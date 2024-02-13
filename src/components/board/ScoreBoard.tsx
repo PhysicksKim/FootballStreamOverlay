@@ -16,17 +16,17 @@ const calculateSpace = (name: string) => {
   let space = 0;
 
   for (const char of name) {
-    space += singleSpaceChars.test(char) ? 1.3 : 2;
+    space += singleSpaceChars.test(char) ? 1 + 1 / 6 : 2;
   }
 
   return space;
 };
 
 const spaceToFontSize = (space: number) => {
-  if (space <= 10) return '40px';
-  if (space <= 12) return '36px';
-  if (space <= 14) return '32px';
-  if (space <= 16) return '28px';
+  if (space <= 11.6) return '40px';
+  if (space <= 13.8) return '36px';
+  if (space <= 15.9) return '32px';
+  if (space <= 17.9) return '28px';
   return '24px';
 };
 
