@@ -1,5 +1,5 @@
 import { useFont } from '@src/contexts/FontContext';
-import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
+import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useInjuryTimeDisplay } from '@src/contexts/timers/injury/InjuryTimeDisplayProvider';
@@ -14,7 +14,7 @@ const RemoteMessageSubscriber = () => {
     remoteSubInfo,
     isConnected: isBoardConnected,
     receiveRemoteMsg,
-  } = useStompBoardClient();
+  } = useRemoteHostClient();
 
   // TODO : 메세지 수신에 따라서 state 변화 해야함
   useEffect(() => {

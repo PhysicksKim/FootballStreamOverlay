@@ -1,5 +1,5 @@
-import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
-import { useStompControlClient } from '@src/contexts/stomp/StompControlClientContext';
+import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
+import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import React, { useState, useEffect } from 'react';
 
 const RemoteMessagePublisher = () => {
@@ -15,7 +15,7 @@ const RemoteMessagePublisher = () => {
     isConnected: isControlConnected,
     publishNowStates,
     eventEmitterRef,
-  } = useStompControlClient();
+  } = useStompMemberClient();
 
   // TODO : state 변화에 따라서 메세지 발행 해야함
 

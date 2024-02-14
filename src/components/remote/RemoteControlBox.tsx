@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useStompControlClient } from '@src/contexts/stomp/StompControlClientContext';
+import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import { ConnectStatus } from '@src/types/stompTypes';
-import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
+import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
 
 import '@styles/remote/RemoteControlBox.scss';
 
-const RemoteControlTab = () => {
+const RemoteControlBox = () => {
   const {
     clientRef,
     remotePubInfo,
     isConnected: isControlConnected,
-  } = useStompControlClient();
-  const { isConnected: isBoardConnected } = useStompBoardClient();
+  } = useStompMemberClient();
+  const { isConnected: isBoardConnected } = useRemoteHostClient();
 
   const [serverStatus, setServerStatus] = useState(false);
   const [stompStatus, setStompStatus] = useState<ConnectStatus>('연결됨');
@@ -92,18 +92,6 @@ const RemoteControlTab = () => {
     clientRef.current.deactivate();
   };
 
-  // const remoteControlTestHandler = () => {
-  //   if (isNotReadyWebsocket()) {
-  //     console.log('websocket is not ready');
-  //     return;
-  //   }
-
-  //   clientRef.current.publish({
-  //     destination: remotePubInfo.pubPath,
-  //     body: JSON.stringify({ hello: 'RemoteCode based control test' }),
-  //   });
-  // };
-
   return (
     <div className='remote-control-tab-container'>
       <h2>원격 컨트롤 탭</h2>
@@ -130,4 +118,4 @@ const RemoteControlTab = () => {
   );
 };
 
-export default RemoteControlTab;
+export default RemoteControlBox;

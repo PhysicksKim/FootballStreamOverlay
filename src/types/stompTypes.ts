@@ -25,15 +25,16 @@ export type RemoteConnectMessage = {
 
 export type StompClientRef = React.MutableRefObject<Client>;
 
-export interface BoardRemoteConnectInfos {
+export interface RemoteConnectInfos {
   remoteCode: string;
   subPath: string;
+  pubPath: string;
   subId: string;
 }
 
-export interface ControlRemoteConnectInfos {
-  pubPath: string;
-}
+// export interface ControlRemoteConnectInfos {
+//   pubPath: string;
+// }
 
 export interface RemoteControlMsg {
   code: number;

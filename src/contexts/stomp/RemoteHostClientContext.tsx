@@ -9,7 +9,8 @@ import React, {
 import { Client, StompConfig } from '@stomp/stompjs';
 import StompInitializer from './StompInitializer';
 import {
-  ControlRemoteConnectInfos,
+  RemoteConnectInfos,
+  RemoteControlMsg,
   StompClientRef,
 } from '@src/types/stompTypes';
 import EventEmitter from 'events';
@@ -19,49 +20,65 @@ const apiUrl = process.env.API_URL;
 const websocketUrl = process.env.WEBSOCKET_URL + '/ws';
 
 // Provider 의 value 로 사용될 타입
-export interface StompControlClient {
+export interface RemoteHostClient {
   clientRef: StompClientRef;
-  remotePubInfo: ControlRemoteConnectInfos;
+  remoteInfos: RemoteConnectInfos;
   isConnected: boolean;
-  publishNowStates: () => boolean;
   eventEmitterRef: React.MutableRefObject<EventEmitter>;
+  receiveRemoteMsg: RemoteControlMsg;
+  setReceiveRemoteMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>;
+  publishNowStates: () => boolean;
 }
 
-const StompControlClientContext = createContext<StompControlClient | undefined>(
+const RemoteHostClientContext = createContext<RemoteHostClient | undefined>(
   undefined,
 );
 
 /**
- * 원격 제어를 발신하는 측에서 사용하는 StompClient 입니다.
- * @returns StompControlClient { clientRef, remotePubInfo, isConnected, publishNowStates, eventEmitterRef }
+ * 원격 제어 코드를 발급하는 Host Client 입니다.
+ * @returns RemoteHostClient { clientRef, remoteInfos, isConnected, receiveRemoteMsg, eventEmitterRef, publishNowStates }
  * @throws Provider 외부에서 사용 시 에러
  */
-export const useStompControlClient = () => {
-  const context = useContext(StompControlClientContext);
+export const useRemoteHostClient = () => {
+  const context = useContext(RemoteHostClientContext);
   if (!context) {
-    throw new Error('useStompControlClient must be used within a Provider');
+    throw new Error('useRemoteHostClient must be used within a Provider');
   }
   return context;
 };
 
-export const StompControlClientProvider: React.FC<{
+export const RemoteHostClientProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const clientRef = useRef<Client>();
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  // const [controlMsgToPub, setControlMsgToPub] = useState<RemoteControlMsg>();
-  const [remotePubInfo, setRemotePubInfo] = useState<ControlRemoteConnectInfos>(
-    {
-      pubPath: '',
-    },
-  );
+  const [receiveRemoteMsg, setReceiveRemoteMsg] = useState<RemoteControlMsg>();
+  const [remoteInfos, setRemoteInfos] = useState<RemoteConnectInfos>({
+    remoteCode: '',
+    subPath: '',
+    subId: '',
+    pubPath: '',
+  });
 
   const stompInitRef = useRef(new StompInitializer(clientRef));
   const eventEmitterRef = useRef(new EventEmitter());
 
   const subChannels = () => {
     stompInitRef.current.subscribeTestHello();
-    stompInitRef.current.subscribeControlRemote(setRemotePubInfo);
+
+    // stompInitRef.current.subscribeScoreBoardRemote(
+    //   setRemoteInfos,
+    //   setReceiveRemoteMsg,
+    // );
+  };
+
+  const remoteInfoExpiredHandler = () => {
+    setRemoteInfos({
+      remoteCode: '',
+      subPath: '',
+      subId: '',
+      pubPath: '',
+    });
   };
 
   /**
@@ -77,31 +94,37 @@ export const StompControlClientProvider: React.FC<{
     brokerURL: websocketUrl,
     onConnect: () => {
       setIsConnected(true);
+      remoteInfoExpiredHandler();
       subChannels();
-      setRemotePubInfo({
-        pubPath: '',
-      });
-      eventEmitterRef.current.emit('afterConnect');
+
+      eventEmitterRef.current.emit('connect');
     },
     onDisconnect: () => {
-      setRemotePubInfo({
-        pubPath: '',
-      });
       setIsConnected(false);
+      remoteInfoExpiredHandler();
+
+      eventEmitterRef.current.emit('disconnect');
     },
     onWebSocketError: (error) => {
       setIsConnected(false);
-      setRemotePubInfo({
-        pubPath: '',
-      });
       clientRef.current.deactivate();
+      remoteInfoExpiredHandler();
+
+      eventEmitterRef.current.emit('disconnect');
     },
     onStompError: (frame) => {
       setIsConnected(false);
-      setRemotePubInfo({
-        pubPath: '',
-      });
       clientRef.current.deactivate();
+      remoteInfoExpiredHandler();
+
+      eventEmitterRef.current.emit('disconnect');
+    },
+    onWebSocketClose: () => {
+      setIsConnected(false);
+      clientRef.current.deactivate();
+      remoteInfoExpiredHandler();
+
+      eventEmitterRef.current.emit('disconnect');
     },
   };
 
@@ -117,16 +140,18 @@ export const StompControlClientProvider: React.FC<{
   }, []);
 
   return (
-    <StompControlClientContext.Provider
+    <RemoteHostClientContext.Provider
       value={{
         clientRef,
-        remotePubInfo,
+        remoteInfos,
         isConnected,
-        publishNowStates,
         eventEmitterRef,
+        receiveRemoteMsg,
+        setReceiveRemoteMsg,
+        publishNowStates,
       }}
     >
       {children}
-    </StompControlClientContext.Provider>
+    </RemoteHostClientContext.Provider>
   );
 };

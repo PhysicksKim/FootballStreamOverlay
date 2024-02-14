@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 import '@styles/control/RemotePubPanel.scss';
-import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
-import { useStompControlClient } from '@src/contexts/stomp/StompControlClientContext';
+import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
+import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTowerBroadcast, faSlash } from '@fortawesome/free-solid-svg-icons';
 
 type RemoteStatus = '끊어짐' | '수신중' | '송신중';
 
 const RemotePubPanel: React.FC<Record<string, never>> = () => {
-  const { isConnected: isSubConnected } = useStompBoardClient();
+  const { isConnected: isSubConnected } = useRemoteHostClient();
   const { isConnected: isPubConnected, publishNowStates } =
-    useStompControlClient();
+    useStompMemberClient();
   const [remoteStatus, setRemoteStatus] = useState<RemoteStatus>('끊어짐');
 
   useEffect(() => {

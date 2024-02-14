@@ -1,7 +1,7 @@
 import { Client, IMessage } from '@stomp/stompjs';
 import React from 'react';
 import {
-  BoardRemoteConnectInfos,
+  RemoteConnectInfos,
   ControlRemoteConnectInfos,
   RemoteCodeIssueMessage,
   RemoteConnectMessage,
@@ -42,7 +42,7 @@ class StompInitializer {
      * Remote connect 성공 메세지 수신
      */
     this.clientRef.current.subscribe(
-      '/user/topic/remote.connect',
+      '/user/topic/remote.receivecode',
       (message: IMessage) => {
         console.log('remote.connect received : ', message);
         let remoteMsg: RemoteConnectMessage;
@@ -61,9 +61,12 @@ class StompInitializer {
   };
 
   private parseControlRemoteMessage = (message: IMessage) => {
-    const remoteMsg: { code: number; pubPath: string } = JSON.parse(
-      message.body,
-    );
+    const remoteMsg: {
+      code: number;
+      subPath: string;
+      pubPath: string;
+      subId: string;
+    } = JSON.parse(message.body);
     if (remoteMsg.code !== 200 || !remoteMsg.pubPath) {
       throw new Error('remoteCodeIssueMessage error');
     }
@@ -71,9 +74,7 @@ class StompInitializer {
   };
 
   public subscribeScoreBoardRemote = (
-    setRemoteInfo: React.Dispatch<
-      React.SetStateAction<BoardRemoteConnectInfos>
-    >,
+    setRemoteInfo: React.Dispatch<React.SetStateAction<RemoteConnectInfos>>,
     setRemoteControlMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>,
   ) => {
     // 원격 제어 코드 수신
@@ -110,9 +111,7 @@ class StompInitializer {
   private subRemoteControlChannel = (
     remoteCode: string,
     remoteSubPath: string,
-    setRemoteInfo: React.Dispatch<
-      React.SetStateAction<BoardRemoteConnectInfos>
-    >,
+    setRemoteInfo: React.Dispatch<React.SetStateAction<RemoteConnectInfos>>,
     setRemoteControlMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>,
   ) => {
     // 현재 구독 카운트를 증가시키고, 고유한 구독 ID를 생성합니다.

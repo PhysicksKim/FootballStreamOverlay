@@ -1,5 +1,5 @@
-import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
-import { useStompControlClient } from '@src/contexts/stomp/StompControlClientContext';
+import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
+import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import React, { useEffect } from 'react';
 import RemoteMessagePublisher from './RemoteMessagePublisher';
 import RemoteMessageSubscriber from './RemoteMessageSubscriber';
@@ -23,8 +23,8 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
   matchName,
   updateMatchName,
 }) => {
-  const { isConnected: isBoardConnected } = useStompBoardClient();
-  const { isConnected: isControlConnected } = useStompControlClient();
+  const { isConnected: isBoardConnected } = useRemoteHostClient();
+  const { isConnected: isControlConnected } = useStompMemberClient();
 
   // TODO : 모든 ScoreBoard 변화 사항들을 파악해서 STOMP 메세지 맵핑해야함
   // 주어진 추가시간, 추가시간 show/hide, 메인/추가 타이머 이벤트들,

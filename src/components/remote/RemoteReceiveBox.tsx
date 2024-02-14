@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useStompBoardClient } from '@src/contexts/stomp/StompBoardClientContext';
+import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
 import { ConnectStatus } from '@src/types/stompTypes';
-import { useStompControlClient } from '@src/contexts/stomp/StompControlClientContext';
+import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 
 import '@styles/remote/RemoteReceiveBox.scss';
 
-const RemoteReceiveTab = () => {
+const RemoteReceiveBox = () => {
   const {
     clientRef,
     remoteSubInfo,
     isConnected: isBoardConnected,
     receiveRemoteMsg,
-  } = useStompBoardClient();
-  const { isConnected: isControlConnected } = useStompControlClient();
+  } = useRemoteHostClient();
+  const { isConnected: isControlConnected } = useStompMemberClient();
 
   const [serverStatus, setServerStatus] = useState(false);
   const [stompStatus, setStompStatus] = useState<ConnectStatus>('연결됨');
@@ -36,21 +36,6 @@ const RemoteReceiveTab = () => {
       return true;
     }
     return false;
-  };
-
-  // 백엔드 서버 연결 테스트
-  const serverCheckCb = () => {
-    axios
-      .get('https://localhost:8083/server/status', { withCredentials: true })
-      .then((res) => {
-        console.log('axios get : ', res.data);
-        console.log('axios headers : ', res.headers);
-        setServerStatus(true);
-      })
-      .catch((err) => {
-        console.log('axios get error : ', err);
-        setServerStatus(false);
-      });
   };
 
   const connectSocketHandler = () => {
@@ -110,4 +95,4 @@ const RemoteReceiveTab = () => {
   );
 };
 
-export default RemoteReceiveTab;
+export default RemoteReceiveBox;

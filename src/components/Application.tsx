@@ -7,8 +7,8 @@ import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot
 import { InjuryTimerStateRoot } from '@src/contexts/timers/injury/InjuryTimerStateRoot';
 import { TeamAProvider } from '@src/contexts/teams/TeamAProvider';
 import { TeamBProvider } from '@src/contexts/teams/TeamBProvider';
-import { StompBoardClientProvider } from '@src/contexts/stomp/StompBoardClientContext';
-import { StompControlClientProvider } from '@src/contexts/stomp/StompControlClientContext';
+import { RemoteHostClientProvider } from '@src/contexts/stomp/RemoteHostClientContext';
+import { StompControlClientProvider } from '@src/contexts/stomp/RemoteMemberClientContext';
 import RemoteMessageManager from './manager/RemoteMessageManager';
 import { TeamAStyleProvider } from '@src/contexts/teams/TeamAStyleProvider';
 import { TeamBStyleProvider } from '@src/contexts/teams/TeamBStyleProvider';
@@ -26,11 +26,11 @@ const Application: React.FC = () => {
                 <TeamBStyleProvider>
                   <FontProvider>
                     <MatchNameProvider>
-                      <StompBoardClientProvider>
+                      <RemoteHostClientProvider>
                         <StompControlClientProvider>
                           <TimerRoot />
                         </StompControlClientProvider>
-                      </StompBoardClientProvider>
+                      </RemoteHostClientProvider>
                     </MatchNameProvider>
                   </FontProvider>
                 </TeamBStyleProvider>
