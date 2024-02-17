@@ -69,8 +69,8 @@ export const RemoteHostClientProvider: React.FC<{
   const [remoteInfos, setRemoteInfos] = useState<RemoteConnectInfos>({
     remoteCode: '',
     subPath: '',
-    subId: '',
     pubPath: '',
+    subId: '',
   });
 
   const [remoteIssueMsg, setRemoteIssueMsg] = useState<RemoteCodeIssueMsg>();
@@ -198,7 +198,7 @@ export const RemoteHostClientProvider: React.FC<{
       expireRemoteInfos();
       subInitChannels();
 
-      eventEmitterRef.current.emit('connect');
+      eventEmitterRef.current.emit('afterConnect');
     },
     onDisconnect: () => {
       setIsConnected(false);

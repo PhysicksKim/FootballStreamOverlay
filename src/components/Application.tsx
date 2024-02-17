@@ -13,6 +13,7 @@ import { TeamAStyleProvider } from '@src/contexts/teams/TeamAStyleProvider';
 import { TeamBStyleProvider } from '@src/contexts/teams/TeamBStyleProvider';
 import { MatchNameProvider } from '@src/contexts/MatchNameContext';
 import { InjuryTimeInfoProvider } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
+import { RemoteClientProvider } from '@src/contexts/stomp/RemoteClientContext';
 
 const Application: React.FC = () => {
   return (
@@ -27,7 +28,9 @@ const Application: React.FC = () => {
                     <MatchNameProvider>
                       <RemoteHostClientProvider>
                         <RemoteMemberClientProvider>
-                          <TimerRoot />
+                          <RemoteClientProvider>
+                            <TimerRoot />
+                          </RemoteClientProvider>
                         </RemoteMemberClientProvider>
                       </RemoteHostClientProvider>
                     </MatchNameProvider>

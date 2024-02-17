@@ -37,6 +37,20 @@ export interface RemoteConnectInfos {
   subId: string;
 }
 
+export interface RemoteInfos {
+  subPath: string;
+  pubPath: string;
+  subId: string;
+}
+
+export interface RemoteEnrollMsg {
+  code: number;
+  message: string;
+  pubPath: string;
+  subPath: string;
+  remoteCode: string;
+}
+
 // export interface ControlRemoteConnectInfos {
 //   pubPath: string;
 // }

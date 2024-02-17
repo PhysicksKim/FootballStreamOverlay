@@ -8,10 +8,13 @@ import React, {
 } from 'react';
 import { Client, StompConfig, IMessage } from '@stomp/stompjs';
 import {
-  RemoteConnectInfos,
+  CodeIssueResponse,
   RemoteConnectMsg,
+  RemoteCodeIssueMsg,
   RemoteControlMsg,
   StompClientRef,
+  RemoteInfos,
+  RemoteEnrollMsg,
 } from '@src/types/stompTypes';
 import EventEmitter from 'events';
 import StompInitializer from './StompInitializer';
@@ -20,22 +23,28 @@ import StompInitializer from './StompInitializer';
 const apiUrl = process.env.API_URL;
 const websocketUrl = process.env.WEBSOCKET_URL + '/ws';
 
-// Provider 의 value 로 사용될 타입
-export interface RemoteMemeberClient {
-  clientRef: StompClientRef;
-  remoteInfos: RemoteConnectInfos;
-  isConnected: boolean;
-  eventEmitterRef: React.MutableRefObject<EventEmitter>;
-  remoteControlMsg: RemoteControlMsg;
-  publishMessage: (pubStates: RemoteControlMsg) => void;
-  pubRemoteConnect: (remoteCode: string) => void;
-  setRemoteCode: (remoteCode: string) => void;
-  emitRemoteControlMsg: () => void;
+export interface HostClient {
+  connectAsHost: () => void;
 }
 
-const RemoteMemberClientContext = createContext<
-  RemoteMemeberClient | undefined
->(undefined);
+export interface MemberClient {
+  connectAsMember: (remoteCode: string) => void;
+}
+
+// Provider 의 value 로 사용될 타입
+export interface RemoteClient {
+  clientRef: StompClientRef;
+  remoteInfos: RemoteInfos;
+  remoteCode: string;
+  isConnected: boolean;
+  eventEmitterRef: React.MutableRefObject<EventEmitter>;
+  publishMessage: (pubStates: RemoteControlMsg) => void;
+  emitRemoteControlMsg: () => void;
+  hostClient: HostClient;
+  memberClient: MemberClient;
+}
+
+const RemoteClientContext = createContext<RemoteClient | undefined>(undefined);
 
 /**
  * 원격 제어에 참여하는 Member Client 입니다.
@@ -46,64 +55,67 @@ const RemoteMemberClientContext = createContext<
  *   eventEmitterRef,
  *   remoteControlMsg,
  *   publishMessage,
+ *   pubIssueCode,
  *   pubRemoteConnect,
- *   setRemoteCode,
+ *   updateRemoteCode,
  *   emitRemoteControlMsg
  * }
  * @throws Provider 외부에서 사용 시 에러
  */
-export const useRemoteMemberClient = () => {
-  const context = useContext(RemoteMemberClientContext);
+export const useRemoteClient = () => {
+  const context = useContext(RemoteClientContext);
   if (!context) {
-    throw new Error('useStompControlClient must be used within a Provider');
+    throw new Error('useRemoteClient must be used within a Provider');
   }
   return context;
 };
 
-export const RemoteMemberClientProvider: React.FC<{
+export const RemoteClientProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const clientRef = useRef<Client>();
   const eventEmitterRef = useRef(new EventEmitter());
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [subCount, setSubCount] = useState(0);
-  const [remoteInfos, setRemoteInfos] = useState<RemoteConnectInfos>({
-    remoteCode: '',
+  const [remoteCode, setRemoteCode] = useState<string>('');
+  const [remoteInfos, setRemoteInfos] = useState<RemoteInfos>({
     subPath: '',
     pubPath: '',
     subId: '',
   });
 
-  const [remoteConnectMsg, setRemoteConnectMsg] = useState<RemoteConnectMsg>();
-  const [remoteControlMsg, setRemoteControlMsg] = useState<RemoteControlMsg>();
+  const [remoteEnrollMsg, setRemoteEnrollMsg] = useState<RemoteEnrollMsg>();
 
   const subInitChannels = () => {
     StompInitializer.subscribeTestHello(clientRef);
     subRemoteCodeConnectChannel();
+    subRemoteCodeReceiveChannel();
   };
 
   const expireRemoteInfos = () => {
     setRemoteInfos({
-      remoteCode: '',
       subPath: '',
       subId: '',
       pubPath: '',
     });
   };
 
+  /**
+   * 사용자가 원격 코드를 발급 또는 등록 후, 원격 채널을 등록합니다.
+   */
   useEffect(() => {
-    // TODO : remoteConnectMsg 가 에러인 경우 처리해야함
-    // 예를 들어 이미 코드에 연결해둔 경우에는 remoteConnectMsg 가 error 메세지를 담고 있음
-    // 따라서 이 경우 사용자에게 기존 연결을 끊고 새로 연결할 것인지 물어봐야함.
-    // 그리고 예외 처리로, 이전 코드와 동일한데 새로운 subPath, pubPath 를 받은 경우에도 처리해야함
-    // 이 처리는 여기서 하는 것보다 setRemoteCode 에서 하는 게 좋아보이는데
-    // 자꾸 예외처리가 이리저리 이동해서 구조가 복잡하니까 나중에 리팩토링 해야할듯
-    if (StompInitializer.isValideRemoteCode(remoteInfos.remoteCode)) {
+    if (StompInitializer.isValideRemoteCode(remoteCode)) {
+      // TODO : remoteConnectMsg 가 에러인 경우 처리해야함
+      // 예를 들어 이미 코드에 연결해둔 경우에는 remoteConnectMsg 가 error 메세지를 담고 있음
+      // 따라서 이 경우 사용자에게 기존 연결을 끊고 새로 연결할 것인지 물어봐야함.
+      // 그리고 예외 처리로, 이전 코드와 동일한데 새로운 subPath, pubPath 를 받은 경우에도 처리해야함
+      // 이 처리는 여기서 하는 것보다 setRemoteCode 에서 하는 게 좋아보이는데
+      // 자꾸 예외처리가 이리저리 이동해서 구조가 복잡하니까 나중에 리팩토링 해야할듯
       subRemoteAndUpdateRemoteInfos();
     } else {
       expireRemoteInfos();
     }
-  }, [remoteConnectMsg]);
+  }, [remoteEnrollMsg]);
 
   useEffect(() => {
     console.log('remoteInfos : ', remoteInfos);
@@ -120,12 +132,12 @@ export const RemoteMemberClientProvider: React.FC<{
 
     clientRef.current.unsubscribe(prevSubId);
     clientRef.current.subscribe(
-      remoteConnectMsg.subPath,
+      remoteEnrollMsg.subPath,
       (message: IMessage) => {
         try {
-          const msg: RemoteControlMsg = JSON.parse(message.body);
+          const msg: RemoteEnrollMsg = JSON.parse(message.body);
           if (msg) {
-            setRemoteControlMsg(msg);
+            setRemoteEnrollMsg(msg);
           }
         } catch (e) {
           console.log('remoteControlMsg parse error : ', e);
@@ -134,15 +146,29 @@ export const RemoteMemberClientProvider: React.FC<{
       { id: nextSubId },
     );
 
-    setRemoteInfos((prev) => {
+    setRemoteCode(remoteEnrollMsg.remoteCode);
+    setRemoteInfos((_) => {
       return {
-        ...prev,
-        subPath: remoteConnectMsg.subPath,
-        pubPath: remoteConnectMsg.pubPath,
+        subPath: remoteEnrollMsg.subPath,
+        pubPath: remoteEnrollMsg.pubPath,
         subId: nextSubId,
       };
     });
     setSubCount((prev) => prev + 1);
+  };
+
+  // TODO : unsubscribe 안해도 중복 sub 문제 발생 안하려나?
+  const subRemoteCodeReceiveChannel = () => {
+    clientRef.current.subscribe(
+      '/user/topic/remote.receivecode',
+      (message: IMessage) => {
+        const remoteIssueMsg: RemoteEnrollMsg = parseRemoteEnrollMsg(message);
+
+        setRemoteEnrollMsg(remoteIssueMsg);
+        console.log('remoteIssue : ', remoteIssueMsg);
+      },
+      { id: 'remoteReceiveCode' },
+    );
   };
 
   /**
@@ -155,40 +181,60 @@ export const RemoteMemberClientProvider: React.FC<{
     clientRef.current.subscribe(
       '/user/topic/remote.connect',
       (message: IMessage) => {
-        const remoteConnectMsg: RemoteConnectMsg =
-          parseRemoteConnectMessage(message);
+        const remoteConnectMsg: RemoteEnrollMsg = parseRemoteEnrollMsg(message);
 
-        setRemoteConnectMsg(remoteConnectMsg);
+        setRemoteEnrollMsg(remoteConnectMsg);
         console.log('remoteConnectMsg : ', remoteConnectMsg);
       },
       { id: 'remoteConnect' },
     );
   };
 
-  const parseRemoteConnectMessage = (message: IMessage) => {
-    const remoteMsg: RemoteConnectMsg = JSON.parse(message.body);
+  /**
+   * 원격 코드 발급(Host), 원격 코드 연결(Member) 의 응답 메세지를 파싱합니다.
+   * @param message
+   * @returns
+   */
+  const parseRemoteEnrollMsg: (message: IMessage) => RemoteEnrollMsg = (
+    message,
+  ) => {
+    const remoteMsg: RemoteEnrollMsg = JSON.parse(message.body);
     if (remoteMsg.code !== 200) {
-      throw new Error('remoteCodeIssueMessage error');
+      throw new Error(`remoteCodeIssueMessage error ${remoteMsg}`);
     }
     return remoteMsg;
   };
 
-  const pubRemoteConnect = (remoteCode: string) => {
+  /**
+   * 코드 발급을 위한 요청을 서버로 전송합니다.
+   */
+  const connectAsHost = () => {
+    clientRef.current.publish({
+      destination: '/app/remote.issuecode',
+    });
+  };
+
+  /**
+   * Member 로서 원격 제어 서버에 연결합니다.
+   * RemoteCode 를 바탕으로 Host 에 연결을 요청합니다.
+   * @param remoteCode
+   * @returns void
+   */
+  const connectAsMember: (remoteCode: string) => void = (
+    remoteCode: string,
+  ) => {
     if (!clientRef.current.connected) {
       console.log('client is not connected');
       return;
     }
+    if (!StompInitializer.isValideRemoteCode(remoteCode)) {
+      console.log(`remoteCode is not valid :: [${remoteCode}]`);
+    }
 
+    setRemoteCode(remoteCode);
     clientRef.current.publish({
       destination: '/app/remote.connect',
       body: JSON.stringify({ remoteCode: remoteCode }),
-    });
-  };
-
-  const setRemoteCode = (paramRemoteCode: string) => {
-    setRemoteInfos({
-      ...remoteInfos,
-      remoteCode: paramRemoteCode,
     });
   };
 
@@ -257,20 +303,24 @@ export const RemoteMemberClientProvider: React.FC<{
   }, []);
 
   return (
-    <RemoteMemberClientContext.Provider
+    <RemoteClientContext.Provider
       value={{
         clientRef,
         remoteInfos,
+        remoteCode,
         isConnected,
         eventEmitterRef,
-        remoteControlMsg,
         publishMessage,
-        pubRemoteConnect,
-        setRemoteCode,
         emitRemoteControlMsg,
+        hostClient: {
+          connectAsHost,
+        },
+        memberClient: {
+          connectAsMember,
+        },
       }}
     >
       {children}
-    </RemoteMemberClientContext.Provider>
+    </RemoteClientContext.Provider>
   );
 };
