@@ -2,10 +2,10 @@ import { Client, IMessage } from '@stomp/stompjs';
 import React from 'react';
 import {
   RemoteConnectInfos,
-  ControlRemoteConnectInfos,
-  RemoteCodeIssueMessage,
-  RemoteConnectMessage,
+  RemoteCodeIssueMsg,
+  RemoteConnectMsg,
   RemoteControlMsg,
+  CodeIssueResponse,
 } from '@src/types/stompTypes';
 
 class StompInitializer {
@@ -20,11 +20,13 @@ class StompInitializer {
     this.clientRef = clientRef;
   }
 
-  public subscribeTestHello = () => {
+  public static subscribeTestHello = (
+    clientRef: React.MutableRefObject<Client>,
+  ) => {
     /**
      * 테스트용 Hello 메세지 수신
      */
-    this.clientRef.current.subscribe(
+    clientRef.current.subscribe(
       '/topic/hello',
       (message: IMessage) => {
         console.log('hello received : ', message);
@@ -33,66 +35,40 @@ class StompInitializer {
     );
   };
 
-  public subscribeControlRemote = (
-    setRemotePubInfo: React.Dispatch<
-      React.SetStateAction<ControlRemoteConnectInfos>
-    >,
+  /**
+   * 원격 연결 코드가 유효한지 확인합니다.
+   * 원격 연결 코드는 0-9, a-z, A-Z 로 이루어진 6자리 문자열입니다.
+   * @param remoteCode 원격 연결 코드
+   * @returns 문자열 유효성
+   */
+  public static isValideRemoteCode: (remoteCode: string) => boolean = (
+    remoteCode: string,
   ) => {
-    /**
-     * Remote connect 성공 메세지 수신
-     */
+    return remoteCode.match(/^[0-9a-zA-Z]{6}$/) !== null;
+  };
+
+  public subCodeAndRemoteReceiveChannels = (
+    setRemoteInfos: React.Dispatch<React.SetStateAction<RemoteConnectInfos>>,
+    setRemoteControlMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>,
+  ) => {
+    this.clientRef.current.unsubscribe('remoteConnect');
+    // 원격 제어 코드 수신
     this.clientRef.current.subscribe(
       '/user/topic/remote.receivecode',
       (message: IMessage) => {
-        console.log('remote.connect received : ', message);
-        let remoteMsg: RemoteConnectMessage;
+        let remoteCodeMsg: RemoteCodeIssueMsg;
         try {
-          remoteMsg = this.parseControlRemoteMessage(message);
-          setRemotePubInfo({
-            pubPath: remoteMsg.pubPath,
-          });
-        } catch (e) {
-          console.log('remote message error: ', e);
-        }
-        console.log('remote code : ', remoteMsg);
-      },
-      { id: 'remoteConnect' },
-    );
-  };
-
-  private parseControlRemoteMessage = (message: IMessage) => {
-    const remoteMsg: {
-      code: number;
-      subPath: string;
-      pubPath: string;
-      subId: string;
-    } = JSON.parse(message.body);
-    if (remoteMsg.code !== 200 || !remoteMsg.pubPath) {
-      throw new Error('remoteCodeIssueMessage error');
-    }
-    return remoteMsg;
-  };
-
-  public subscribeScoreBoardRemote = (
-    setRemoteInfo: React.Dispatch<React.SetStateAction<RemoteConnectInfos>>,
-    setRemoteControlMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>,
-  ) => {
-    // 원격 제어 코드 수신
-    this.clientRef.current.subscribe(
-      '/user/topic/board/remotecode.receive',
-      (message: IMessage) => {
-        let remoteCodeMsg: RemoteCodeIssueMessage;
-        try {
-          remoteCodeMsg = this.parseScoreBoardRemoteMessage(message);
+          remoteCodeMsg = this.parseCodeIssueMessage(message);
         } catch (e) {
           console.log('remote message error: ', e);
         }
         console.log('remote code : ', remoteCodeMsg);
 
-        this.subRemoteControlChannel(
+        this.subRemoteReceiveChannel(
           remoteCodeMsg.remoteCode,
           remoteCodeMsg.subPath,
-          setRemoteInfo,
+          remoteCodeMsg.pubPath,
+          setRemoteInfos,
           setRemoteControlMsg,
         );
       },
@@ -100,24 +76,27 @@ class StompInitializer {
     );
   };
 
-  private parseScoreBoardRemoteMessage = (message: IMessage) => {
-    const remoteMsg = JSON.parse(message.body);
-    if (remoteMsg.code !== 200 || !remoteMsg.subPath) {
-      throw new Error('remoteCodeIssueMessage error', remoteMsg);
+  private parseCodeIssueMessage: (message: IMessage) => CodeIssueResponse = (
+    message,
+  ) => {
+    const remoteMsg: CodeIssueResponse = JSON.parse(message.body);
+    if (remoteMsg.code !== 200) {
+      throw new Error(`remoteCodeIssueMessage error ${remoteMsg}`);
     }
     return remoteMsg;
   };
 
-  private subRemoteControlChannel = (
+  public subRemoteReceiveChannel = (
     remoteCode: string,
-    remoteSubPath: string,
+    subPath: string,
+    pubPath: string,
     setRemoteInfo: React.Dispatch<React.SetStateAction<RemoteConnectInfos>>,
     setRemoteControlMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>,
   ) => {
     // 현재 구독 카운트를 증가시키고, 고유한 구독 ID를 생성합니다.
     const prevCount = this.boardRemoteSubCount;
-    const prevSubId = `remoteControlMsg-${prevCount}`;
-    const nextSubId = `remoteControlMsg-${prevCount + 1}`;
+    const prevSubId = `remoteMsg-${prevCount}`;
+    const nextSubId = `remoteMsg-${prevCount + 1}`;
     setTimeout(() => {
       this.boardRemoteSubCount++;
     }, 0);
@@ -127,7 +106,7 @@ class StompInitializer {
       this.clientRef.current.unsubscribe(prevSubId);
 
       this.clientRef.current.subscribe(
-        remoteSubPath,
+        subPath,
         (message: IMessage) => {
           try {
             const msg = JSON.parse(message.body);
@@ -144,12 +123,55 @@ class StompInitializer {
       console.log('remote control channel sub : ', nextSubId);
       setRemoteInfo({
         remoteCode: remoteCode,
-        subPath: remoteSubPath,
+        subPath: subPath,
+        pubPath: pubPath,
         subId: nextSubId,
       });
     }
     console.log('remote control channel unsub : ', prevSubId);
     // console.log('remote control channel sub : ', nextSubId);
+  };
+
+  // ----
+  public subConnectAndRemoteReceiveChannels = (
+    remoteCode: string,
+    setRemoteInfos: React.Dispatch<React.SetStateAction<RemoteConnectInfos>>,
+    setRemoteControlMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>,
+  ) => {
+    this.clientRef.current.unsubscribe('remoteConnect');
+    /**
+     * Remote connect 성공 메세지 수신
+     */
+    this.clientRef.current.subscribe(
+      '/user/topic/remote.connect',
+      (message: IMessage) => {
+        console.log('remote.connect received : ', message);
+        let remoteMsg: RemoteConnectMsg;
+        try {
+          remoteMsg = this.parseRemoteConnectMessage(message);
+        } catch (e) {
+          console.log('remote message error: ', e);
+        }
+        console.log('remote code : ', remoteMsg);
+
+        this.subRemoteReceiveChannel(
+          remoteCode,
+          remoteMsg.subPath,
+          remoteMsg.pubPath,
+          setRemoteInfos,
+          setRemoteControlMsg,
+        );
+      },
+      { id: 'remoteConnect' },
+    );
+  };
+
+  private parseRemoteConnectMessage = (message: IMessage) => {
+    const remoteMsg: RemoteConnectMsg = JSON.parse(message.body);
+    if (remoteMsg.code !== 200) {
+      throw new Error('remoteCodeIssueMessage error');
+    }
+    return remoteMsg;
   };
 }
 

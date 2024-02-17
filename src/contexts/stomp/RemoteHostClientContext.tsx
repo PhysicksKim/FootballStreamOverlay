@@ -6,9 +6,11 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import { Client, StompConfig } from '@stomp/stompjs';
+import { Client, StompConfig, IMessage } from '@stomp/stompjs';
 import StompInitializer from './StompInitializer';
 import {
+  CodeIssueResponse,
+  RemoteCodeIssueMsg,
   RemoteConnectInfos,
   RemoteControlMsg,
   StompClientRef,
@@ -25,9 +27,10 @@ export interface RemoteHostClient {
   remoteInfos: RemoteConnectInfos;
   isConnected: boolean;
   eventEmitterRef: React.MutableRefObject<EventEmitter>;
-  receiveRemoteMsg: RemoteControlMsg;
-  setReceiveRemoteMsg: React.Dispatch<React.SetStateAction<RemoteControlMsg>>;
-  publishNowStates: () => boolean;
+  remoteControlMsg: RemoteControlMsg;
+  publishMessage: (pubStates: RemoteControlMsg) => void;
+  pubIssueCode: () => void;
+  emitRemoteControlMsg: () => void;
 }
 
 const RemoteHostClientContext = createContext<RemoteHostClient | undefined>(
@@ -36,7 +39,16 @@ const RemoteHostClientContext = createContext<RemoteHostClient | undefined>(
 
 /**
  * 원격 제어 코드를 발급하는 Host Client 입니다.
- * @returns RemoteHostClient { clientRef, remoteInfos, isConnected, receiveRemoteMsg, eventEmitterRef, publishNowStates }
+ * @returns RemoteHostClient
+ * {
+ * clientRef,
+ * remoteInfos,
+ * isConnected,
+ * eventEmitterRef,
+ * remoteControlMsg,
+ * publishMessage,
+ * pubIssueCode
+ * }
  * @throws Provider 외부에서 사용 시 에러
  */
 export const useRemoteHostClient = () => {
@@ -51,8 +63,9 @@ export const RemoteHostClientProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const clientRef = useRef<Client>();
+  const eventEmitterRef = useRef(new EventEmitter());
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [receiveRemoteMsg, setReceiveRemoteMsg] = useState<RemoteControlMsg>();
+  const [subCount, setSubCount] = useState(0);
   const [remoteInfos, setRemoteInfos] = useState<RemoteConnectInfos>({
     remoteCode: '',
     subPath: '',
@@ -60,19 +73,15 @@ export const RemoteHostClientProvider: React.FC<{
     pubPath: '',
   });
 
-  const stompInitRef = useRef(new StompInitializer(clientRef));
-  const eventEmitterRef = useRef(new EventEmitter());
+  const [remoteIssueMsg, setRemoteIssueMsg] = useState<RemoteCodeIssueMsg>();
+  const [remoteControlMsg, setRemoteControlMsg] = useState<RemoteControlMsg>();
 
-  const subChannels = () => {
-    stompInitRef.current.subscribeTestHello();
-
-    // stompInitRef.current.subscribeScoreBoardRemote(
-    //   setRemoteInfos,
-    //   setReceiveRemoteMsg,
-    // );
+  const subInitChannels = () => {
+    StompInitializer.subscribeTestHello(clientRef);
+    subRemoteCodeReceiveChannel();
   };
 
-  const remoteInfoExpiredHandler = () => {
+  const expireRemoteInfos = () => {
     setRemoteInfos({
       remoteCode: '',
       subPath: '',
@@ -82,47 +91,139 @@ export const RemoteHostClientProvider: React.FC<{
   };
 
   /**
-   * `publishControlMsg` 이벤트를 발생시킵니다.
-   * eventEmitter.on('publishControlMsg', handler); 를 통해서 원격 제어 메세지를 전송하는 handler 를 작성합니다.
-   * @returns `true` if event had listened.
+   * 코드 발급 메세지가 업데이트 되면,
+   * 메세지에 담긴 원격 제어 채널을 구독합니다.
    */
-  const publishNowStates = () => {
-    return eventEmitterRef.current.emit('publishControlMsg');
+  useEffect(() => {
+    console.log('useEffect :: remoteInfos ', remoteIssueMsg);
+    if (
+      remoteIssueMsg &&
+      StompInitializer.isValideRemoteCode(remoteIssueMsg.remoteCode)
+    ) {
+      subRemoteAndUpdateRemoteInfos();
+    } else {
+      expireRemoteInfos();
+    }
+  }, [remoteIssueMsg]);
+
+  /**
+   * 원격 코드를 발급한 이후 subPath 를 subscribe 하여 원격 명령을 받습니다.
+   */
+  const subRemoteAndUpdateRemoteInfos = () => {
+    const prevCount = subCount;
+    const prevSubId = `remoteMsg-${prevCount}`;
+    const nextSubId = `remoteMsg-${prevCount + 1}`;
+
+    clientRef.current.unsubscribe(prevSubId);
+    clientRef.current.subscribe(
+      remoteIssueMsg.subPath,
+      (message: IMessage) => {
+        try {
+          const msg: RemoteControlMsg = JSON.parse(message.body);
+          if (msg) {
+            setRemoteControlMsg(msg);
+          }
+        } catch (e) {
+          console.log('remoteControlMsg parse error : ', e);
+        }
+      },
+      { id: nextSubId },
+    );
+
+    setRemoteInfos((prev) => {
+      return {
+        remoteCode: remoteIssueMsg.remoteCode,
+        subPath: remoteIssueMsg.subPath,
+        pubPath: remoteIssueMsg.pubPath,
+        subId: nextSubId,
+      };
+    });
+    setSubCount((prev) => prev + 1);
+  };
+
+  // TODO : unsubscribe 안해도 중복 sub 문제 발생 안하려나?
+  const subRemoteCodeReceiveChannel = () => {
+    clientRef.current.subscribe(
+      '/user/topic/remote.receivecode',
+      (message: IMessage) => {
+        const remoteIssueMsg: RemoteCodeIssueMsg =
+          parseCodeIssueMessage(message);
+        console.log('remote code : ', remoteIssueMsg);
+
+        setRemoteIssueMsg(remoteIssueMsg);
+        console.log('remoteConnectMsg : ', remoteIssueMsg);
+      },
+      { id: 'remoteReceiveCode' },
+    );
+  };
+
+  const parseCodeIssueMessage: (message: IMessage) => CodeIssueResponse = (
+    message,
+  ) => {
+    const remoteMsg: CodeIssueResponse = JSON.parse(message.body);
+    if (remoteMsg.code !== 200) {
+      throw new Error(`remoteCodeIssueMessage error ${remoteMsg}`);
+    }
+    return remoteMsg;
+  };
+
+  /**
+   * 코드 발급을 위한 요청을 서버로 전송합니다.
+   */
+  const pubIssueCode = () => {
+    clientRef.current.publish({
+      destination: '/app/remote.issuecode',
+    });
+  };
+
+  /**
+   * 현재 타이머의 상태들을 원격 제어 서버로 전송합니다.
+   * @param pubStates 원격 제어로 보낼 타이머의 상태값을 담고 있는 JSON 객체
+   */
+  const publishMessage = (pubStates: RemoteControlMsg) => {
+    clientRef.current.publish({
+      destination: remoteInfos.pubPath,
+      body: JSON.stringify(pubStates),
+    });
+  };
+
+  const emitRemoteControlMsg = () => {
+    eventEmitterRef.current.emit('remoteControlMsg');
   };
 
   const stompConfig: StompConfig = {
     brokerURL: websocketUrl,
     onConnect: () => {
       setIsConnected(true);
-      remoteInfoExpiredHandler();
-      subChannels();
+      expireRemoteInfos();
+      subInitChannels();
 
       eventEmitterRef.current.emit('connect');
     },
     onDisconnect: () => {
       setIsConnected(false);
-      remoteInfoExpiredHandler();
+      expireRemoteInfos();
 
       eventEmitterRef.current.emit('disconnect');
     },
     onWebSocketError: (error) => {
       setIsConnected(false);
       clientRef.current.deactivate();
-      remoteInfoExpiredHandler();
+      expireRemoteInfos();
 
       eventEmitterRef.current.emit('disconnect');
     },
     onStompError: (frame) => {
       setIsConnected(false);
       clientRef.current.deactivate();
-      remoteInfoExpiredHandler();
+      expireRemoteInfos();
 
       eventEmitterRef.current.emit('disconnect');
     },
     onWebSocketClose: () => {
       setIsConnected(false);
       clientRef.current.deactivate();
-      remoteInfoExpiredHandler();
+      expireRemoteInfos();
 
       eventEmitterRef.current.emit('disconnect');
     },
@@ -146,9 +247,10 @@ export const RemoteHostClientProvider: React.FC<{
         remoteInfos,
         isConnected,
         eventEmitterRef,
-        receiveRemoteMsg,
-        setReceiveRemoteMsg,
-        publishNowStates,
+        remoteControlMsg,
+        publishMessage,
+        pubIssueCode,
+        emitRemoteControlMsg,
       }}
     >
       {children}

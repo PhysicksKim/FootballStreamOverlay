@@ -1,8 +1,8 @@
 import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
-import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
+import { useRemoteMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import React, { useEffect } from 'react';
-import RemoteMessagePublisher from './RemoteMessagePublisher';
-import RemoteMessageSubscriber from './RemoteMessageSubscriber';
+import RemoteReceiver from './RemoteMessagePublisher';
+import RemotePublisher from './RemoteMessageSubscriber';
 
 export interface RemoteMessageManagerProps {
   givenInjuryTime: number;
@@ -24,7 +24,7 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
   updateMatchName,
 }) => {
   const { isConnected: isBoardConnected } = useRemoteHostClient();
-  const { isConnected: isControlConnected } = useStompMemberClient();
+  const { isConnected: isControlConnected } = useRemoteMemberClient();
 
   // TODO : 모든 ScoreBoard 변화 사항들을 파악해서 STOMP 메세지 맵핑해야함
   // 주어진 추가시간, 추가시간 show/hide, 메인/추가 타이머 이벤트들,
@@ -35,8 +35,8 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
       <div>RemoteMessageManager</div>
       {isBoardConnected != isControlConnected ? ( // 둘 중 하나만 연결되어야 함
         <>
-          {isControlConnected && <RemoteMessagePublisher />}
-          {isBoardConnected && <RemoteMessageSubscriber />}
+          {isControlConnected && <RemoteReceiver />}
+          {isBoardConnected && <RemotePublisher />}
         </>
       ) : (
         <></>

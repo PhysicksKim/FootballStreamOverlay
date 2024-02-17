@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 
 import '@styles/control/RemotePubPanel.scss';
 import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
-import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
+import { useRemoteMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTowerBroadcast, faSlash } from '@fortawesome/free-solid-svg-icons';
 
 type RemoteStatus = '끊어짐' | '수신중' | '송신중';
 
 const RemotePubPanel: React.FC<Record<string, never>> = () => {
-  const { isConnected: isSubConnected } = useRemoteHostClient();
-  const { isConnected: isPubConnected, publishNowStates } =
-    useStompMemberClient();
+  const { isConnected: isSubConnected, emitRemoteControlMsg: emitHost } =
+    useRemoteHostClient();
+  const { isConnected: isPubConnected, emitRemoteControlMsg: emitMember } =
+    useRemoteMemberClient();
   const [remoteStatus, setRemoteStatus] = useState<RemoteStatus>('끊어짐');
 
   useEffect(() => {
@@ -21,6 +22,11 @@ const RemotePubPanel: React.FC<Record<string, never>> = () => {
       isSubConnected ? '수신중' : isPubConnected ? '송신중' : '끊어짐',
     );
   }, [isSubConnected, isPubConnected]);
+
+  const handleRemoteSend = () => {
+    if (isSubConnected) emitHost();
+    else if (isPubConnected) emitMember();
+  };
 
   return (
     <div className='remote-pub-box-container'>
@@ -65,7 +71,7 @@ const RemotePubPanel: React.FC<Record<string, never>> = () => {
         <div className='remote-send-btn'>
           <button
             id='send-control-msg-btn'
-            onClick={publishNowStates}
+            onClick={handleRemoteSend}
             disabled={!isPubConnected}
           >
             전송

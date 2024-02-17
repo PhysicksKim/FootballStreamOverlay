@@ -1,16 +1,16 @@
 import React from 'react';
-import RemoteControlBox from './RemoteControlBox';
-import RemoteReceiveBox from './RemoteReceiveBox';
+import RemoteMemberBox from './RemoteMemberBox';
+import RemoteHostBox from './RemoteHostBox';
 import '@styles/remote/RemoteTab.scss';
 
 const RemoteTab = () => {
   return (
     <div className='remote-tab-container'>
       <div className='remote-receive-wrapper'>
-        <RemoteReceiveBox />
+        <RemoteHostBox />
       </div>
       <div className='remote-control-wrapper'>
-        <RemoteControlBox />
+        <RemoteMemberBox />
       </div>
     </div>
   );

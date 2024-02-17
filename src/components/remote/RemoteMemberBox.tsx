@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
+import { useRemoteMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import { ConnectStatus } from '@src/types/stompTypes';
 import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
 
-import '@styles/remote/RemoteControlBox.scss';
+import '@styles/remote/RemoteMemberBox.scss';
 
 const RemoteControlBox = () => {
   const {
     clientRef,
-    remotePubInfo,
+    remoteInfos,
     isConnected: isControlConnected,
-  } = useStompMemberClient();
+    eventEmitterRef,
+    remoteControlMsg,
+    publishMessage,
+    pubRemoteConnect,
+    setRemoteCode,
+  } = useRemoteMemberClient();
   const { isConnected: isBoardConnected } = useRemoteHostClient();
 
   const [serverStatus, setServerStatus] = useState(false);
@@ -56,7 +61,6 @@ const RemoteControlBox = () => {
       console.error('clientRef is not set');
       return;
     }
-
     if (isBoardConnected) {
       console.log(
         'boardClient is already connected. please disconnect boardClient first.',
@@ -74,16 +78,15 @@ const RemoteControlBox = () => {
       console.log('input is empty');
       return;
     }
-
-    if (isNotReadyWebsocket()) {
-      console.log('websocket is not ready');
+    if (isBoardConnected) {
+      console.log(
+        'boardClient is already connected. please disconnect boardClient first.',
+      );
       return;
     }
 
-    clientRef.current.publish({
-      destination: '/app/remote.connect',
-      body: JSON.stringify({ remoteCode: remotecodeInput }),
-    });
+    setRemoteCode(remotecodeInput);
+    pubRemoteConnect(remotecodeInput);
   };
 
   const disconnectHandler = () => {
@@ -102,7 +105,7 @@ const RemoteControlBox = () => {
         <div className='websocket-status'>{stompStatus}</div>
       </div>
       <div className='group-box'>
-        <div>원격 연결</div>
+        <div>코드 연결</div>
         <input
           type='text'
           id='remote-connect-code-input'
@@ -111,8 +114,12 @@ const RemoteControlBox = () => {
         <button onClick={remoteConnectHandler}>연결</button>
       </div>
       <div className='group-box'>
+        <div>subPath</div>
+        <div> : [ {remoteInfos.subPath} ]</div>
+      </div>
+      <div className='group-box'>
         <div>pubPath</div>
-        <div> : [ {remotePubInfo.pubPath} ]</div>
+        <div> : [ {remoteInfos.pubPath} ]</div>
       </div>
     </div>
   );

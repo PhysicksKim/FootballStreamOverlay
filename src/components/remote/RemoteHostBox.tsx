@@ -2,18 +2,21 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
 import { ConnectStatus } from '@src/types/stompTypes';
-import { useStompMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
+import { useRemoteMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 
-import '@styles/remote/RemoteReceiveBox.scss';
+import '@styles/remote/RemoteHostBox.scss';
 
-const RemoteReceiveBox = () => {
+const RemoteHostBox = () => {
   const {
     clientRef,
-    remoteSubInfo,
+    remoteInfos,
     isConnected: isBoardConnected,
-    receiveRemoteMsg,
+    eventEmitterRef,
+    remoteControlMsg,
+    publishMessage,
+    pubIssueCode,
   } = useRemoteHostClient();
-  const { isConnected: isControlConnected } = useStompMemberClient();
+  const { isConnected: isControlConnected } = useRemoteMemberClient();
 
   const [serverStatus, setServerStatus] = useState(false);
   const [stompStatus, setStompStatus] = useState<ConnectStatus>('연결됨');
@@ -25,10 +28,6 @@ const RemoteReceiveBox = () => {
       setStompStatus('끊어짐');
     }
   }, [isBoardConnected]);
-
-  useEffect(() => {
-    console.log('receiveRemoteMsg : ', receiveRemoteMsg);
-  }, [receiveRemoteMsg]);
 
   const isNotReadyWebsocket = () => {
     if (!clientRef.current || !clientRef.current.connected) {
@@ -56,12 +55,9 @@ const RemoteReceiveBox = () => {
   };
 
   const issueCodeHandler = () => {
-    clientRef.current.publish({
-      destination: '/app/board/remotecode.expire/' + remoteSubInfo.remoteCode,
-    });
-    clientRef.current.publish({
-      destination: '/app/board/remotecode.issue',
-    });
+    if (isNotReadyWebsocket()) return;
+
+    pubIssueCode();
   };
 
   const disconnectHandler = () => {
@@ -85,14 +81,18 @@ const RemoteReceiveBox = () => {
       </div>
       <div className='group-box'>
         <div>코드 값</div>
-        <div> : [ {remoteSubInfo.remoteCode} ]</div>
+        <div> : [ {remoteInfos.remoteCode} ]</div>
       </div>
       <div className='group-box'>
         <div>subPath</div>
-        <div> : [ {remoteSubInfo.subPath} ]</div>
+        <div> : [ {remoteInfos.subPath} ]</div>
+      </div>
+      <div className='group-box'>
+        <div>pubPath</div>
+        <div> : [ {remoteInfos.pubPath} ]</div>
       </div>
     </div>
   );
 };
 
-export default RemoteReceiveBox;
+export default RemoteHostBox;

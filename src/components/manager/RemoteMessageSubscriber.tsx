@@ -8,21 +8,7 @@ import { useMainTimeDisplay } from '@src/contexts/timers/main/MainTimeDisplayPro
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
 import React, { useEffect } from 'react';
 
-const RemoteMessageSubscriber = () => {
-  const {
-    clientRef: boardClientRef,
-    remoteSubInfo,
-    isConnected: isBoardConnected,
-    receiveRemoteMsg,
-  } = useRemoteHostClient();
-
-  // TODO : 메세지 수신에 따라서 state 변화 해야함
-  useEffect(() => {
-    if (isBoardConnected) {
-      console.log('RemoteMessageSubscriber recvMessage: ', receiveRemoteMsg);
-    }
-  }, [receiveRemoteMsg]);
-
+const RemotePublisher = () => {
   useFont();
   useTeamA();
   useTeamB();
@@ -60,4 +46,4 @@ const RemoteMessageSubscriber = () => {
   return <div>RemoteMessageSubscriber</div>;
 };
 
-export default RemoteMessageSubscriber;
+export default RemotePublisher;
