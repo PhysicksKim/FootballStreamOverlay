@@ -8,16 +8,13 @@ import React, {
 } from 'react';
 import { Client, StompConfig, IMessage } from '@stomp/stompjs';
 import {
-  CodeIssueResponse,
-  RemoteConnectMsg,
-  RemoteCodeIssueMsg,
   RemoteControlMsg,
   StompClientRef,
   RemoteInfos,
-  RemoteEnrollMsg,
+  RemoteConnectMsg,
 } from '@src/types/stompTypes';
 import EventEmitter from 'events';
-import StompInitializer from './StompInitializer';
+import RemoteUtil from './StompInitializer';
 
 // API 서버 환경변수 (개발/서비스 환경)
 const apiUrl = process.env.API_URL;
@@ -51,14 +48,13 @@ const RemoteClientContext = createContext<RemoteClient | undefined>(undefined);
  * @returns RemoteMemeberClient {
  *   clientRef,
  *   remoteInfos,
+ *   remoteCode,
  *   isConnected,
  *   eventEmitterRef,
- *   remoteControlMsg,
  *   publishMessage,
- *   pubIssueCode,
- *   pubRemoteConnect,
- *   updateRemoteCode,
- *   emitRemoteControlMsg
+ *   emitRemoteControlMsg,
+ *   hostClient,
+ *   memberClient,
  * }
  * @throws Provider 외부에서 사용 시 에러
  */
@@ -84,10 +80,9 @@ export const RemoteClientProvider: React.FC<{
     subId: '',
   });
 
-  const [remoteEnrollMsg, setRemoteEnrollMsg] = useState<RemoteEnrollMsg>();
+  const [remoteConnectMsg, setRemoteConnectMsg] = useState<RemoteConnectMsg>();
 
   const subInitChannels = () => {
-    StompInitializer.subscribeTestHello(clientRef);
     subRemoteCodeConnectChannel();
     subRemoteCodeReceiveChannel();
   };
@@ -104,7 +99,11 @@ export const RemoteClientProvider: React.FC<{
    * 사용자가 원격 코드를 발급 또는 등록 후, 원격 채널을 등록합니다.
    */
   useEffect(() => {
-    if (StompInitializer.isValideRemoteCode(remoteCode)) {
+    console.log('useEffect _ remoteConnectMsg : ', remoteConnectMsg);
+    if (
+      remoteConnectMsg &&
+      RemoteUtil.isValideRemoteCode(remoteConnectMsg.remoteCode)
+    ) {
       // TODO : remoteConnectMsg 가 에러인 경우 처리해야함
       // 예를 들어 이미 코드에 연결해둔 경우에는 remoteConnectMsg 가 error 메세지를 담고 있음
       // 따라서 이 경우 사용자에게 기존 연결을 끊고 새로 연결할 것인지 물어봐야함.
@@ -115,7 +114,7 @@ export const RemoteClientProvider: React.FC<{
     } else {
       expireRemoteInfos();
     }
-  }, [remoteEnrollMsg]);
+  }, [remoteConnectMsg]);
 
   useEffect(() => {
     console.log('remoteInfos : ', remoteInfos);
@@ -132,12 +131,12 @@ export const RemoteClientProvider: React.FC<{
 
     clientRef.current.unsubscribe(prevSubId);
     clientRef.current.subscribe(
-      remoteEnrollMsg.subPath,
+      remoteConnectMsg.subPath,
       (message: IMessage) => {
         try {
-          const msg: RemoteEnrollMsg = JSON.parse(message.body);
+          const msg: RemoteConnectMsg = JSON.parse(message.body);
           if (msg) {
-            setRemoteEnrollMsg(msg);
+            setRemoteConnectMsg(msg);
           }
         } catch (e) {
           console.log('remoteControlMsg parse error : ', e);
@@ -146,11 +145,11 @@ export const RemoteClientProvider: React.FC<{
       { id: nextSubId },
     );
 
-    setRemoteCode(remoteEnrollMsg.remoteCode);
+    setRemoteCode(remoteConnectMsg.remoteCode);
     setRemoteInfos((_) => {
       return {
-        subPath: remoteEnrollMsg.subPath,
-        pubPath: remoteEnrollMsg.pubPath,
+        subPath: remoteConnectMsg.subPath,
+        pubPath: remoteConnectMsg.pubPath,
         subId: nextSubId,
       };
     });
@@ -162,9 +161,9 @@ export const RemoteClientProvider: React.FC<{
     clientRef.current.subscribe(
       '/user/topic/remote.receivecode',
       (message: IMessage) => {
-        const remoteIssueMsg: RemoteEnrollMsg = parseRemoteEnrollMsg(message);
+        const remoteIssueMsg: RemoteConnectMsg = parseRemoteEnrollMsg(message);
 
-        setRemoteEnrollMsg(remoteIssueMsg);
+        setRemoteConnectMsg(remoteIssueMsg);
         console.log('remoteIssue : ', remoteIssueMsg);
       },
       { id: 'remoteReceiveCode' },
@@ -181,9 +180,10 @@ export const RemoteClientProvider: React.FC<{
     clientRef.current.subscribe(
       '/user/topic/remote.connect',
       (message: IMessage) => {
-        const remoteConnectMsg: RemoteEnrollMsg = parseRemoteEnrollMsg(message);
+        const remoteConnectMsg: RemoteConnectMsg =
+          parseRemoteEnrollMsg(message);
 
-        setRemoteEnrollMsg(remoteConnectMsg);
+        setRemoteConnectMsg(remoteConnectMsg);
         console.log('remoteConnectMsg : ', remoteConnectMsg);
       },
       { id: 'remoteConnect' },
@@ -195,10 +195,10 @@ export const RemoteClientProvider: React.FC<{
    * @param message
    * @returns
    */
-  const parseRemoteEnrollMsg: (message: IMessage) => RemoteEnrollMsg = (
+  const parseRemoteEnrollMsg: (message: IMessage) => RemoteConnectMsg = (
     message,
   ) => {
-    const remoteMsg: RemoteEnrollMsg = JSON.parse(message.body);
+    const remoteMsg: RemoteConnectMsg = JSON.parse(message.body);
     if (remoteMsg.code !== 200) {
       throw new Error(`remoteCodeIssueMessage error ${remoteMsg}`);
     }
@@ -227,7 +227,7 @@ export const RemoteClientProvider: React.FC<{
       console.log('client is not connected');
       return;
     }
-    if (!StompInitializer.isValideRemoteCode(remoteCode)) {
+    if (!RemoteUtil.isValideRemoteCode(remoteCode)) {
       console.log(`remoteCode is not valid :: [${remoteCode}]`);
     }
 
@@ -250,7 +250,7 @@ export const RemoteClientProvider: React.FC<{
   };
 
   const emitRemoteControlMsg = () => {
-    eventEmitterRef.current.emit('remoteControlMsg');
+    eventEmitterRef.current.emit('publishRemoteControlMsg');
   };
 
   const stompConfig: StompConfig = {

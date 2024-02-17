@@ -7,8 +7,6 @@ import { MainTimerStateRoot } from '@src/contexts/timers/main/MainTimerStateRoot
 import { InjuryTimerStateRoot } from '@src/contexts/timers/injury/InjuryTimerStateRoot';
 import { TeamAProvider } from '@src/contexts/teams/TeamAProvider';
 import { TeamBProvider } from '@src/contexts/teams/TeamBProvider';
-import { RemoteHostClientProvider } from '@src/contexts/stomp/RemoteHostClientContext';
-import { RemoteMemberClientProvider } from '@src/contexts/stomp/RemoteMemberClientContext';
 import { TeamAStyleProvider } from '@src/contexts/teams/TeamAStyleProvider';
 import { TeamBStyleProvider } from '@src/contexts/teams/TeamBStyleProvider';
 import { MatchNameProvider } from '@src/contexts/MatchNameContext';
@@ -26,13 +24,9 @@ const Application: React.FC = () => {
                 <TeamBStyleProvider>
                   <FontProvider>
                     <MatchNameProvider>
-                      <RemoteHostClientProvider>
-                        <RemoteMemberClientProvider>
-                          <RemoteClientProvider>
-                            <TimerRoot />
-                          </RemoteClientProvider>
-                        </RemoteMemberClientProvider>
-                      </RemoteHostClientProvider>
+                      <RemoteClientProvider>
+                        <TimerRoot />
+                      </RemoteClientProvider>
                     </MatchNameProvider>
                   </FontProvider>
                 </TeamBStyleProvider>

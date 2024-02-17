@@ -21,12 +21,12 @@ export type RemoteCodeIssueMsg = {
   message: string;
 };
 
-export type RemoteConnectMsg = {
-  code: number;
-  message: string;
-  subPath: string;
-  pubPath: string;
-};
+// export type RemoteConnectMsg = {
+//   code: number;
+//   message: string;
+//   subPath: string;
+//   pubPath: string;
+// };
 
 export type StompClientRef = React.MutableRefObject<Client>;
 
@@ -43,23 +43,13 @@ export interface RemoteInfos {
   subId: string;
 }
 
-export interface RemoteEnrollMsg {
+export interface RemoteConnectMsg {
   code: number;
   message: string;
   pubPath: string;
   subPath: string;
   remoteCode: string;
 }
-
-// export interface ControlRemoteConnectInfos {
-//   pubPath: string;
-// }
-
-// export interface RemoteControlMsg {
-//   code: number;
-//   message: string;
-//   data: { [key: string]: any };
-// }
 
 export type ConnectStatus = '연결됨' | '끊어짐';
 

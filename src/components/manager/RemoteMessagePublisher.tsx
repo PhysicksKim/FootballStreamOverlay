@@ -1,5 +1,3 @@
-import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
-import { useRemoteMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
 import React, { useState, useEffect } from 'react';
 
 const RemoteReceiver = () => {

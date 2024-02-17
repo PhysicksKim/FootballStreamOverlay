@@ -1,5 +1,4 @@
 import { useFont } from '@src/contexts/FontContext';
-import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useInjuryTimeDisplay } from '@src/contexts/timers/injury/InjuryTimeDisplayProvider';

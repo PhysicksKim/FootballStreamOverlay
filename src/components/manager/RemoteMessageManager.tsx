@@ -1,8 +1,9 @@
-import { useRemoteHostClient } from '@src/contexts/stomp/RemoteHostClientContext';
-import { useRemoteMemberClient } from '@src/contexts/stomp/RemoteMemberClientContext';
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import RemoteReceiver from './RemoteMessagePublisher';
 import RemotePublisher from './RemoteMessageSubscriber';
+import { useRemoteClient } from '@src/contexts/stomp/RemoteClientContext';
+import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
+import { TimerState } from '@src/hooks/useTimerHook';
 
 export interface RemoteMessageManagerProps {
   givenInjuryTime: number;
@@ -14,6 +15,11 @@ export interface RemoteMessageManagerProps {
   updateMatchName: (matchName: string) => void;
 }
 
+type Time = {
+  min: number;
+  sec: number;
+};
+
 const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
   givenInjuryTime,
   disappearInjuryTimer,
@@ -23,16 +29,28 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
   matchName,
   updateMatchName,
 }) => {
-  const { isConnected: isBoardConnected } = useRemoteHostClient();
-  const { isConnected: isControlConnected } = useRemoteMemberClient();
-
   // TODO : 모든 ScoreBoard 변화 사항들을 파악해서 STOMP 메세지 맵핑해야함
   // 주어진 추가시간, 추가시간 show/hide, 메인/추가 타이머 이벤트들,
   // 팀 속성(코드, 이름, 점수, 유니폼, 팀폰트색), 대회 이름, 글로벌 폰트
+  const { eventEmitterRef } = useRemoteClient();
+  const { timer } = useMainTimerManager();
+  const timeRef = useRef<Time>({ min: 0, sec: 0 });
+
+  useEffect(() => {
+    console.log('time changed', timer.time);
+    timeRef.current = timer.time;
+  }, [timer.time]);
+
+  useEffect(() => {
+    eventEmitterRef.current.on('publishRemoteControlMsg', () => {
+      console.log('eventEmitter [publishRemoteControlMsg] Called');
+      console.log('timeRef.current', timeRef.current);
+    });
+  }, [eventEmitterRef.current]);
 
   return (
     <>
-      <div>RemoteMessageManager</div>
+      {/* <div>RemoteMessageManager</div>
       {isBoardConnected != isControlConnected ? ( // 둘 중 하나만 연결되어야 함
         <>
           {isControlConnected && <RemoteReceiver />}
@@ -40,7 +58,7 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
         </>
       ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 };

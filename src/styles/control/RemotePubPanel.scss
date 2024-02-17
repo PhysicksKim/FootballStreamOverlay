@@ -40,12 +40,6 @@
     }
     .remote-connect-status-icon {
       position: relative;
-      .remote-on {
-        color: rgb(88, 221, 5);
-      }
-      .remote-off {
-        color: rgb(221, 5, 5);
-      }
       .remote-slash-hidden {
         // position: absolute;
         visibility: hidden;
@@ -62,9 +56,6 @@
 .remote-disconnect {
   color: #ce1c09;
 }
-.remote-subscribe {
-  color: #29e614;
-}
-.remote-publish {
+.remote-connect {
   color: #0c2ce3;
 }
