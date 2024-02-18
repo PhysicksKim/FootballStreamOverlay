@@ -38,12 +38,26 @@
         box-sizing: border-box;
         height: 170px;
         left: -135px;
-        top: -100px;
+        top: -105px;
         background-color: rgba(0, 0, 0, 0);
         padding-left: 17px;
         padding-right: 17px;
         padding-top: 10px;
         z-index: -1;
+        border-radius: 20px 20px 0 0;
+      }
+
+      .gye-mancity {
+        position: absolute;
+        box-sizing: border-box;
+        height: 130px;
+        left: -145px;
+        top: -90px;
+        background-color: rgba(0, 0, 0, 0);
+        padding-left: 17px;
+        padding-right: 17px;
+        padding-top: 10px;
+        z-index: 0;
         border-radius: 20px 20px 0 0;
       }
     }

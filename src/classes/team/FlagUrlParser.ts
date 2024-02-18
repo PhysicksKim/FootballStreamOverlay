@@ -296,7 +296,9 @@ import whuFlag from '@assets/flags/epl2324/westham.svg';
 import wlvFlag from '@assets/flags/epl2324/wolves.svg';
 // #endregion epl flags imports
 
-export const getFlagImageUrl = (team: Team) => {
+export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
+  team: Team,
+) => {
   if (team.category === 'asiancup') {
     switch (team.code) {
       case 'ad':

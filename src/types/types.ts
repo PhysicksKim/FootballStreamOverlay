@@ -36,7 +36,7 @@ export interface Team {
   code: string;
   name: string;
   score: number;
-  isAway?: boolean;
+  // isAway?: boolean;
   uniform: string;
 }
 

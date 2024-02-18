@@ -43,6 +43,9 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     });
   }, [eventEmitter]);
 
+  /**
+   * Precision-Timer 라이브러리를 사용해서 1초마다 tick 함수 실행
+   */
   const timer = useTimer(
     {
       delay: 1000,

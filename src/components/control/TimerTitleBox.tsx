@@ -1,6 +1,8 @@
 import { FontEnum, fontInfos } from '@src/classes/FontEnum';
 import { useFont } from '@src/contexts/FontContext';
 import React from 'react';
+import '@styles/control/TimerTitleBox.scss';
+import { defaultMatchName } from '@src/classes/team/DefaultScoreBoardValue';
 
 export interface TimerTitleBoxProps {
   updateMatchName: (matchName: string) => void;
@@ -20,11 +22,11 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
           id='match-title-text-input'
           className='match-title-text-input'
           type='text'
-          placeholder='ex 아시안컵 E조 조별 예선'
+          placeholder={defaultMatchName}
           onChange={(e) => {
             const title = e.target.value.trim();
             if (!title) {
-              updateMatchName('아시안컵 E조 조별 예선');
+              updateMatchName(defaultMatchName);
             } else {
               updateMatchName(e.target.value);
             }
@@ -42,19 +44,24 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
         />
       </div>
       <div className='font-radio-button-box'>
-        {Object.entries(fontInfos).map(([fontCode, { name }]) => (
-          <div key={fontCode}>
-            <input
-              type='radio'
-              id={`font-${fontCode}`}
-              name='font-choice'
-              value={fontCode}
-              onChange={() => updateGlobalFont(fontCode as FontEnum)}
-              checked={fontInfo.code === fontCode} // 현재 선택된 폰트와 비교
-            />
-            <label htmlFor={`font-${fontCode}`}>{name}</label>
-          </div>
-        ))}
+        {Object.entries(fontInfos).map(([fontCode, { name }]) =>
+          fontCode === FontEnum.TAEBEAK ? ( // 태백체 비활성화
+            <></>
+          ) : (
+            <div key={fontCode}>
+              <input
+                type='radio'
+                id={`font-${fontCode}`}
+                name='font-choice'
+                value={fontCode}
+                onChange={() => updateGlobalFont(fontCode as FontEnum)}
+                checked={fontInfo.code === fontCode}
+                disabled={fontCode === FontEnum.TAEBEAK}
+              />
+              <label htmlFor={`font-${fontCode}`}>{name}</label>
+            </div>
+          ),
+        )}
       </div>
     </div>
   );

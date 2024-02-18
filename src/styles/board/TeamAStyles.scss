@@ -4,16 +4,17 @@
 @mixin teamAColor($team, $status: 'home') {
   $color: map.get($colors, $team, $status);
 
-  $colorAlpha08: append($color, 0.8);
+  $colorAlpha08: append($color, 0.9);
   $colorAlphaNo: append($color, 1);
 
   background: $color;
   background: linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0) 50%,
-      rgba(0, 0, 0, 0.3) 85%,
-      rgba(0, 0, 0, 0.3) 100%,
-      transparent
+      rgba(0, 0, 0, 0.15) 5%,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(0, 0, 0, 0.08) 76%,
+      rgba(0, 0, 0, 0.2) 85%,
+      rgba(0, 0, 0, 0.3) 100%
     ),
     linear-gradient(
       90deg,
@@ -317,4 +318,23 @@
 }
 .team-a-epl2324-wlv-third {
   @include teamAColor('epl2324-wlv', 'third');
+}
+
+// --- 기타 ----
+// 컵팀
+.team-a-etc-cup-home {
+  @include teamAColor('etc-cup');
+}
+.team-a-etc-cup-away,
+.team-a-etc-cup-third {
+  @include teamAColor('etc-cup', 'away');
+}
+
+// 기타 빈로고
+.team-a-etc-ety-home {
+  @include teamAColor('etc-ety');
+}
+.team-a-etc-ety-away,
+.team-a-etc-ety-third {
+  @include teamAColor('etc-ety', 'away');
 }

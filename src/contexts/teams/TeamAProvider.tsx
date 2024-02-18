@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Team } from '@src/types/types';
-import CountryCodes from '@src/classes/team/AsiancupCodes';
+import { defaultTeamA } from '@src/classes/team/DefaultScoreBoardValue';
 
 const TeamAContext = createContext(
   {} as {
@@ -14,14 +14,7 @@ export const useTeamA = () => useContext(TeamAContext);
 export const TeamAProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const teamAInitialValue: Team = {
-    category: 'asiancup',
-    code: CountryCodes.대한민국.code,
-    name: '대한민국',
-    score: 0,
-    uniform: 'home',
-  };
-
+  const teamAInitialValue: Team = defaultTeamA;
   const [teamA, setTeamA] = useState<Team>(teamAInitialValue);
 
   const updateTeamA = <K extends keyof Team>(key: K, value: Team[K]) => {
