@@ -124,7 +124,7 @@
 .team-a-text-wrapper,
 .team-b-text-wrapper {
   box-sizing: border-box;
-  flex-basis: 280px;
+  flex-basis: 288px;
   flex-grow: 0;
   flex-shrink: 0;
   overflow-x: hidden;
@@ -132,11 +132,11 @@
 
 .team-a-text-wrapper {
   flex-direction: row;
-  padding-left: 50px;
+  padding-left: 54px;
   padding-right: 10px;
 }
 .team-b-text-wrapper {
   flex-direction: row-reverse;
   padding-left: 10px;
-  padding-right: 50px;
+  padding-right: 53px;
 }
