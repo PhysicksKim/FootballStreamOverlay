@@ -45,11 +45,10 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
       </div>
       <div className='font-radio-button-box'>
         {Object.entries(fontInfos).map(([fontCode, { name }]) =>
-          fontCode === FontEnum.TAEBEAK ? ( // 태백체 비활성화
-            <></>
-          ) : (
+          fontCode === FontEnum.TAEBEAK ? null : ( // 태백체 비활성화
             <div key={fontCode}>
               <input
+                key={`fontCodeInput-${fontCode}`}
                 type='radio'
                 id={`font-${fontCode}`}
                 name='font-choice'
@@ -58,7 +57,12 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
                 checked={fontInfo.code === fontCode}
                 disabled={fontCode === FontEnum.TAEBEAK}
               />
-              <label htmlFor={`font-${fontCode}`}>{name}</label>
+              <label
+                key={`fontCodeLabel-${fontCode}`}
+                htmlFor={`font-${fontCode}`}
+              >
+                {name}
+              </label>
             </div>
           ),
         )}

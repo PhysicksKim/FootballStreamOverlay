@@ -1,3 +1,4 @@
+import { defaultMatchName } from '@src/classes/team/DefaultScoreBoardValue';
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 interface MatchNameContextProps {
@@ -24,7 +25,7 @@ export const useMatchName = () => {
 export const MatchNameProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [matchName, setMatchName] = useState<string>('EPL 23-24 시즌');
+  const [matchName, setMatchName] = useState<string>(defaultMatchName);
 
   const updateMatchName = (matchName: string) => {
     setMatchName(matchName);

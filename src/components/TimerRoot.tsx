@@ -30,13 +30,8 @@ const TimerRoot = () => {
   const { fontInfo, updateGlobalFont } = useFont();
 
   // 대회 종류
-<<<<<<< HEAD
+  // TODO : [MERGE] matchName 초기값 설정 방법 다시 분석
   const { matchName, updateMatchName } = useMatchName();
-=======
-  const [matchName, setMatchName] = useState(
-    '2023-24 잉글랜드 프리미어리그 25R',
-  );
->>>>>>> main
 
   // 타이머
   const mainTimerManager = useMainTimerManager();

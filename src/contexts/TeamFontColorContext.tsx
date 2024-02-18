@@ -10,6 +10,10 @@ const TeamFontColorContext = createContext<TeamFontColor | undefined>(
   undefined,
 );
 
+/**
+ *
+ * @returns TeamFontColor { teamAColor, teamBColor, updateTeamFontColor }
+ */
 export const useTeamFontColor = () => {
   const context = useContext(TeamFontColorContext);
   if (!context) {

@@ -107,9 +107,9 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
             <>
               <option value='home'>홈</option>
               <option value='away'>어웨이</option>
-              {category !== Categories.Asiancup && (
-                <option value='third'>3rd</option>
-              )}{' '}
+              {/* {category !== Categories.Asiancup && ( */}
+              <option value='third'>3rd</option>
+              {/* )}{' '} */}
             </>
           ) : (
             <option value='none' disabled>

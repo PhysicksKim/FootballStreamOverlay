@@ -1,6 +1,6 @@
 import { FontInfo } from '@src/classes/FontEnum';
 import { Client } from '@stomp/stompjs';
-import { Team, TeamFontColor, TeamStyles } from './types';
+import { FontColorOptions, Team, TeamFontColor, TeamStyles } from './types';
 import { UUID } from 'crypto';
 
 export type RemoteCodeIssueMsg = {
@@ -111,7 +111,6 @@ export interface RemoteControlMsg {
   message: string;
   metadata: {
     date: Date;
-    uuid: UUID;
   };
   data: {
     mainTimer: {
@@ -133,18 +132,9 @@ export interface RemoteControlMsg {
       isShowInjuryTimer: boolean;
     };
     matchName: string;
-    /**
-     * FontEnum
-     * ```
-     * ONE_MOBILE_TITLE = 'ONE-Mobile-Title',
-     * TAEBEAK = 'TAEBAEKfont',
-     * ```
-     */
-    fontInfo: FontInfo;
     teamA: Team;
     teamB: Team;
     teamAStyle: TeamStyles;
     teamBStyle: TeamStyles;
-    teamFontColor: TeamFontColor;
   };
 }

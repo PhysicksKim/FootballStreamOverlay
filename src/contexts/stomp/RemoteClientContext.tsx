@@ -72,7 +72,8 @@ export const RemoteClientProvider: React.FC<{
   const clientRef = useRef<Client>();
   const eventEmitterRef = useRef(new EventEmitter());
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [subCount, setSubCount] = useState(0);
+
+  // 원격에 사용되는 각종 상태값들 (원격 코드, 원격 연결 path)
   const [remoteCode, setRemoteCode] = useState<string>('');
   const [remoteInfos, setRemoteInfos] = useState<RemoteInfos>({
     subPath: '',
@@ -80,7 +81,13 @@ export const RemoteClientProvider: React.FC<{
     subId: '',
   });
 
+  // 원격 연결시 사용 (원격 코드 발급 or 코드 등록)
+  const [subCount, setSubCount] = useState(0);
   const [remoteConnectMsg, setRemoteConnectMsg] = useState<RemoteConnectMsg>();
+  const remoteInfosRef = useRef(remoteInfos);
+
+  // 원격 제어 메세지
+  const [remoteConrolMsg, setRemoteControlMsg] = useState<RemoteControlMsg>();
 
   const subInitChannels = () => {
     subRemoteCodeConnectChannel();
@@ -94,6 +101,11 @@ export const RemoteClientProvider: React.FC<{
       pubPath: '',
     });
   };
+
+  useEffect(() => {
+    console.log('remoteInfos updated :: ', remoteInfos);
+    remoteInfosRef.current = remoteInfos;
+  }, [remoteInfos]);
 
   /**
    * 사용자가 원격 코드를 발급 또는 등록 후, 원격 채널을 등록합니다.
@@ -111,14 +123,12 @@ export const RemoteClientProvider: React.FC<{
       // 이 처리는 여기서 하는 것보다 setRemoteCode 에서 하는 게 좋아보이는데
       // 자꾸 예외처리가 이리저리 이동해서 구조가 복잡하니까 나중에 리팩토링 해야할듯
       subRemoteAndUpdateRemoteInfos();
-    } else {
-      expireRemoteInfos();
     }
   }, [remoteConnectMsg]);
 
   useEffect(() => {
-    console.log('remoteInfos : ', remoteInfos);
-  }, [remoteInfos]);
+    console.log('remoteConrolMsg updated :: ', remoteConrolMsg);
+  }, [remoteConrolMsg]);
 
   /**
    * 원격 연결 메세지가 수신된 경우, 해당 메세지를 바탕으로 subPath, pubPath 를 업데이트합니다.
@@ -134,9 +144,9 @@ export const RemoteClientProvider: React.FC<{
       remoteConnectMsg.subPath,
       (message: IMessage) => {
         try {
-          const msg: RemoteConnectMsg = JSON.parse(message.body);
+          const msg: RemoteControlMsg = JSON.parse(message.body);
           if (msg) {
-            setRemoteConnectMsg(msg);
+            setRemoteControlMsg(msg);
           }
         } catch (e) {
           console.log('remoteControlMsg parse error : ', e);
@@ -145,6 +155,7 @@ export const RemoteClientProvider: React.FC<{
       { id: nextSubId },
     );
 
+    console.log('remoteConnectMsg : ', remoteConnectMsg);
     setRemoteCode(remoteConnectMsg.remoteCode);
     setRemoteInfos((_) => {
       return {
@@ -244,7 +255,7 @@ export const RemoteClientProvider: React.FC<{
    */
   const publishMessage = (pubStates: RemoteControlMsg) => {
     clientRef.current.publish({
-      destination: remoteInfos.pubPath,
+      destination: remoteInfosRef.current.pubPath,
       body: JSON.stringify(pubStates),
     });
   };

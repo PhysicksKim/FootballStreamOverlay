@@ -11,6 +11,10 @@ type TeamStyleContextType = {
 
 const TeamAStyleContext = createContext({} as TeamStyleContextType);
 
+/**
+ *
+ * @returns TeamAStyleContext { teamAStyle, updateTeamAStyle }
+ */
 export const useTeamAStyle = () => useContext(TeamAStyleContext);
 
 export const TeamAStyleProvider: React.FC<{ children: React.ReactNode }> = ({
