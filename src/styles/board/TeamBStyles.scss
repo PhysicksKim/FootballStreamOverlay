@@ -319,3 +319,22 @@
 .team-b-epl2324-wlv-third {
   @include teamBColor('epl2324-wlv', 'third');
 }
+
+// --- 기타 ----
+// 컵팀
+.team-b-etc-cup-home {
+  @include teamBColor('etc-cup');
+}
+.team-b-etc-cup-away,
+.team-b-etc-cup-third {
+  @include teamBColor('etc-cup', 'away');
+}
+
+// 기타 빈로고
+.team-b-etc-ety-home {
+  @include teamBColor('etc-ety');
+}
+.team-b-etc-ety-away,
+.team-b-etc-ety-third {
+  @include teamBColor('etc-ety', 'away');
+}

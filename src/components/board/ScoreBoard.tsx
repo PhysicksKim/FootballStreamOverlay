@@ -16,17 +16,18 @@ const calculateSpace = (name: string) => {
   let space = 0;
 
   for (const char of name) {
-    space += singleSpaceChars.test(char) ? 1.3 : 2;
+    space += singleSpaceChars.test(char) ? 1 + 1 / 6 : 2;
   }
 
   return space;
 };
 
 const spaceToFontSize = (space: number) => {
-  if (space <= 10) return '40px';
-  if (space <= 12) return '36px';
-  if (space <= 14) return '32px';
-  if (space <= 16) return '28px';
+  if (space <= 11.16) return '46px';
+  if (space <= 13.16) return '38px';
+  if (space <= 15.33) return '33px';
+  if (space <= 17.33) return '28px';
+  if (space <= 19.49) return '25px';
   return '24px';
 };
 
@@ -85,7 +86,7 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
           </div>
           <div className='team-score-wrapper team-a-score-wrapper'>
             <div
-              className='score-text text-outstroke'
+              className='score-text score-text-a text-outstroke'
               data-text={teamA.score}
               style={{ color: teamAStyle.fontColor }}
             >
@@ -97,7 +98,7 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
         <div className={`team-section team-b-format ${teamBStyleClassName}`}>
           <div className='team-score-wrapper team-b-score-wrapper'>
             <div
-              className='score-text text-outstroke'
+              className='score-text score-text-b text-outstroke'
               data-text={teamB.score}
               style={{ color: teamBStyle.fontColor }}
             >

@@ -42,19 +42,24 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
         />
       </div>
       <div className='font-radio-button-box'>
-        {Object.entries(fontInfos).map(([fontCode, { name }]) => (
-          <div key={fontCode}>
-            <input
-              type='radio'
-              id={`font-${fontCode}`}
-              name='font-choice'
-              value={fontCode}
-              onChange={() => updateGlobalFont(fontCode as FontEnum)}
-              checked={fontInfo.code === fontCode} // 현재 선택된 폰트와 비교
-            />
-            <label htmlFor={`font-${fontCode}`}>{name}</label>
-          </div>
-        ))}
+        {Object.entries(fontInfos).map(([fontCode, { name }]) =>
+          fontCode === FontEnum.TAEBEAK ? ( // 태백체 비활성화
+            <></>
+          ) : (
+            <div key={fontCode}>
+              <input
+                type='radio'
+                id={`font-${fontCode}`}
+                name='font-choice'
+                value={fontCode}
+                onChange={() => updateGlobalFont(fontCode as FontEnum)}
+                checked={fontInfo.code === fontCode}
+                disabled={fontCode === FontEnum.TAEBEAK}
+              />
+              <label htmlFor={`font-${fontCode}`}>{name}</label>
+            </div>
+          ),
+        )}
       </div>
     </div>
   );

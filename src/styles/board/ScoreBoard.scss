@@ -4,6 +4,7 @@
   width: 700px;
   height: 90px;
   border: 3px rgb(255, 255, 255) solid;
+  z-index: 999;
 
   .score-board-wrapper {
     box-sizing: border-box;
@@ -19,7 +20,7 @@
       height: 90px;
       width: 90px;
 
-      // 국기 이미지
+      // 팀 로고 이미지
       span {
         box-sizing: border-box;
         background-size: 100%;
@@ -51,7 +52,9 @@
       .team-text-wrapper {
         display: flex;
         align-items: center;
-        width: 500px;
+        justify-content: center;
+        // width: 500px;
+        padding-top: 3px;
 
         .team-text {
           text-wrap: nowrap;
@@ -64,8 +67,8 @@
     .team-b-format {
       box-sizing: border-box;
       width: 50%;
-      text-wrap: nowrap;
-      overflow: hidden;
+      // text-wrap: nowrap;
+      // overflow: hidden;
     }
   }
 }
@@ -81,10 +84,20 @@
 // }
 
 .score-text {
+  font-family: 'TAEBAEKfont';
+  font-weight: 100;
   position: relative;
-  font-size: 40px;
+  font-size: 50px;
   z-index: 999;
+  padding-top: 2px;
 }
+.score-text-a {
+  padding-right: 20px;
+}
+.score-text-b {
+  padding-left: 20px;
+}
+
 .team-text {
   position: relative;
   font-size: 30px;
@@ -111,7 +124,7 @@
 .team-a-text-wrapper,
 .team-b-text-wrapper {
   box-sizing: border-box;
-  flex-basis: 297px;
+  flex-basis: 288px;
   flex-grow: 0;
   flex-shrink: 0;
   overflow-x: hidden;
@@ -119,11 +132,11 @@
 
 .team-a-text-wrapper {
   flex-direction: row;
-  padding-left: 62px;
-  padding-right: 13px;
+  padding-left: 54px;
+  padding-right: 10px;
 }
 .team-b-text-wrapper {
   flex-direction: row-reverse;
-  padding-left: 13px;
-  padding-right: 62px;
+  padding-left: 10px;
+  padding-right: 53px;
 }
