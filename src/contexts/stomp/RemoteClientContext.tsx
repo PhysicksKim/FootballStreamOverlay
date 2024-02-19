@@ -35,6 +35,7 @@ export interface RemoteClient {
   remoteCode: string;
   isConnected: boolean;
   eventEmitterRef: React.MutableRefObject<EventEmitter>;
+  remoteConrolMsg: RemoteControlMsg | undefined;
   publishMessage: (pubStates: RemoteControlMsg) => void;
   emitRemoteControlMsg: () => void;
   hostClient: HostClient;
@@ -51,6 +52,7 @@ const RemoteClientContext = createContext<RemoteClient | undefined>(undefined);
  *   remoteCode,
  *   isConnected,
  *   eventEmitterRef,
+ *   remoteConrolMsg,
  *   publishMessage,
  *   emitRemoteControlMsg,
  *   hostClient,
@@ -321,6 +323,7 @@ export const RemoteClientProvider: React.FC<{
         remoteCode,
         isConnected,
         eventEmitterRef,
+        remoteConrolMsg,
         publishMessage,
         emitRemoteControlMsg,
         hostClient: {

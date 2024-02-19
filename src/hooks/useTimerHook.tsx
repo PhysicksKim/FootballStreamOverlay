@@ -3,6 +3,11 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EventEmitter } from 'events';
 import { Time } from '@src/types/types';
 
+export interface TimerMilliseconds {
+  milliseconds: number;
+  updateMiliseconds: (milliseconds: number) => void;
+}
+
 export interface TimerState {
   time: {
     min: number;
@@ -14,10 +19,16 @@ export interface TimerState {
   pause: () => void;
   set: (minutes?: number, seconds?: number) => void;
   isRunning: boolean;
+  /**
+   * milliseconds: number;
+   * updateMiliseconds: (milliseconds: number) => void;
+   */
+  mils: TimerMilliseconds;
 }
 
 const useTimerHook = (): [TimerState, EventEmitter] => {
   const [totalSeconds, setTotalSeconds] = useState(0);
+  const [milliseconds, setMilliseconds] = useState(0);
   const [eventEmitter] = useState(new EventEmitter());
   const [time, setTime] = useState<Time>({ min: 0, sec: 0 });
   const [isRunning, setIsRunning] = useState(false);
@@ -29,26 +40,42 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   const pauseTimes: number[] = [45 * 60, 90 * 60, 105 * 60, 120 * 60];
 
   const tick = useCallback(() => {
-    setTotalSeconds((prevSeconds) => {
-      const newSeconds = prevSeconds + 1;
+    let isRoundUp = false;
 
-      eventEmitter.emit('secondsUpdated');
-      checkForPauseTime(newSeconds);
-
-      if (newSeconds > 120 * 60) {
-        eventEmitter.emit('timeExceeded');
-        return 120 * 60;
+    setMilliseconds((prevMilliseconds) => {
+      if (prevMilliseconds >= 900) {
+        isRoundUp = true;
+        return 0;
+      } else {
+        return prevMilliseconds + 100;
       }
-      return newSeconds;
     });
+
+    if (isRoundUp) {
+      setTotalSeconds((prevSeconds) => {
+        const newSeconds = prevSeconds + 1;
+
+        eventEmitter.emit('secondsUpdated');
+        return newSeconds;
+      });
+    }
   }, [eventEmitter]);
 
+  useEffect(() => {
+    checkForPauseTime(totalSeconds);
+
+    if (totalSeconds > 120 * 60) {
+      eventEmitter.emit('timeExceeded');
+      setTotalSeconds(120 * 60);
+    }
+  }, [totalSeconds]);
+
   /**
-   * Precision-Timer 라이브러리를 사용해서 1초마다 tick 함수 실행
+   * Precision-Timer 라이브러리를 사용해서 0.1초마다 tick 함수 실행
    */
   const timer = useTimer(
     {
-      delay: 1000,
+      delay: 100,
       // fireOnStart: true,
       startImmediately: false,
     },
@@ -113,7 +140,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   }, []);
 
   // 하프 타임 도달한 경우 메인 타이머 멈춤
-  const checkForPauseTime = (nowSecs: number) => {
+  const checkForPauseTime = useCallback((nowSecs: number) => {
     const index = pauseTimes.indexOf(nowSecs);
 
     if (index !== -1) {
@@ -128,6 +155,12 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
 
       pause();
     }
+  }, []);
+
+  const updateMiliseconds: (milliseconds: number) => void = (
+    milliseconds: number,
+  ) => {
+    setMilliseconds(milliseconds);
   };
 
   return [
@@ -139,6 +172,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
       pause,
       set,
       isRunning,
+      mils: { milliseconds, updateMiliseconds },
     },
     eventEmitter,
   ];

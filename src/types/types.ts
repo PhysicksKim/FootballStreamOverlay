@@ -1,6 +1,11 @@
 import { TimerState } from '@src/hooks/useTimerHook';
 import { EventEmitter } from 'events';
 
+/**
+ *
+ * min: number;
+ * sec: number;
+ */
 export interface Time {
   min: number;
   sec: number;

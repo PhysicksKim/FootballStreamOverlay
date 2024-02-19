@@ -118,6 +118,7 @@ export interface RemoteControlMsg {
         min: number;
         sec: number;
       };
+      milliseconds: number;
       isRunning: boolean;
     };
     injuryTimer: {
@@ -125,6 +126,7 @@ export interface RemoteControlMsg {
         min: number;
         sec: number;
       };
+      milliseconds: number;
       isRunning: boolean;
     };
     injuryInfo: {
