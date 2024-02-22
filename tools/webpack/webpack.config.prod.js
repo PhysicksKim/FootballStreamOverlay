@@ -19,10 +19,8 @@ module.exports = {
   plugins: [
     ...require('./webpack.plugins'),
     new webpack.DefinePlugin({
-      'process.env.API_URL': JSON.stringify('https://production-server.com'),
-      'process.env.WEBSOCKET_URL': JSON.stringify(
-        'wss://production-server.com',
-      ),
+      'process.env.API_URL': JSON.stringify('https://gyechunsik.site'),
+      'process.env.WEBSOCKET_URL': JSON.stringify('wss://gyechunsik.site'),
     }),
   ],
   resolve: {
