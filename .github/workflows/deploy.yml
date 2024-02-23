@@ -36,7 +36,8 @@ jobs:
 
       - name: Copy Files
         run: |
-          rm -rf pages_repo/docs/*
+          rm -rf pages_repo/docs/*.*
+          rm -rf pages_repo/docs/assets
           cp -r dist/* pages_repo/docs/
 
       - name: Commit and Push
