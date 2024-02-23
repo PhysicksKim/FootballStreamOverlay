@@ -34,6 +34,7 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
             matchName={matchName}
           />
           <RemoteReceiver
+            isShowInjuryTimer={isShowInjuryTimer}
             disappearInjuryTimer={disappearInjuryTimer}
             showInjuryTimer={showInjuryTimer}
             updateGivenInjuryTime={updateGivenInjuryTime}

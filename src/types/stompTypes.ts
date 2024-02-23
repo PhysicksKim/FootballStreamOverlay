@@ -106,6 +106,15 @@ export interface RemoteMessage {
   };
 }
 
+export type RemoteTimerMsg = {
+  time: {
+    min: number;
+    sec: number;
+  };
+  milliseconds: number;
+  isRunning: boolean;
+};
+
 export interface RemoteControlMsg {
   code: number;
   message: string;
@@ -113,22 +122,8 @@ export interface RemoteControlMsg {
     date: Date;
   };
   data: {
-    mainTimer: {
-      time: {
-        min: number;
-        sec: number;
-      };
-      milliseconds: number;
-      isRunning: boolean;
-    };
-    injuryTimer: {
-      time: {
-        min: number;
-        sec: number;
-      };
-      milliseconds: number;
-      isRunning: boolean;
-    };
+    mainTimer: RemoteTimerMsg;
+    injuryTimer: RemoteTimerMsg;
     injuryInfo: {
       givenInjuryTime: number;
       isShowInjuryTimer: boolean;
