@@ -1,3 +1,5 @@
+@import '@styles/Themes.scss';
+
 .control-links-container {
   position: fixed;
   top: -37px;
@@ -25,6 +27,7 @@
 .active-link {
   transition: 0.1s ease-in-out background-color;
   background-color: rgb(227, 227, 227);
+  // background-color: $beige-bright1;
   color: rgb(0, 0, 0);
   border-bottom: 3px rgb(64, 49, 231) solid;
 }
@@ -32,5 +35,6 @@
 .not-active-link {
   transition: 0.1s ease-in-out background-color;
   background-color: rgb(72, 72, 72);
+  // background-color: $beige-dark1;
   color: rgb(198, 191, 191);
 }

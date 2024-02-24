@@ -1,6 +1,6 @@
 import React from 'react';
 import '@styles/control/ControlPanel.scss';
-import TimerControlPanel from './TimerControlPanel';
+import TimerControlPanel from './timerPanel/TimerControlPanel';
 import BoardControlPanel from './BoardControlPanel';
 
 interface LiveControlTabProps {

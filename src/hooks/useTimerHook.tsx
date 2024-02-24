@@ -150,10 +150,11 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
         'firstExtraTimeStop',
         'secondExtraTimeStop',
       ];
-      eventEmitter.emit(events[index]);
-      eventEmitter.emit('halfTimeStop'); // 추가시간 표시는 halfTimeStop 이벤트로 인식
-
-      pause();
+      if (isRunning) {
+        eventEmitter.emit(events[index]);
+        eventEmitter.emit('halfTimeStop'); // 추가시간 표시는 halfTimeStop 이벤트로 인식
+        pause();
+      }
     }
   }, []);
 

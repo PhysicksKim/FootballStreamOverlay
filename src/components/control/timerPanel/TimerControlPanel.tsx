@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEye,
-  faEyeSlash,
-  faMinus,
-  faPause,
-  faPlay,
-  faPlus,
-  faReply,
-} from '@fortawesome/free-solid-svg-icons';
 import { Time } from '@src/types/types';
-import '../../styles/control/TimerControlPanel.scss';
+import '@styles/control/timerPanel/TimerControlPanel.scss';
 import TimerPresetButtons from './TimerPresetButtons';
-import TimerTitleBox from './TimerTitleBox';
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
 import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
+import MainTimerBox from './MainTimerBox';
+import InjuryTimerBox from './InjuryTimerBox';
 
 export interface TimerPresets {
   wait: {
@@ -120,7 +111,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     }
     setMainSeconds(newValue);
   };
-  // #endregion
 
   // #region Injury Timer
   const toggleInjuryTimerRunning = () => {
@@ -180,7 +170,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   const stopInjuryTimer = () => {
     injuryTimerManager.timer.stop();
-    // setIsInjuryTimerRunning(false);
     disappearInjuryTimer();
   };
 
@@ -291,184 +280,37 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   return (
     <div className='timer-control-panel-box'>
       <div className='timer-time-set-box'>
-        <TimerTitleBox
+        {/* <TimerTitleBox
           updateMatchName={updateMatchName}
           changeGivenInjuryTime={changeGivenInjuryTime}
-        />
-        <div className='main-timer-box'>
-          <div className='timer-box-index main-timer-box-index'>
-            메인 타이머
-          </div>
-          <div className='minsec-set-box minutes-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='main-minutes-input'>분</label>
-              <button
-                className='input-plus minutes-plus-btn'
-                onClick={(e) =>
-                  setMainMinutes((prev) => (prev + 1 <= 120 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus minutes-minus-btn'
-                onClick={(e) =>
-                  setMainMinutes((prev) => (prev - 1 >= 0 ? prev - 1 : 120))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                key='main-minutes-input'
-                id='main-minutes-input'
-                className='minutes-input'
-                type='number'
-                placeholder='Minutes'
-                value={Number(mainMinutes).toString()}
-                onChange={(e) => updateMainMinutes(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='minsec-set-box seconds-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='main-seconds-input'>초</label>
-              <button
-                className='input-plus seconds-plus-btn'
-                onClick={(e) =>
-                  setMainSeconds((prev) => (prev + 1 <= 59 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus seconds-minus-btn'
-                onClick={(e) =>
-                  setMainSeconds((prev) => (prev - 1 >= 0 ? prev - 1 : 59))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                key='main-seconds-input'
-                id='main-seconds-input'
-                className='seconds-input'
-                type='number'
-                placeholder='Seconds'
-                value={Number(mainSeconds).toString()}
-                onChange={(e) => updateMainSeconds(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='playbtn-set-box'>
-            <button onClick={startMainTimer}>
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-            <button onClick={toggleMainTimerRunning}>
-              {/* {isMainTimerRunning ? ( */}
-              {mainTimerManager.timer.isRunning ? (
-                <FontAwesomeIcon icon={faPause} />
-              ) : (
-                <FontAwesomeIcon icon={faReply} />
-              )}
-            </button>
-          </div>
-        </div>
-        <div className='injury-timer-box'>
-          <div className='timer-box-index injury-timer-box-index'>
-            추가 타이머
-          </div>
-          <div className='minsec-set-box minutes-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='injury-minutes-input'>분</label>
-              <button
-                className='input-plus minutes-plus-btn'
-                onClick={(e) =>
-                  setInjuryMinutes((prev) => (prev + 1 <= 120 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus minutes-minus-btn'
-                onClick={(e) =>
-                  setInjuryMinutes((prev) => (prev - 1 >= 0 ? prev - 1 : 120))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                key='injury-minutes-input'
-                id='injury-minutes-input'
-                className='minutes-input'
-                type='number'
-                placeholder='Minutes'
-                value={Number(injuryMinutes).toString()}
-                onChange={(e) => updateInjuryMinutes(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='minsec-set-box seconds-set-box'>
-            <div className='minsec-button-box'>
-              <label htmlFor='injury-seconds-input'>초</label>
-              <button
-                className='input-plus seconds-plus-btn'
-                onClick={(e) =>
-                  setInjurySeconds((prev) => (prev + 1 <= 59 ? prev + 1 : 0))
-                }
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <button
-                className='input-minus seconds-minus-btn'
-                onClick={(e) =>
-                  setInjurySeconds((prev) => (prev - 1 >= 0 ? prev - 1 : 59))
-                }
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-            </div>
-            <div className='minsec-input-box'>
-              <input
-                key='injury-seconds-input'
-                id='injury-seconds-input'
-                className='seconds-input'
-                type='number'
-                placeholder='Seconds'
-                value={Number(injurySeconds).toString()}
-                onChange={(e) => updateInjurySeconds(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='playbtn-set-box'>
-            <button onClick={startInjuryTimerWithTime}>
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-            <button onClick={toggleInjuryTimerRunning}>
-              {/* {isInjuryTimerRunning ? ( */}
-              {injuryTimerManager.timer.isRunning ? (
-                <FontAwesomeIcon icon={faPause} />
-              ) : (
-                <FontAwesomeIcon icon={faReply} />
-              )}
-            </button>
-            <button onClick={toggleShowInjuryTimer}>
-              {isShowInjuryTimer ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
-            </button>
-          </div>
-        </div>
+        /> */}
+        <div className='timer-boxes-title'>타이머 설정</div>
+        <MainTimerBox
+          mainMinutes={mainMinutes}
+          setMainMinutes={setMainMinutes}
+          updateMainMinutes={updateMainMinutes}
+          mainSeconds={mainSeconds}
+          setMainSeconds={setMainSeconds}
+          updateMainSeconds={updateMainSeconds}
+          startMainTimer={startMainTimer}
+          toggleMainTimerRunning={toggleMainTimerRunning}
+          isRunning={mainTimerManager.timer.isRunning}
+        ></MainTimerBox>
+        <InjuryTimerBox
+          injuryMinutes={injuryMinutes}
+          setInjuryMinutes={setInjuryMinutes}
+          updateInjuryMinutes={updateInjuryMinutes}
+          injurySeconds={injurySeconds}
+          setInjurySeconds={setInjurySeconds}
+          updateInjurySeconds={updateInjurySeconds}
+          startInjuryTimerWithTime={startInjuryTimerWithTime}
+          toggleInjuryTimerRunning={toggleInjuryTimerRunning}
+          isRunning={injuryTimerManager.timer.isRunning}
+          toggleShowInjuryTimer={toggleShowInjuryTimer}
+          isShowInjuryTimer={isShowInjuryTimer}
+        ></InjuryTimerBox>
       </div>
       <div className='timer-preset-set-box'>
-        <div className='timer-preset-index'># 타이머 프리셋</div>
         <TimerPresetButtons presets={presets} />
       </div>
     </div>

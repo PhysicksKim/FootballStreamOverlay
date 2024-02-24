@@ -1,8 +1,10 @@
+@import '@styles/Themes.scss';
+
 .match-name-board-container {
   margin-top: 100px;
   display: block;
   width: auto;
-  background-color: #f7f1e3;
+  background-color: $beige-bright2;
   padding-top: 3px;
   padding-left: 20px;
   padding-right: 20px;

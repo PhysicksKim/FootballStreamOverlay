@@ -1,4 +1,3 @@
-import { FontEnum, fontInfos } from '@src/classes/FontEnum';
 import { useFont } from '@src/contexts/FontContext';
 import React from 'react';
 import '@styles/control/TimerTitleBox.scss';
@@ -13,7 +12,6 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
   updateMatchName,
   changeGivenInjuryTime,
 }) => {
-  const { fontInfo, updateGlobalFont } = useFont();
   return (
     <div className='timer-title-box'>
       <div className='match-title-input-box'>
@@ -42,30 +40,6 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
           placeholder='추가시간'
           onChange={(e) => changeGivenInjuryTime(e.target.value)}
         />
-      </div>
-      <div className='font-radio-button-box'>
-        {Object.entries(fontInfos).map(([fontCode, { name }]) =>
-          fontCode === FontEnum.TAEBEAK ? null : ( // 태백체 비활성화
-            <div key={fontCode}>
-              <input
-                key={`fontCodeInput-${fontCode}`}
-                type='radio'
-                id={`font-${fontCode}`}
-                name='font-choice'
-                value={fontCode}
-                onChange={() => updateGlobalFont(fontCode as FontEnum)}
-                checked={fontInfo.code === fontCode}
-                disabled={fontCode === FontEnum.TAEBEAK}
-              />
-              <label
-                key={`fontCodeLabel-${fontCode}`}
-                htmlFor={`font-${fontCode}`}
-              >
-                {name}
-              </label>
-            </div>
-          ),
-        )}
       </div>
     </div>
   );

@@ -1,0 +1,297 @@
+@import '@styles/FontVariables.scss';
+@import '@styles/Themes.scss';
+
+.timer-control-panel-box {
+  display: flex;
+  flex-direction: row;
+  background-color: $beige-bright2;
+  padding: 7px;
+  border-radius: 7px;
+
+  > div {
+    margin-right: 5px;
+  }
+}
+
+.timer-preset-set-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-time-set-box,
+.timer-preset-set-box {
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background: rgb(133, 132, 130);
+  box-shadow: $beige-back-black 0px 0px 2px 1px;
+}
+
+.timer-boxes-title {
+  font-size: 14px;
+  text-align: start;
+  box-sizing: border-box;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  background-color: $beige-back-black;
+  color: $beige-bright2;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.main-timer-box,
+.injury-timer-box {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  margin-top: 2px;
+
+  .timer-box-index {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $beige-black;
+    border-radius: 5px;
+    margin-right: 5px;
+
+    .index-text-wrapper {
+      color: $beige-bright2;
+      box-sizing: border-box;
+      padding: 5px;
+      padding-left: 10px;
+      padding-right: 10px;
+      border-radius: 5px;
+    }
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 50px;
+    padding-top: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    box-shadow: none;
+    border: rgb(83, 82, 82) solid 1px;
+  }
+
+  .minsec-set-box {
+    position: relative;
+    .minsec-button-box {
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      width: 100%;
+      margin-top: 1px;
+
+      > button {
+        width: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      > button:nth-child(1) {
+        margin-top: 2px;
+        padding-top: 2px;
+        border-radius: 9px 0 0 9px;
+      }
+      > button:nth-child(2) {
+        margin-top: 2px;
+        border-radius: 0 9px 9px 0;
+      }
+    }
+    .minsec-input-box {
+      > input {
+        background-color: $beige-dark1;
+        color: white;
+        text-align: center;
+        font-size: 18px;
+      }
+    }
+  }
+
+  .minutes-set-box {
+    .minsec-button-box {
+      .minutes-plus-btn {
+        margin-left: 2px;
+      }
+    }
+    .minsec-input-box {
+      > input {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-right: $beige-dark1 3px solid;
+        margin-right: 0;
+        padding-left: 10px;
+      }
+    }
+  }
+  .seconds-set-box {
+    .minsec-button-box {
+      .seconds-minus-btn {
+        margin-right: 2px;
+      }
+    }
+    .minsec-input-box {
+      > input {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-left: $beige-dark2 1px dashed;
+        margin-left: 0;
+        padding-right: 8px;
+      }
+    }
+  }
+
+  // 재생 버튼 박스
+  .timer-control-btn-set-box {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    .playbtn-set-box {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      > button {
+        width: 35px;
+        height: 50%;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        background-color: $beige-dark1;
+        color: $beige-bright2;
+        margin-left: 3px;
+        margin-right: 3px;
+      }
+      > button:nth-child(1) {
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+      }
+      > button:nth-child(2) {
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+      }
+    }
+    .injury-showbtn-set-box {
+      display: flex;
+      flex-direction: column-reverse;
+
+      > button {
+        height: 30px;
+        border-radius: 50%;
+        background-color: $beige-dark1;
+        color: $beige-bright2;
+        padding-top: 3px;
+      }
+      > button:hover {
+        background-color: $beige-dark2;
+      }
+    }
+  }
+}
+
+.injury-showbtn-set-box {
+  display: flex;
+  // align-items: end;
+  flex-direction: column-reverse;
+
+  width: 30px;
+  height: 100%;
+  overflow: hidden;
+}
+
+// ----------------- preset buttons -----------------
+
+.gametime-preset-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center; // end 시 오른쪽에 preset 들 붙음
+  justify-content: center;
+  position: relative;
+
+  .timer-preset-index {
+    font-size: 14px;
+    text-align: start;
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+    padding-left: 10px;
+    background-color: $beige-back-black;
+    color: $beige-bright2;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  .preset-flex-box {
+    display: flex;
+    flex-direction: column;
+
+    .preset-first,
+    .preset-second,
+    .preset-overfirst,
+    .preset-oversecond {
+      display: flex;
+      flex-direction: row;
+
+      .preset-title {
+        padding: 3px;
+        box-sizing: border-box;
+        border: $beige-dark1 solid 1px;
+        border-radius: 5px 0 0 5px;
+        background-color: $beige-back-black;
+        color: $beige-bright2;
+      }
+
+      button {
+        padding: 3px;
+        box-sizing: border-box;
+        border: $beige-dark1 solid 1px;
+        border-radius: 0;
+        background-color: $beige-dark1;
+        border: $beige-dark2 solid 2px;
+        border-right: $beige-dark2 solid 2px;
+        color: $beige-bright2;
+        font-size: 16px;
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+
+      button:hover {
+        background-color: $beige-dark2;
+        border: $beige-bright2 solid 2px;
+        cursor: pointer;
+      }
+
+      :last-child {
+        border-radius: 0 5px 5px 0;
+      }
+    }
+  }
+}
+
+// input type=number 증감 화살표 제거
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button {
+  box-sizing: border-box;
+  transition: 0.15s;
+  background-color: rgba(83, 82, 82, 0.471);
+  border: rgb(83, 82, 82) solid 1px;
+  color: white;
+  font-size: 13px;
+}
+button:hover {
+  background-color: rgb(93, 92, 92);
+  border: $beige-bright2 solid 1px;
+  cursor: pointer;
+}
