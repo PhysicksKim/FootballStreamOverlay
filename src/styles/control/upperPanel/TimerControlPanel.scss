@@ -7,6 +7,9 @@
   background-color: $beige-bright2;
   padding: 7px;
   border-radius: 7px;
+  align-items: stretch;
+
+  flex-grow: 1;
 
   > div {
     margin-right: 5px;
@@ -70,8 +73,8 @@
 
   input {
     box-sizing: border-box;
-    width: 50px;
-    padding-top: 25px;
+    width: 60px;
+    padding-top: 33px;
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 5px;
@@ -94,10 +97,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 18px;
       }
       > button:nth-child(1) {
         margin-top: 2px;
-        padding-top: 2px;
+        padding-top: 4px;
         border-radius: 9px 0 0 9px;
       }
       > button:nth-child(2) {
@@ -110,7 +114,7 @@
         background-color: $beige-dark1;
         color: white;
         text-align: center;
-        font-size: 18px;
+        font-size: 20px;
       }
     }
   }
@@ -176,6 +180,12 @@
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
       }
+      > button:hover {
+        background-color: rgb(178, 177, 177);
+        color: $beige-dark1;
+        border: $beige-bright2 solid 1px;
+        cursor: pointer;
+      }
     }
     .injury-showbtn-set-box {
       display: flex;
@@ -189,7 +199,10 @@
         padding-top: 3px;
       }
       > button:hover {
-        background-color: $beige-dark2;
+        background-color: rgb(178, 177, 177);
+        color: $beige-dark1;
+        border: $beige-bright2 solid 1px;
+        cursor: pointer;
       }
     }
   }
@@ -240,7 +253,7 @@
       flex-direction: row;
 
       .preset-title {
-        padding: 3px;
+        padding: 6px;
         box-sizing: border-box;
         border: $beige-dark1 solid 1px;
         border-radius: 5px 0 0 5px;
@@ -263,13 +276,14 @@
       }
 
       button:hover {
-        background-color: $beige-dark2;
+        background-color: rgb(178, 177, 177);
+        color: $beige-dark1;
         border: $beige-bright2 solid 2px;
         cursor: pointer;
       }
 
       :last-child {
-        border-radius: 0 5px 5px 0;
+        border-radius: 0 7px 7px 0;
       }
     }
   }
@@ -291,7 +305,8 @@ button {
   font-size: 13px;
 }
 button:hover {
-  background-color: rgb(93, 92, 92);
+  background-color: rgb(178, 177, 177);
+  color: $beige-dark1;
   border: $beige-bright2 solid 1px;
   cursor: pointer;
 }

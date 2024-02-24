@@ -27,12 +27,12 @@ module.exports = {
   devtool: 'cheap-module-source-map',
   devServer: {
     open: true,
-    https: {
-      key: fs.readFileSync(
-        path.resolve(__dirname, '../../localhost+1-key.pem'),
-      ), // 개인 키 경로
-      cert: fs.readFileSync(path.resolve(__dirname, '../../localhost+1.pem')), // 인증서 경로
-    },
+    // https: {
+    //   key: fs.readFileSync(
+    //     path.resolve(__dirname, '../../localhost+1-key.pem'),
+    //   ), // 개인 키 경로
+    //   cert: fs.readFileSync(path.resolve(__dirname, '../../localhost+1.pem')), // 인증서 경로
+    // },
   },
   optimization: {
     splitChunks: {

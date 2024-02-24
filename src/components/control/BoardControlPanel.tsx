@@ -10,12 +10,13 @@ import RemotePubPanel from './RemotePubPanel';
 const BoardControlPanel: React.FC<Record<string, never>> = () => {
   return (
     <div className='board-control-panel-wrapper'>
-      <div className='score-control-panel-box'>
+      {/* <div className='score-control-panel-box'>
         <ScoreControlPanel />
       </div>
       <div className='info-panel-box'>
         <InfoPanel />
-      </div>
+      </div> */}
+      <div>스코어 버튼, 주어진 인저리 타임 지정</div>
       <div className='remote-pub-box'>
         <RemotePubPanel />
       </div>

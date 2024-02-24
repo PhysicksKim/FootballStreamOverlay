@@ -1,6 +1,6 @@
 {
   "name": "football-score-board",
-  "version": "1.1.6",
+  "version": "1.2.0-beta",
   "description": "score and match time board for streaming overlay - gyechunhoe theme",
   "license": "MIT",
   "scripts": {

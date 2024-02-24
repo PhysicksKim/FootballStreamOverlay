@@ -1,17 +1,13 @@
-import { useFont } from '@src/contexts/FontContext';
 import React from 'react';
-import '@styles/control/TimerTitleBox.scss';
+import '@styles/control/upperPanel/TimerTitleBox.scss';
 import { defaultMatchName } from '@src/classes/team/DefaultScoreBoardValue';
+import TeamNameBox from './TeamNameBox';
 
 export interface TimerTitleBoxProps {
   updateMatchName: (matchName: string) => void;
-  changeGivenInjuryTime: (value: string) => void;
 }
 
-const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
-  updateMatchName,
-  changeGivenInjuryTime,
-}) => {
+const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
   return (
     <div className='timer-title-box'>
       <div className='match-title-input-box'>
@@ -31,16 +27,8 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({
           }}
         />
       </div>
-      <div className='given-injury-input-box'>
-        <div className='given-injury-input-index index-text'>추가 시간</div>
-        <input
-          id='given-injury-time-input'
-          className='given-injury-time-input'
-          type='number'
-          placeholder='추가시간'
-          onChange={(e) => changeGivenInjuryTime(e.target.value)}
-        />
-      </div>
+
+      <TeamNameBox />
     </div>
   );
 };

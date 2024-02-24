@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Time } from '@src/types/types';
-import '@styles/control/timerPanel/TimerControlPanel.scss';
+import '@styles/control/upperPanel/TimerControlPanel.scss';
 import TimerPresetButtons from './TimerPresetButtons';
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
 import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
 import MainTimerBox from './MainTimerBox';
 import InjuryTimerBox from './InjuryTimerBox';
+import TimerTitleBox from './TimerTitleBox';
 
 export interface TimerPresets {
   wait: {
@@ -280,10 +281,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   return (
     <div className='timer-control-panel-box'>
       <div className='timer-time-set-box'>
-        {/* <TimerTitleBox
-          updateMatchName={updateMatchName}
-          changeGivenInjuryTime={changeGivenInjuryTime}
-        /> */}
         <div className='timer-boxes-title'>타이머 설정</div>
         <MainTimerBox
           mainMinutes={mainMinutes}
@@ -312,6 +309,13 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
       </div>
       <div className='timer-preset-set-box'>
         <TimerPresetButtons presets={presets} />
+      </div>
+
+      <div className='match-title-set-box'>
+        <TimerTitleBox
+          updateMatchName={updateMatchName}
+          // changeGivenInjuryTime={changeGivenInjuryTime}
+        />
       </div>
     </div>
   );

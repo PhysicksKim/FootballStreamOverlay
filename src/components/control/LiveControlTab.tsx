@@ -1,6 +1,6 @@
 import React from 'react';
 import '@styles/control/ControlPanel.scss';
-import TimerControlPanel from './timerPanel/TimerControlPanel';
+import TimerControlPanel from './upperPanel/TimerControlPanel';
 import BoardControlPanel from './BoardControlPanel';
 
 interface LiveControlTabProps {
@@ -29,6 +29,7 @@ const LiveControlTab: React.FC<LiveControlTabProps> = ({
           updateMatchName={updateMatchName}
         />
       </div>
+      {/* <BoardControlPanel /> */}
       <div className='board-control-wrapper'>
         <BoardControlPanel />
       </div>

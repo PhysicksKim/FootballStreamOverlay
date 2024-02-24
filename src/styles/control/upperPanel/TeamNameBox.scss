@@ -1,0 +1,61 @@
+@import '@styles/Themes.scss';
+
+.team-name-change-box {
+  // background-color: $beige-dark2;
+  padding: 0;
+  margin-top: 7px;
+}
+.team-name-change-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  margin: 5px 0;
+}
+.font-is-black-wrapper {
+  background-color: $beige-middle;
+  padding: 5px 5px;
+  border-radius: 5px;
+  margin-left: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.team-name-input-box {
+  position: relative;
+  margin-top: 5px;
+
+  > label {
+    position: absolute;
+    box-sizing: border-box;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    border: none;
+    font-size: 16px;
+    color: #fff;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+
+  > input {
+    width: 137px;
+    height: 32px;
+    font-size: 16px;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 10px;
+    background-color: $beige-dark2;
+    border: 1.2px solid $beige-bright1;
+    outline: none;
+  }
+
+  > input:focus ~ label,
+  > input:valid ~ label {
+    top: 0;
+    font-size: 12px;
+    background-color: $beige-dark2;
+    border-radius: 3px;
+  }
+}
