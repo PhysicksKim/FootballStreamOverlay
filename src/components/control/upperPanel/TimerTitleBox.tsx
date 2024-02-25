@@ -1,7 +1,8 @@
 import React from 'react';
-import '@styles/control/upperPanel/TimerTitleBox.scss';
 import { defaultMatchName } from '@src/classes/team/DefaultScoreBoardValue';
 import TeamNameBox from './TeamNameBox';
+
+import '@styles/control/upperPanel/TimerTitleBox.scss';
 
 export interface TimerTitleBoxProps {
   updateMatchName: (matchName: string) => void;

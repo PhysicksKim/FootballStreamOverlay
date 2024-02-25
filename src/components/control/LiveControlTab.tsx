@@ -1,7 +1,7 @@
 import React from 'react';
 import '@styles/control/ControlPanel.scss';
 import TimerControlPanel from './upperPanel/TimerControlPanel';
-import BoardControlPanel from './BoardControlPanel';
+import BoardControlPanel from './lowerPanel/BoardControlPanel';
 
 interface LiveControlTabProps {
   showInjuryTimer: () => void;

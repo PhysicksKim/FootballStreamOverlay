@@ -28,5 +28,31 @@
 }
 
 .main-time-text {
-  margin-bottom: 6px;
+  margin-bottom: 7px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  > div {
+    box-sizing: border-box;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .main-timer-1,
+  .main-timer-2,
+  .main-timer-4,
+  .main-timer-5 {
+    width: 19px;
+  }
+  .main-timer-3 {
+    width: 14px;
+  }
+  .main-timer-1 {
+    margin-left: 20px;
+    text-align: right;
+  }
+  .main-timer-5 {
+    margin-right: 20px;
+    text-align: left;
+  }
 }

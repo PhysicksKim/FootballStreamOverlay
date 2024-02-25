@@ -27,8 +27,7 @@
   box-sizing: border-box;
   padding: 10px;
   border-radius: 5px;
-  box-sizing: border-box;
-  background: rgb(133, 132, 130);
+  background: $background-box;
   box-shadow: $beige-back-black 0px 0px 2px 1px;
 }
 
@@ -258,7 +257,7 @@
         border: $beige-dark1 solid 1px;
         border-radius: 5px 0 0 5px;
         background-color: $beige-back-black;
-        color: $beige-bright2;
+        color: $beige-middle;
       }
 
       button {
@@ -300,7 +299,7 @@ button {
   box-sizing: border-box;
   transition: 0.15s;
   background-color: rgba(83, 82, 82, 0.471);
-  border: rgb(83, 82, 82) solid 1px;
+  border: $btn-updown solid 1px;
   color: white;
   font-size: 13px;
 }

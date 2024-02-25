@@ -1,0 +1,93 @@
+@import '@styles/Themes.scss';
+
+.remote-pub-box-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  border-radius: 5px;
+  box-sizing: border-box;
+  background: $background-box;
+  box-shadow: $beige-back-black 0px 0px 2px 1px;
+
+  .remote-pub-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+
+    .remote-title {
+      width: 100%;
+
+      .remote-title-text {
+        font-size: 14px;
+        text-align: start;
+        box-sizing: border-box;
+        border-radius: 5px;
+        width: 100%;
+        margin-bottom: 5px;
+        padding-left: 10px;
+        background-color: $beige-back-black;
+        color: $beige-bright2;
+        padding-top: 3px;
+        padding-bottom: 3px;
+      }
+    }
+
+    .remote-connect-status {
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+      padding: 7px 10px;
+      background-color: $beige-dark2;
+      border-radius: 5px;
+
+      .remote-connect-status-title {
+        color: $beige-bright2;
+        margin-right: 10px;
+      }
+
+      * {
+        margin-right: 5px;
+      }
+
+      .remote-connect-status-icon {
+        position: relative;
+        .remote-slash-hidden {
+          visibility: hidden;
+        }
+        .slash {
+          position: absolute;
+          color: rgb(253, 66, 66);
+          left: 0;
+        }
+      }
+    }
+
+    .remote-send-btn {
+      // background-color: $beige-dark2;
+      padding: 5px 0;
+
+      > button {
+        padding: 4px 10px;
+        border-radius: 5px;
+      }
+    }
+  }
+}
+
+$text-outline: #dd3a2820;
+
+.remote-disconnect {
+  color: #f14532;
+  text-shadow: -1px -1px 0 $text-outline, 1px -1px 0 $text-outline,
+    -1px 1px 0 $text-outline, 1px 1px 0 $text-outline;
+}
+.remote-connect {
+  color: #0c2ce3;
+}

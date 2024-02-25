@@ -5,6 +5,7 @@ import { useTeamAStyle } from '@src/contexts/teams/TeamAStyleProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useTeamBStyle } from '@src/contexts/teams/TeamBStyleProvider';
 import { teamCodeToTeamName } from '@src/classes/team/Category';
+
 import '@styles/control/upperPanel/TeamNameBox.scss';
 
 const TeamNameBox = () => {
@@ -50,7 +51,7 @@ const TeamNameBox = () => {
       <div className='team-name-change-wrapper'>
         <div className='team-name-input-box team-a-name-box'>
           <input type='text' required={true} onChange={handleTeamANameChange} />
-          <label htmlFor=''>Team A 이름</label>
+          <label htmlFor=''>Team A 이름 변경</label>
         </div>
         <div className='font-is-black-wrapper'>
           <div>검은색 폰트</div>
@@ -66,7 +67,7 @@ const TeamNameBox = () => {
       <div className='team-name-change-wrapper'>
         <div className='team-name-input-box team-b-name-box'>
           <input type='text' required={true} onChange={handleTeamBNameChange} />
-          <label htmlFor=''>Team B 이름</label>
+          <label htmlFor=''>Team B 이름 변경</label>
         </div>
         <div className='font-is-black-wrapper'>
           <div>검은색 폰트</div>

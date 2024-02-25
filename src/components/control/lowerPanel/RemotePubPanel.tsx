@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import '@styles/control/RemotePubPanel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTowerBroadcast, faSlash } from '@fortawesome/free-solid-svg-icons';
 import { useRemoteClient } from '@src/contexts/stomp/RemoteClientContext';
+
+import '@styles/control/lowerPanel/RemotePubPanel.scss';
 
 type RemoteStatus = '끊어짐' | '연결됨';
 
@@ -31,9 +32,9 @@ const RemotePubPanel: React.FC<Record<string, never>> = () => {
 
   return (
     <div className='remote-pub-box-container'>
-      <div className='remote-pub-content'>
+      <div className='remote-pub-wrapper'>
         <div className='remote-title'>
-          <div className='remote-title-text'>원격 연결</div>
+          <div className='remote-title-text'>원격제어</div>
         </div>
         <div className='remote-connect-status'>
           <div className='remote-connect-status-title'>상태</div>

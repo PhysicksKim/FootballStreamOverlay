@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Time } from '@src/types/types';
-import '@styles/control/upperPanel/TimerControlPanel.scss';
-import TimerPresetButtons from './TimerPresetButtons';
+
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
 import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
+
+import TimerPresetButtons from './TimerPresetButtons';
 import MainTimerBox from './MainTimerBox';
 import InjuryTimerBox from './InjuryTimerBox';
 import TimerTitleBox from './TimerTitleBox';
+
+import { Time } from '@src/types/types';
+
+import '@styles/control/upperPanel/TimerControlPanel.scss';
 
 export interface TimerPresets {
   wait: {

@@ -19,6 +19,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  > input[type='checkbox'] {
+    height: 16px;
+    width: 16px;
+  }
 }
 
 .team-name-input-box {
@@ -33,7 +38,7 @@
     transform: translateY(-50%);
     border: none;
     font-size: 16px;
-    color: #fff;
+    color: $beige-middle;
     padding: 0 5px;
     pointer-events: none;
     transition: all 0.3s ease;

@@ -16,7 +16,7 @@
   padding: 10px;
   border-radius: 5px;
   box-sizing: border-box;
-  background: rgb(133, 132, 130);
+  background: $background-box;
   box-shadow: $beige-back-black 0px 0px 2px 1px;
 
   .timer-title-box {
@@ -46,6 +46,7 @@
     }
     .match-title-text-input::placeholder {
       color: $beige-middle;
+      padding-left: 3px;
     }
   }
 }
