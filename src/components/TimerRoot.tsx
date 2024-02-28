@@ -20,15 +20,14 @@ import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerMa
 import RouteControlPanels from './RouteControlPanels';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
+import { defaultMatchName } from '@src/classes/team/DefaultScoreBoardValue';
 
 const TimerRoot = () => {
   // 글로벌 폰트
   const { fontInfo, updateGlobalFont } = useFont();
 
   // 대회 종류
-  const [matchName, setMatchName] = useState(
-    '2023-24 잉글랜드 프리미어리그 25R',
-  );
+  const [matchName, setMatchName] = useState(defaultMatchName);
 
   // 타이머
   const mainTimerManager = useMainTimerManager();
