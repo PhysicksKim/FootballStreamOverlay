@@ -80,9 +80,12 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     } else {
       mainTimerManager.startTimer({ min: mainMinutes, sec: mainSeconds });
     }
-    if (isShowInjuryTimer) {
+    if (isShowInjuryTimer || injuryTimerManager.timer.isRunning) {
       stopInjuryTimer();
       disappearInjuryTimer();
+      setTimeout(() => {
+        injuryTimerManager.setTimer({ min: 0, sec: 0 });
+      }, 1000);
     }
   };
 

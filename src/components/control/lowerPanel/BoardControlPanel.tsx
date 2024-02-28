@@ -4,6 +4,7 @@ import RemotePubPanel from './RemotePubPanel';
 import ScoreInjuryBox from './ScoreInjuryBox';
 
 import '@styles/control/lowerPanel/BoardControlPanel.scss';
+import VoidPubPanel from './VoidPubPanel';
 
 const BoardControlPanel: React.FC<Record<string, never>> = () => {
   return (
@@ -13,6 +14,9 @@ const BoardControlPanel: React.FC<Record<string, never>> = () => {
       </div>
       <div className='remote-pub-box'>
         <RemotePubPanel />
+      </div>
+      <div className='void-pub-box'>
+        <VoidPubPanel />
       </div>
     </div>
   );

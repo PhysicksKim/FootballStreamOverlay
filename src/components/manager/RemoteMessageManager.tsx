@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRemoteClient } from '@src/contexts/stomp/RemoteClientContext';
 import RemotePublisher from './RemotePublisher';
 import RemoteReceiver from './RemoteReceiver';
@@ -23,6 +23,10 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
   updateMatchName,
 }) => {
   const { isConnected } = useRemoteClient();
+
+  useEffect(() => {
+    console.log('RemoteClient : isConnected ', isConnected);
+  }, [isConnected]);
 
   return (
     <>

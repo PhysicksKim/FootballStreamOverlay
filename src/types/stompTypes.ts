@@ -61,51 +61,6 @@ export interface CodeIssueResponse {
   subPath: string;
 }
 
-/**
- * 원격 제어 수신/송신 메세지
- */
-export interface RemoteMessage {
-  /**
-   * 200 : 정상 메세지
-   * 400 : 에러 메세지
-   */
-  type: 'control' | 'error';
-  data: {
-    mainTimer: {
-      time: {
-        min: number;
-        sec: number;
-      };
-      isRunning: boolean;
-    };
-    injuryTimer: {
-      time: {
-        min: number;
-        sec: number;
-      };
-      isRunning: boolean;
-    };
-    injuryInfo: {
-      givenInjuryTime: number;
-      isShowInjuryTimer: boolean;
-    };
-    matchName: string;
-    /**
-     * FontEnum
-     * ```
-     * ONE_MOBILE_TITLE = 'ONE-Mobile-Title',
-     * TAEBEAK = 'TAEBAEKfont',
-     * ```
-     */
-    fontInfo: FontInfo;
-    teamA: Team;
-    teamB: Team;
-    teamAStyle: TeamStyles;
-    teamBStyle: TeamStyles;
-    teamFontColor: TeamFontColor;
-  };
-}
-
 export type RemoteTimerMsg = {
   time: {
     min: number;
@@ -115,23 +70,26 @@ export type RemoteTimerMsg = {
   isRunning: boolean;
 };
 
+export type ScorePayload = {
+  teamAScore: number;
+  teamBScore: number;
+};
+
+export type GivenInjuryPayload = {
+  givenInjuryTime: number;
+};
+
+export type RemoteMsgDataPayload = ScorePayload | GivenInjuryPayload;
+
 export interface RemoteControlMsg {
   code: number;
+  type: 'control' | 'members';
   message: string;
   metadata: {
     date: Date;
   };
-  data: {
-    mainTimer: RemoteTimerMsg;
-    injuryTimer: RemoteTimerMsg;
-    injuryInfo: {
-      givenInjuryTime: number;
-      isShowInjuryTimer: boolean;
-    };
-    matchName: string;
-    teamA: Team;
-    teamB: Team;
-    teamAStyle: TeamStyles;
-    teamBStyle: TeamStyles;
+  data?: {
+    score: ScorePayload;
+    givenInjury: GivenInjuryPayload;
   };
 }

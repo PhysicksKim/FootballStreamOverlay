@@ -4,7 +4,6 @@
 .timer-control-panel-box {
   display: flex;
   flex-direction: row;
-  background-color: $beige-bright2;
   padding: 7px;
   border-radius: 7px;
   align-items: stretch;
@@ -29,6 +28,13 @@
   border-radius: 5px;
   background: $background-box;
   box-shadow: $beige-back-black 0px 0px 2px 1px;
+}
+
+.timer-time-set-box {
+  width: $panel-width-first;
+}
+.timer-preset-set-box {
+  width: $panel-width-second;
 }
 
 .timer-boxes-title {

@@ -75,6 +75,10 @@ export const RemoteClientProvider: React.FC<{
   const eventEmitterRef = useRef(new EventEmitter());
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
+  // TODO : 닉네임 설정 저장 변경 유효성 및 중복검사 기능 / 원격 코드 연결&발급 시 닉네임state 포함하도록 변경 / 채널 닉네임 관리 기능
+  const [ninkname, setNickname] = useState<string>('tester');
+  const [channelNicknames, setChannelNicknames] = useState<string[]>([]);
+
   // 원격에 사용되는 각종 상태값들 (원격 코드, 원격 연결 path)
   const [remoteCode, setRemoteCode] = useState<string>('');
   const [remoteInfos, setRemoteInfos] = useState<RemoteInfos>({
@@ -141,7 +145,30 @@ export const RemoteClientProvider: React.FC<{
     const prevSubId = `remoteMsg-${prevCount}`;
     const nextSubId = `remoteMsg-${prevCount + 1}`;
 
-    clientRef.current.unsubscribe(prevSubId);
+    if (remoteCode === remoteConnectMsg.remoteCode) {
+      console.log('동일한 remoteCode 로 재연결');
+    } else {
+      updateRemoteInfosWithUnsub(prevCount, prevSubId, nextSubId);
+    }
+
+    setRemoteCode(remoteConnectMsg.remoteCode);
+    setRemoteInfos((_) => {
+      return {
+        subPath: remoteConnectMsg.subPath,
+        pubPath: remoteConnectMsg.pubPath,
+        subId: nextSubId,
+      };
+    });
+  };
+
+  const updateRemoteInfosWithUnsub = (
+    prevCount: number,
+    prevSubId: string,
+    nextSubId: string,
+  ) => {
+    if (prevCount > 0) {
+      clientRef.current.unsubscribe(prevSubId);
+    }
     clientRef.current.subscribe(
       remoteConnectMsg.subPath,
       (message: IMessage) => {
@@ -156,16 +183,6 @@ export const RemoteClientProvider: React.FC<{
       },
       { id: nextSubId },
     );
-
-    console.log('remoteConnectMsg : ', remoteConnectMsg);
-    setRemoteCode(remoteConnectMsg.remoteCode);
-    setRemoteInfos((_) => {
-      return {
-        subPath: remoteConnectMsg.subPath,
-        pubPath: remoteConnectMsg.pubPath,
-        subId: nextSubId,
-      };
-    });
     setSubCount((prev) => prev + 1);
   };
 
@@ -175,9 +192,7 @@ export const RemoteClientProvider: React.FC<{
       '/user/topic/remote.receivecode',
       (message: IMessage) => {
         const remoteIssueMsg: RemoteConnectMsg = parseRemoteEnrollMsg(message);
-
         setRemoteConnectMsg(remoteIssueMsg);
-        console.log('remoteIssue : ', remoteIssueMsg);
       },
       { id: 'remoteReceiveCode' },
     );
@@ -195,9 +210,7 @@ export const RemoteClientProvider: React.FC<{
       (message: IMessage) => {
         const remoteConnectMsg: RemoteConnectMsg =
           parseRemoteEnrollMsg(message);
-
         setRemoteConnectMsg(remoteConnectMsg);
-        console.log('remoteConnectMsg : ', remoteConnectMsg);
       },
       { id: 'remoteConnect' },
     );
@@ -224,6 +237,7 @@ export const RemoteClientProvider: React.FC<{
   const connectAsHost = () => {
     clientRef.current.publish({
       destination: '/app/remote.issuecode',
+      body: JSON.stringify({ nickname: 'testHost' }),
     });
   };
 
@@ -247,7 +261,7 @@ export const RemoteClientProvider: React.FC<{
     setRemoteCode(remoteCode);
     clientRef.current.publish({
       destination: '/app/remote.connect',
-      body: JSON.stringify({ remoteCode: remoteCode }),
+      body: JSON.stringify({ remoteCode: remoteCode, nickname: 'testMember' }),
     });
   };
 
@@ -276,30 +290,34 @@ export const RemoteClientProvider: React.FC<{
       eventEmitterRef.current.emit('afterConnect');
     },
     onDisconnect: () => {
+      console.log('onDisconnect');
       expireRemoteInfos();
       setIsConnected(false);
 
       eventEmitterRef.current.emit('disconnect');
     },
     onWebSocketError: (error) => {
+      console.log('onWebSocketError', error);
       setIsConnected(false);
-      clientRef.current.deactivate();
       expireRemoteInfos();
 
+      clientRef.current.deactivate();
       eventEmitterRef.current.emit('disconnect');
     },
     onStompError: (frame) => {
+      console.log('onStompError', frame);
       setIsConnected(false);
-      clientRef.current.deactivate();
       expireRemoteInfos();
 
+      clientRef.current.deactivate();
       eventEmitterRef.current.emit('disconnect');
     },
     onWebSocketClose: () => {
+      console.log('onWebSocketClose');
       setIsConnected(false);
-      clientRef.current.deactivate();
       expireRemoteInfos();
 
+      clientRef.current.deactivate();
       eventEmitterRef.current.emit('disconnect');
     },
   };

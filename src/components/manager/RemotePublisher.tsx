@@ -35,43 +35,27 @@ const RemotePublisher: React.FC<RemotePublisherProps> = ({
   >();
   const remoteMsgRef = useRef<RemoteControlMsg | undefined>(remoteControlMsg);
 
+  // TODO : 모든 state 보내는 게 아니라, 변경된 state만 보내도록 수정하자.
   useEffect(() => {
     const pubState: RemoteControlMsg = {
       code: 200,
+      type: 'control',
       message: 'test message send',
       metadata: {
         date: new Date(),
       },
       data: {
-        mainTimer: {
-          time: {
-            min: mainTimer.time.min,
-            sec: mainTimer.time.sec,
-          },
-          isRunning: mainTimer.isRunning,
-          milliseconds: mainTimer.mils.milliseconds,
+        score: {
+          teamAScore: teamA.score,
+          teamBScore: teamB.score,
         },
-        injuryTimer: {
-          time: {
-            min: injuryTimer.time.min,
-            sec: injuryTimer.time.sec,
-          },
-          isRunning: injuryTimer.isRunning,
-          milliseconds: injuryTimer.mils.milliseconds,
+        givenInjury: {
+          givenInjuryTime: givenInjuryTime,
         },
-        injuryInfo: {
-          givenInjuryTime,
-          isShowInjuryTimer,
-        },
-        matchName,
-        teamA,
-        teamB,
-        teamAStyle,
-        teamBStyle,
       },
     };
     setRemoteControlMsg(pubState);
-  }, [mainTimer.time, injuryTimer.time]);
+  }, [teamA.score, teamB.score, givenInjuryTime]);
 
   useEffect(() => {
     remoteMsgRef.current = remoteControlMsg;
@@ -85,7 +69,11 @@ const RemotePublisher: React.FC<RemotePublisherProps> = ({
     });
   }, []);
 
-  return <></>;
+  return (
+    <>
+      <div className='remote-publisher-component'></div>
+    </>
+  );
 };
 
 export default RemotePublisher;

@@ -3,7 +3,6 @@
 .score-injury-contol-panel-box {
   display: flex;
   flex-direction: row;
-  background-color: $beige-bright2;
   border-radius: 7px;
   align-items: stretch;
 
@@ -21,7 +20,7 @@
   align-items: start;
 
   height: 125px;
-  width: 100%;
+  width: $panel-width-first;
 
   padding: 10px;
   border-radius: 5px;

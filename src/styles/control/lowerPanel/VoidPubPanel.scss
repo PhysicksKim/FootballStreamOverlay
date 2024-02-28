@@ -1,0 +1,56 @@
+@import '@styles/Themes.scss';
+
+.void-pub-box-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background: $background-box;
+  box-shadow: $beige-back-black 0px 0px 2px 1px;
+
+  .void-pub-box-wrapper {
+    box-sizing: border-box;
+    padding: 10px;
+    height: 100%;
+
+    .void-pub-title {
+      font-size: 14px;
+      text-align: start;
+      box-sizing: border-box;
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 5px;
+      padding-left: 10px;
+      background-color: $beige-back-black;
+      color: $beige-bright2;
+      padding-top: 3px;
+      padding-bottom: 3px;
+    }
+
+    .github-box,
+    .gmail-box {
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+
+      padding-top: 4px;
+      padding-left: 10px;
+      padding-bottom: 3px;
+
+      background-color: $beige-dark1;
+      border-radius: 5px;
+      color: $beige-bright1;
+
+      > * {
+        margin-right: 10px;
+      }
+    }
+
+    .github-box {
+      margin-top: 10px;
+    }
+    .gmail-box {
+      margin-top: 10px;
+    }
+  }
+}
