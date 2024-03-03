@@ -145,11 +145,11 @@ export const RemoteClientProvider: React.FC<{
     const prevSubId = `remoteMsg-${prevCount}`;
     const nextSubId = `remoteMsg-${prevCount + 1}`;
 
-    if (remoteCode === remoteConnectMsg.remoteCode) {
-      console.log('동일한 remoteCode 로 재연결');
-    } else {
-      updateRemoteInfosWithUnsub(prevCount, prevSubId, nextSubId);
-    }
+    // if (remoteCode === remoteConnectMsg.remoteCode) {
+    //   console.log('동일한 remoteCode 로 재연결');
+    // } else {
+    updateRemoteInfosWithUnsub(prevCount, prevSubId, nextSubId);
+    // }
 
     setRemoteCode(remoteConnectMsg.remoteCode);
     setRemoteInfos((_) => {
