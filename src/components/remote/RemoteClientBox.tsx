@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { ConnectStatus } from '@src/types/stompTypes';
 
 import '@styles/remote/RemoteHostBox.scss';
