@@ -10,7 +10,10 @@ export const Flag = styled.span<{ team: Team }>`
       `
       background-image: url(${flagImageUrl});
       background-repeat: no-repeat;
-      background-size: cover;
+      background-position: center center; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
     `
     );
   }}
