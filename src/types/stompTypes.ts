@@ -45,10 +45,13 @@ export interface RemoteInfos {
 
 export interface RemoteConnectMsg {
   code: number;
+  type: 'connect' | 'issue' | 'error';
   message: string;
   pubPath: string;
   subPath: string;
   remoteCode: string;
+  autoRemote: boolean;
+  cookieGetUrl: string;
 }
 
 export type ConnectStatus = '연결됨' | '끊어짐';

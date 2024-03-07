@@ -12,30 +12,33 @@ import { TeamBStyleProvider } from '@src/contexts/teams/TeamBStyleProvider';
 import { MatchNameProvider } from '@src/contexts/MatchNameContext';
 import { InjuryTimeInfoProvider } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
 import { RemoteClientProvider } from '@src/contexts/stomp/RemoteClientContext';
+import { CookiesProvider } from 'react-cookie';
 
 const Application: React.FC = () => {
   return (
-    <MainTimerStateRoot>
-      <InjuryTimerStateRoot>
-        <InjuryTimeInfoProvider>
-          <TeamAProvider>
-            <TeamBProvider>
-              <TeamAStyleProvider>
-                <TeamBStyleProvider>
-                  <FontProvider>
-                    <MatchNameProvider>
-                      <RemoteClientProvider>
-                        <TimerRoot />
-                      </RemoteClientProvider>
-                    </MatchNameProvider>
-                  </FontProvider>
-                </TeamBStyleProvider>
-              </TeamAStyleProvider>
-            </TeamBProvider>
-          </TeamAProvider>
-        </InjuryTimeInfoProvider>
-      </InjuryTimerStateRoot>
-    </MainTimerStateRoot>
+    <CookiesProvider>
+      <MainTimerStateRoot>
+        <InjuryTimerStateRoot>
+          <InjuryTimeInfoProvider>
+            <TeamAProvider>
+              <TeamBProvider>
+                <TeamAStyleProvider>
+                  <TeamBStyleProvider>
+                    <FontProvider>
+                      <MatchNameProvider>
+                        <RemoteClientProvider>
+                          <TimerRoot />
+                        </RemoteClientProvider>
+                      </MatchNameProvider>
+                    </FontProvider>
+                  </TeamBStyleProvider>
+                </TeamAStyleProvider>
+              </TeamBProvider>
+            </TeamAProvider>
+          </InjuryTimeInfoProvider>
+        </InjuryTimerStateRoot>
+      </MainTimerStateRoot>
+    </CookiesProvider>
   );
 };
 

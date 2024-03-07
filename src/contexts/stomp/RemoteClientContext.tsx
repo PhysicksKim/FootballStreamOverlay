@@ -15,17 +15,19 @@ import {
 } from '@src/types/stompTypes';
 import EventEmitter from 'events';
 import RemoteUtil from './StompInitializer';
-
-// API 서버 환경변수 (개발/서비스 환경)
-const apiUrl = process.env.API_URL;
-const websocketUrl = process.env.WEBSOCKET_URL + '/ws';
+import axios from 'axios';
+import { Urls } from '@src/classes/Utils';
 
 export interface HostClient {
-  connectAsHost: () => void;
+  connectAsHost: (nickname: string, isAutoRemote: boolean) => void;
 }
 
 export interface MemberClient {
-  connectAsMember: (remoteCode: string) => void;
+  connectAsMember: (
+    remoteCode: string,
+    nickname: string,
+    isAutoRemote: boolean,
+  ) => void;
 }
 
 // Provider 의 value 로 사용될 타입
@@ -96,8 +98,7 @@ export const RemoteClientProvider: React.FC<{
   const [remoteConrolMsg, setRemoteControlMsg] = useState<RemoteControlMsg>();
 
   const subInitChannels = () => {
-    subRemoteCodeConnectChannel();
-    subRemoteCodeReceiveChannel();
+    subRemoteCommonChannel();
   };
 
   const expireRemoteInfos = () => {
@@ -118,17 +119,22 @@ export const RemoteClientProvider: React.FC<{
    */
   useEffect(() => {
     console.log('useEffect _ remoteConnectMsg : ', remoteConnectMsg);
-    if (
-      remoteConnectMsg &&
-      RemoteUtil.isValideRemoteCode(remoteConnectMsg.remoteCode)
-    ) {
-      // TODO : remoteConnectMsg 가 에러인 경우 처리해야함
-      // 예를 들어 이미 코드에 연결해둔 경우에는 remoteConnectMsg 가 error 메세지를 담고 있음
-      // 따라서 이 경우 사용자에게 기존 연결을 끊고 새로 연결할 것인지 물어봐야함.
-      // 그리고 예외 처리로, 이전 코드와 동일한데 새로운 subPath, pubPath 를 받은 경우에도 처리해야함
-      // 이 처리는 여기서 하는 것보다 setRemoteCode 에서 하는 게 좋아보이는데
-      // 자꾸 예외처리가 이리저리 이동해서 구조가 복잡하니까 나중에 리팩토링 해야할듯
-      subRemoteAndUpdateRemoteInfos();
+    switch (remoteConnectMsg?.type) {
+      case 'issue':
+      case 'connect':
+        if (
+          remoteConnectMsg &&
+          RemoteUtil.isValideRemoteCode(remoteConnectMsg.remoteCode)
+        ) {
+          subRemoteAndUpdateRemoteInfos();
+        }
+        if (remoteConnectMsg.autoRemote) {
+          getUserCookie(remoteConnectMsg.cookieGetUrl);
+        }
+        break;
+      case 'error':
+      default:
+        console.log('remoteConnectMsg error :: ', remoteConnectMsg);
     }
   }, [remoteConnectMsg]);
 
@@ -145,11 +151,7 @@ export const RemoteClientProvider: React.FC<{
     const prevSubId = `remoteMsg-${prevCount}`;
     const nextSubId = `remoteMsg-${prevCount + 1}`;
 
-    // if (remoteCode === remoteConnectMsg.remoteCode) {
-    //   console.log('동일한 remoteCode 로 재연결');
-    // } else {
     updateRemoteInfosWithUnsub(prevCount, prevSubId, nextSubId);
-    // }
 
     setRemoteCode(remoteConnectMsg.remoteCode);
     setRemoteInfos((_) => {
@@ -186,42 +188,29 @@ export const RemoteClientProvider: React.FC<{
     setSubCount((prev) => prev + 1);
   };
 
-  // TODO : unsubscribe 안해도 중복 sub 문제 발생 안하려나?
-  const subRemoteCodeReceiveChannel = () => {
-    clientRef.current.subscribe(
-      '/user/topic/remote.receivecode',
-      (message: IMessage) => {
-        const remoteIssueMsg: RemoteConnectMsg = parseRemoteEnrollMsg(message);
-        setRemoteConnectMsg(remoteIssueMsg);
-      },
-      { id: 'remoteReceiveCode' },
-    );
-  };
-
   /**
-   * 원격 코드 연결 후 서버의 응답을 수신합니다.
-   * onConnect 를 통해 기본적으로 등록합니다.
-   * 서버의 응답이 정상적이라면, `remoteConnectMsg` 를 업데이트합니다.
-   * 업데이트 된 `remoteConnectMsg` 는 useEffect 를 통해 subPath pubPath 를 변경합니다.
+   * 원격 코드 연결과 관련된 서버의 응답을 수신합니다.
+   * onConnect 핸들러를 통해 등록합니다.
+   * 서버의 응답 메세지가 정상적이라면(에러메세지 포함), `remoteConnectMsg` 를 업데이트합니다.
+   * 업데이트 된 `remoteConnectMsg` 는 useEffect 를 통해 subPath pubPath 를 변경하거나 에러를 처리합니다.
    */
-  const subRemoteCodeConnectChannel = () => {
+  const subRemoteCommonChannel = () => {
     clientRef.current.subscribe(
-      '/user/topic/remote.connect',
+      '/user/topic/remote',
       (message: IMessage) => {
-        const remoteConnectMsg: RemoteConnectMsg =
-          parseRemoteEnrollMsg(message);
-        setRemoteConnectMsg(remoteConnectMsg);
+        const remoteCommonMsg: RemoteConnectMsg = parseRemoteCommonMsg(message);
+        setRemoteConnectMsg(remoteCommonMsg);
       },
-      { id: 'remoteConnect' },
+      { id: 'remoteCommonMsg' },
     );
   };
 
   /**
-   * 원격 코드 발급(Host), 원격 코드 연결(Member) 의 응답 메세지를 파싱합니다.
+   * 원격 코드 발급(issue code), 원격 코드 연결(connect) 의 응답 메세지를 파싱합니다.
    * @param message
    * @returns
    */
-  const parseRemoteEnrollMsg: (message: IMessage) => RemoteConnectMsg = (
+  const parseRemoteCommonMsg: (message: IMessage) => RemoteConnectMsg = (
     message,
   ) => {
     const remoteMsg: RemoteConnectMsg = JSON.parse(message.body);
@@ -234,10 +223,17 @@ export const RemoteClientProvider: React.FC<{
   /**
    * 코드 발급을 위한 요청을 서버로 전송합니다.
    */
-  const connectAsHost = () => {
+  const connectAsHost = (nickname: string, isAutoRemote: boolean) => {
+    nickname = nickname.trim();
+
+    if (isNotValidNickname(nickname)) {
+      console.log(`nickname is not valid :: [${nickname}]`);
+      return;
+    }
+
     clientRef.current.publish({
       destination: '/app/remote.issuecode',
-      body: JSON.stringify({ nickname: 'testHost' }),
+      body: JSON.stringify({ nickname: nickname, autoRemote: isAutoRemote }),
     });
   };
 
@@ -247,9 +243,11 @@ export const RemoteClientProvider: React.FC<{
    * @param remoteCode
    * @returns void
    */
-  const connectAsMember: (remoteCode: string) => void = (
+  const connectAsMember: (
     remoteCode: string,
-  ) => {
+    nickname: string,
+    isAutoRemote: boolean,
+  ) => void = (remoteCode: string, nickname: string, isAutoRemote: boolean) => {
     if (!clientRef.current.connected) {
       console.log('client is not connected');
       return;
@@ -257,12 +255,25 @@ export const RemoteClientProvider: React.FC<{
     if (!RemoteUtil.isValideRemoteCode(remoteCode)) {
       console.log(`remoteCode is not valid :: [${remoteCode}]`);
     }
+    nickname = nickname.trim();
+    if (isNotValidNickname(nickname)) {
+      console.log(`nickname is not valid :: [${nickname}]`);
+      return;
+    }
 
     setRemoteCode(remoteCode);
     clientRef.current.publish({
       destination: '/app/remote.connect',
-      body: JSON.stringify({ remoteCode: remoteCode, nickname: 'testMember' }),
+      body: JSON.stringify({
+        remoteCode: remoteCode,
+        nickname: nickname,
+        autoRemote: isAutoRemote,
+      }),
     });
+  };
+
+  const isNotValidNickname = (nickname: string) => {
+    return new Blob([nickname]).size > 30;
   };
 
   /**
@@ -279,9 +290,19 @@ export const RemoteClientProvider: React.FC<{
   const emitRemoteControlMsg = () => {
     eventEmitterRef.current.emit('publishRemoteControlMsg');
   };
+  const getUserCookie = (cookieGetUrl: string) => {
+    axios
+      .get(Urls.apiUrl + cookieGetUrl, { withCredentials: true })
+      .then((res) => {
+        console.log('getUserCookie res : ', res);
+      })
+      .catch((err) => {
+        console.log('getUserCookie err : ', err);
+      });
+  };
 
   const stompConfig: StompConfig = {
-    brokerURL: websocketUrl,
+    brokerURL: Urls.websocketUrl,
     onConnect: () => {
       setIsConnected(true);
       expireRemoteInfos();
