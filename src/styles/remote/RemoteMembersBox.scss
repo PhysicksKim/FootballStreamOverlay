@@ -1,0 +1,73 @@
+@import '@styles/Themes.scss';
+
+.remote-members-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  margin-right: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: $background-box;
+
+  .remote-members-title {
+    font-size: 16px;
+    text-align: start;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: $beige-back-black;
+    color: $beige-middle;
+
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    padding-left: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .remote-members-list-box {
+    box-sizing: border-box;
+    border: $beige-dark1 5px solid;
+    background-color: $beige-back-black;
+    flex-grow: 1;
+    overflow-y: auto;
+
+    > ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+
+      > li {
+        margin-top: 7px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 7px 15px;
+        background-color: $beige-dark2;
+        color: $beige-bright2;
+        overflow-wrap: break-word;
+        word-break: break-all;
+        font-size: 18px;
+        border-radius: 10px;
+      }
+      > li:first-child {
+        margin-top: 13px;
+      }
+    }
+  }
+  .remote-members-list-box::-webkit-scrollbar {
+    width: 10px;
+  }
+  .remote-members-list-box::-webkit-scrollbar-track {
+    background: $scroll-track;
+    border-radius: 10px;
+  }
+  .remote-members-list-box::-webkit-scrollbar-thumb {
+    background: $scroll-thumb;
+    border-radius: 10px;
+  }
+  .remote-members-list-box::-webkit-scrollbar-thumb:hover {
+    background: $scroll-thumb-hover;
+  }
+}

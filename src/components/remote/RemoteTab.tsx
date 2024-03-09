@@ -1,13 +1,13 @@
 import React from 'react';
 import '@styles/remote/RemoteTab.scss';
 import RemoteClientBox from './RemoteClientBox';
+import RemoteMembersBox from './RemoteMembersBox';
 
 const RemoteTab = () => {
   return (
     <div className='remote-tab-container'>
-      <div className='remote-control-wrapper'>
-        <RemoteClientBox />
-      </div>
+      <RemoteClientBox />
+      <RemoteMembersBox />
     </div>
   );
 };

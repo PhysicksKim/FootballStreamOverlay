@@ -65,7 +65,7 @@
         }
         .slash {
           position: absolute;
-          color: rgb(253, 66, 66);
+          color: #b88a84;
           left: 0;
         }
       }
@@ -83,13 +83,13 @@
   }
 }
 
-$text-outline: #dd3a2820;
+$text-outline: #00000000;
 
 .remote-disconnect {
-  color: #f14532;
+  color: #b88a84;
   text-shadow: -1px -1px 0 $text-outline, 1px -1px 0 $text-outline,
     -1px 1px 0 $text-outline, 1px 1px 0 $text-outline;
 }
 .remote-connect {
-  color: #0c2ce3;
+  color: #6578e0;
 }

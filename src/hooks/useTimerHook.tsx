@@ -45,7 +45,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     setMilliseconds((prevMilliseconds) => {
       if (prevMilliseconds >= 900) {
         isRoundUp = true;
-        return 0;
+        return prevMilliseconds - 900;
       } else {
         return prevMilliseconds + 100;
       }
@@ -84,8 +84,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
 
   useEffect(() => {
     setIsRunning(timer.isRunning());
-    console.log('useEffect[timer.isRunning] called');
-    console.log('timer.isRunning: ', timer.isRunning());
   }, [timer.isRunning()]);
 
   useEffect(() => {

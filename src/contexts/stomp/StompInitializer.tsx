@@ -8,6 +8,7 @@ class RemoteUtil {
   public static isValideRemoteCode: (remoteCode: string) => boolean = (
     remoteCode: string,
   ) => {
+    if (typeof remoteCode !== 'string') return false;
     return remoteCode.match(/^[0-9a-zA-Z]{6}$/) !== null;
   };
 }

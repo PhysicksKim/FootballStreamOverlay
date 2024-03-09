@@ -5,7 +5,7 @@ import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useTeamBStyle } from '@src/contexts/teams/TeamBStyleProvider';
 import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
-import { RemoteControlMsg } from '@src/types/stompTypes';
+import { RemoteChannelMsg } from '@src/types/stompTypes';
 import React, { useEffect, useRef, useState } from 'react';
 
 export interface RemotePublisherProps {
@@ -31,13 +31,13 @@ const RemotePublisher: React.FC<RemotePublisherProps> = ({
   const { teamBStyle } = useTeamBStyle();
 
   const [remoteControlMsg, setRemoteControlMsg] = useState<
-    RemoteControlMsg | undefined
+    RemoteChannelMsg | undefined
   >();
-  const remoteMsgRef = useRef<RemoteControlMsg | undefined>(remoteControlMsg);
+  const remoteMsgRef = useRef<RemoteChannelMsg | undefined>(remoteControlMsg);
 
   // TODO : 모든 state 보내는 게 아니라, 변경된 state만 보내도록 수정하자.
   useEffect(() => {
-    const pubState: RemoteControlMsg = {
+    const pubState: RemoteChannelMsg = {
       code: 200,
       type: 'control',
       message: 'test message send',

@@ -5,7 +5,7 @@ import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useTeamBStyle } from '@src/contexts/teams/TeamBStyleProvider';
 import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
 import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
-import { RemoteControlMsg, RemoteTimerMsg } from '@src/types/stompTypes';
+import { RemoteChannelMsg, RemoteTimerMsg } from '@src/types/stompTypes';
 import { Time } from '@src/types/types';
 import React, { useEffect, useState } from 'react';
 
@@ -59,7 +59,7 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
     updateStateByRemoteMsg(remoteConrolMsg);
   }, [remoteConrolMsg]);
 
-  const updateStateByRemoteMsg = (remoteConrolMsg: RemoteControlMsg) => {
+  const updateStateByRemoteMsg = (remoteConrolMsg: RemoteChannelMsg) => {
     if (!remoteConrolMsg || remoteConrolMsg.code !== 200) {
       console.log('Invalid Remote Control Message :: code is not 200');
       return;
@@ -69,22 +69,22 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
       case 'control':
         doControlMsg(remoteConrolMsg);
         break;
-      case 'members':
-        console.log("unExpected 'members' type message");
-        break;
       default:
-        console.log(
-          'Unexpected Remote Control Message Type :: ',
-          remoteConrolMsg.type,
-        );
         break;
     }
   };
 
-  const doControlMsg = (remoteConrolMsg: RemoteControlMsg) => {
-    const data = remoteConrolMsg.data;
-    if (!data) {
-      console.log('Invalid Remote Control Message :: data is undefined');
+  const doControlMsg = (remoteControlMsg: RemoteChannelMsg) => {
+    const { data, type } = remoteControlMsg;
+
+    if (
+      type !== 'control' ||
+      'score' in data === false ||
+      'givenInjury' in data === false
+    ) {
+      console.log(
+        'Invalid Remote Control Message :: type is not control or score or givenInjury is not in data',
+      );
       return;
     }
 

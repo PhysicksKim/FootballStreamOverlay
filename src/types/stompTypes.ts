@@ -43,15 +43,16 @@ export interface RemoteInfos {
   subId: string;
 }
 
-export interface RemoteConnectMsg {
+export interface RemoteCommonMessage {
   code: number;
-  type: 'connect' | 'issue' | 'error';
+  type: 'connect' | 'issue' | 'error' | 'sub' | 'autoreconnect';
   message: string;
   pubPath: string;
   subPath: string;
   remoteCode: string;
   autoRemote: boolean;
   cookieGetUrl: string;
+  data?: any;
 }
 
 export type ConnectStatus = '연결됨' | '끊어짐';
@@ -84,15 +85,43 @@ export type GivenInjuryPayload = {
 
 export type RemoteMsgDataPayload = ScorePayload | GivenInjuryPayload;
 
-export interface RemoteControlMsg {
+// export interface RemoteChannelMsg {
+//   code: number;
+//   type: 'control' | 'members';
+//   message: string;
+//   metadata: {
+//     date: Date;
+//   };
+//   data?:
+//     | {
+//         score: ScorePayload;
+//         givenInjury: GivenInjuryPayload;
+//       }
+//     | {
+//         members: string[];
+//       };
+// }
+export interface BaseRemoteChannelMsg {
   code: number;
-  type: 'control' | 'members';
   message: string;
   metadata: {
     date: Date;
   };
-  data?: {
+}
+
+export interface ControlChannelMsg extends BaseRemoteChannelMsg {
+  type: 'control';
+  data: {
     score: ScorePayload;
     givenInjury: GivenInjuryPayload;
   };
 }
+
+export interface MembersChannelMsg extends BaseRemoteChannelMsg {
+  type: 'members';
+  data: {
+    members: string[];
+  };
+}
+
+export type RemoteChannelMsg = ControlChannelMsg | MembersChannelMsg;

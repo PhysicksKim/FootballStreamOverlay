@@ -1,0 +1,66 @@
+@import '@styles/Themes.scss';
+
+.tooltip {
+  position: absolute;
+  background-color: $beige-black;
+  color: $warning-red;
+  text-align: center;
+  border-radius: 5px;
+  border: $beige-bright2 1px solid;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.5s;
+
+  // no-wrap 설정들
+  text-align: center;
+  word-break: nowrap;
+  display: inline-block;
+  text-overflow: clip;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* 초기 상태 */
+.tooltip-enter {
+  opacity: 0;
+}
+
+/* 진입 애니메이션 활성화 상태 */
+.tooltip-enter-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 500ms;
+}
+
+/* 퇴장 상태 */
+.tooltip-exit {
+  opacity: 1;
+}
+
+/* 퇴장 애니메이션 활성화 상태 */
+.tooltip-exit-active {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.tooltip.top.left {
+  bottom: calc(100% + 2px);
+  left: 0;
+  // transform: translateX(100%);
+}
+
+.tooltip.bottom.left {
+  top: calc(100% + 2px);
+  left: 0;
+  // transform: translateX(-50%);
+}
+
+.tooltip.bottom.center {
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  flex-wrap: nowrap;
+}
