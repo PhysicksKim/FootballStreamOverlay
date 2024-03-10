@@ -6,6 +6,6 @@ export const timeToZeroFillString = (time: Time) =>
     .padStart(2, '0')}`;
 
 export const Urls = {
-  apiUrl: process.env.API_URL,
-  websocketUrl: process.env.WEBSOCKET_URL + '/ws',
+  apiUrl: process.env.API_URL || window.location.origin,
+  websocketUrl: (process.env.WEBSOCKET_URL || window.location.origin) + '/ws',
 };

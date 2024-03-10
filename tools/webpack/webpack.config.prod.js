@@ -13,14 +13,18 @@ module.exports = {
     chunkFilename: '[name].[chunkhash].chunk.js',
     clean: true,
     publicPath: process.env.PUBLIC_URL || '',
-    // apiPath: 'https://localhost:8083',
-    // websocketPath: 'wss://localhost:8083',
   },
   plugins: [
     ...require('./webpack.plugins'),
     new webpack.DefinePlugin({
-      'process.env.API_URL': JSON.stringify('https://gyechunsik.site'),
-      'process.env.WEBSOCKET_URL': JSON.stringify('wss://gyechunsik.site'),
+      'process.env.API_URL':
+        process.env.SAME_ORIGIN === 'true'
+          ? JSON.stringify('')
+          : JSON.stringify('https://gyechunsik.site'),
+      'process.env.WEBSOCKET_URL':
+        process.env.SAME_ORIGIN === 'true'
+          ? JSON.stringify('')
+          : JSON.stringify('wss://gyechunsik.site'),
     }),
   ],
   resolve: {

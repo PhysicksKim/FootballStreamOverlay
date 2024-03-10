@@ -134,6 +134,11 @@ export const RemoteClientProvider: React.FC<{
     }
   }, []);
 
+  useEffect(() => {
+    console.log('Urls.apiUrl', Urls.apiUrl);
+    console.log('Urls.websocketUrl', Urls.websocketUrl);
+  }, []);
+
   // 새로운 원격 정보를 받으면
   // 원격 제어 정보 업데이트
   // 새로 원격 채널에 입장했으므로, 채널 닉네임들을 요청합니다.
