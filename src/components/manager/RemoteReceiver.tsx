@@ -62,6 +62,7 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
   const updateStateByRemoteMsg = (remoteConrolMsg: RemoteChannelMsg) => {
     if (!remoteConrolMsg || remoteConrolMsg.code !== 200) {
       console.log('Invalid Remote Control Message :: code is not 200');
+      console.log('Remote Message Payload :: ', remoteConrolMsg);
       return;
     }
 

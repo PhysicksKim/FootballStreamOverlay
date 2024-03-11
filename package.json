@@ -10,7 +10,7 @@
     "serve": "cross-env NODE_ENV=production webpack --config tools/webpack/webpack.config.prod.js && cross-env serve dist/",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src/",
     "spring-dev-build": "cross-env PUBLIC_URL=./scoreboard/ NODE_ENV=production webpack --config tools/webpack/webpack.config.devspring.js",
-    "spring-build": "cross-env PUBLIC_URL=./scoreboard/ NODE_ENV=production SAME_ORIGIN=true webpack --config tools/webpack/webpack.config.prod.js"
+    "spring-build": "cross-env PUBLIC_URL=./scoreboard/ NODE_ENV=production webpack --config tools/webpack/webpack.config.prod.js"
   },
   "devDependencies": {
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",

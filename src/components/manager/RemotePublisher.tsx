@@ -62,11 +62,14 @@ const RemotePublisher: React.FC<RemotePublisherProps> = ({
   }, [remoteControlMsg]);
 
   useEffect(() => {
-    eventEmitterRef.current.on('publishRemoteControlMsg', () => {
-      console.log('eventEmitter [publishRemoteControlMsg] Called');
-      console.log('remoteMsgRef.current :: ', remoteMsgRef.current);
-      publishMessage(remoteMsgRef.current);
-    });
+    eventEmitterRef.current.removeAllListeners('publishRemoteControlMsg');
+    setTimeout(() => {
+      eventEmitterRef.current.on('publishRemoteControlMsg', () => {
+        console.log('eventEmitter [publishRemoteControlMsg] Called');
+        console.log('remoteMsgRef.current :: ', remoteMsgRef.current);
+        publishMessage(remoteMsgRef.current);
+      });
+    }, 300);
   }, []);
 
   return (

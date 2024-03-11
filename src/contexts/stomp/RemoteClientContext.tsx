@@ -188,7 +188,10 @@ export const RemoteClientProvider: React.FC<{
 
         break;
       case 'sub':
-        eventEmitterRef.current.emit('afterSub');
+        setTimeout(() => {
+          console.log('afterSub event emit');
+          eventEmitterRef.current.emit('afterSub');
+        }, 100);
         break;
       case 'error':
         // 원격 연결 에러 시 자동 재연결 해제를 위한 localStorage autoRemote false 설정
@@ -207,15 +210,17 @@ export const RemoteClientProvider: React.FC<{
    */
   const subRemoteCommonChannel = () => {
     console.log('subRemoteCommonChannel');
-    clientRef.current.subscribe(
-      '/user/topic/remote',
-      (message: IMessage) => {
-        const _remoteCommonMsg: RemoteCommonMessage =
-          parseRemoteCommonMsg(message);
-        setRemoteConnectMsg(_remoteCommonMsg);
-      },
-      { id: 'remoteCommonMsg' },
-    );
+    setTimeout(() => {
+      clientRef.current.subscribe(
+        '/user/topic/remote',
+        (message: IMessage) => {
+          const _remoteCommonMsg: RemoteCommonMessage =
+            parseRemoteCommonMsg(message);
+          setRemoteConnectMsg(_remoteCommonMsg);
+        },
+        { id: 'remoteCommonMsg' },
+      );
+    }, 100);
   };
 
   const doAutoReconnect = (nickname: string) => {
@@ -341,11 +346,7 @@ export const RemoteClientProvider: React.FC<{
 
     // TODO : afterSub 이벤트를 발생시키기 위해 deactivate 후에 activate 하는게 맞는지 확인 필요
     // 오버헤드 생김 개선필요
-    if (clientRef.current.active) {
-      clientRef.current.deactivate().then(() => {
-        clientRef.current.activate();
-      });
-    } else {
+    if (!clientRef.current.active) {
       clientRef.current.activate();
     }
   };
@@ -424,6 +425,8 @@ export const RemoteClientProvider: React.FC<{
 
   const requestMemberNicknames = () => {
     if (clientRef.current.connected) {
+      if (!remoteInfos.pubPath) return;
+
       clientRef.current.publish({
         destination: remoteInfos.pubPath + '/members',
         body: JSON.stringify({}),
@@ -438,6 +441,7 @@ export const RemoteClientProvider: React.FC<{
   const stompConfig: StompConfig = {
     brokerURL: Urls.websocketUrl,
     onConnect: () => {
+      console.log('onConnect');
       setIsConnected(true);
       expireRemoteInfos();
       subRemoteCommonChannel();

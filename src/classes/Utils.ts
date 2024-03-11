@@ -7,5 +7,7 @@ export const timeToZeroFillString = (time: Time) =>
 
 export const Urls = {
   apiUrl: process.env.API_URL || window.location.origin,
-  websocketUrl: (process.env.WEBSOCKET_URL || window.location.origin) + '/ws',
+  websocketUrl:
+    (process.env.WEBSOCKET_URL ||
+      window.location.origin.replace(/^http(s?)/, 'ws$1')) + '/ws',
 };
