@@ -285,6 +285,14 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   };
   // #endregion
 
+  const handleSinkPlus1sec = () => {
+    mainTimerManager.timer.adjustTimeSink(1);
+  };
+
+  const handleSinkMinus1sec = () => {
+    mainTimerManager.timer.adjustTimeSink(-1);
+  };
+
   return (
     <div className='timer-control-panel-box'>
       <div className='timer-time-set-box'>
@@ -299,6 +307,8 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
           startMainTimer={startMainTimer}
           toggleMainTimerRunning={toggleMainTimerRunning}
           isRunning={mainTimerManager.timer.isRunning}
+          handleSinkPlus1sec={handleSinkPlus1sec}
+          handleSinkMinus1sec={handleSinkMinus1sec}
         ></MainTimerBox>
         <InjuryTimerBox
           injuryMinutes={injuryMinutes}

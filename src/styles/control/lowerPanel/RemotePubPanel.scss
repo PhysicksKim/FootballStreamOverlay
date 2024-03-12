@@ -44,13 +44,15 @@
       flex-direction: row;
       align-items: end;
       padding: 7px 10px;
-      background-color: $beige-dark2;
+      background-color: $beige-back-black;
       border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
 
-      margin-top: 7px;
+      margin-top: 2px;
 
       .remote-connect-status-title {
-        color: $beige-bright2;
+        color: $beige-middle;
         margin-right: 10px;
       }
 
@@ -72,12 +74,24 @@
     }
 
     .remote-send-btn {
-      // background-color: $beige-dark2;
-      padding: 5px 0;
+      position: relative;
+      margin-top: 3px;
 
       > button {
-        padding: 4px 10px;
+        padding: 6px 10px;
         border-radius: 5px;
+        background-color: $beige-dark2;
+        font-size: 18px;
+        color: $beige-bright2;
+      }
+
+      > button:disabled {
+        background-color: $beige-back-black;
+        color: $beige-middle;
+        &:hover {
+          background-color: $beige-back-black;
+          border: 1px solid $beige-back-black;
+        }
       }
     }
   }

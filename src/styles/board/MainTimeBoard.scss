@@ -23,12 +23,12 @@
   text-align: center; /* 텍스트를 가운데 정렬 */
   background-color: #f7f1e3;
   color: rgb(11, 3, 12);
-  font-size: 30px;
+  font-size: 29px;
   width: 100%; /* 너비를 부모와 같게 설정 */
 }
 
 .main-time-text {
-  margin-bottom: 7px;
+  margin-bottom: 9px;
   box-sizing: border-box;
   overflow: hidden;
 
@@ -38,21 +38,22 @@
     text-align: center;
   }
 
+  .main-timer-0,
   .main-timer-1,
   .main-timer-2,
   .main-timer-4,
   .main-timer-5 {
-    width: 19px;
+    width: 18px;
   }
   .main-timer-3 {
     width: 14px;
   }
-  .main-timer-1 {
-    margin-left: 20px;
+  .main-timer-0 {
+    margin-left: 0px;
     text-align: right;
   }
   .main-timer-5 {
-    margin-right: 20px;
+    margin-right: 18px;
     text-align: left;
   }
 }

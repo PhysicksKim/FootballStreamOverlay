@@ -22,36 +22,20 @@ const RemoteMessageManager: React.FC<RemoteMessageManagerProps> = ({
   updateGivenInjuryTime,
   updateMatchName,
 }) => {
-  const {
-    clientRef,
-    remoteInfos,
-    remoteCode,
-    isConnected,
-    eventEmitterRef,
-    remoteConrolMsg,
-    publishMessage,
-    emitRemoteControlMsg,
-    hostClient,
-    memberClient,
-    doAutoReconnect,
-    autoRemote,
-  } = useRemoteClient();
+  const { clientRef, initStompClient } = useRemoteClient();
 
   useEffect(() => {
     try {
-      console.log('autoRemote.isAutoRemote', autoRemote.isAutoRemote);
-      if (autoRemote.isAutoRemote) {
-        doAutoReconnect(autoRemote.nickname || 'noNicknameFound');
-      }
+      initStompClient();
     } catch (e) {
-      console.log('error', e);
+      console.error(e);
     }
   }, []);
 
   return (
     <>
       <></>
-      {isConnected ? (
+      {clientRef.current?.connected ? (
         <>
           <RemotePublisher
             givenInjuryTime={givenInjuryTime}

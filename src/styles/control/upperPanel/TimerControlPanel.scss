@@ -32,9 +32,13 @@
 
 .timer-time-set-box {
   width: $panel-width-first;
+  max-width: $panel-width-first;
+  max-height: $panel-upper-height;
 }
 .timer-preset-set-box {
   width: $panel-width-second;
+  max-width: $panel-width-second;
+  max-height: $panel-upper-height;
 }
 
 .timer-boxes-title {
@@ -65,6 +69,8 @@
     background-color: $beige-black;
     border-radius: 5px;
     margin-right: 5px;
+    min-width: 51px;
+    max-width: 51px;
 
     .index-text-wrapper {
       color: $beige-bright2;
@@ -213,6 +219,30 @@
   }
 }
 
+.time-sink-btn-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+
+  > button {
+    width: 100%;
+    height: 30px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background-color: $beige-dark1;
+    color: $beige-bright2;
+    font-size: 14px;
+  }
+  > button:first-child {
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
+  > button:last-child {
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+  }
+}
+
 .injury-showbtn-set-box {
   display: flex;
   // align-items: end;
@@ -259,14 +289,24 @@
 
       .preset-title {
         padding: 6px;
+        max-width: 44px;
+        min-width: 44px;
+        max-height: 32px;
+        min-height: 32px;
         box-sizing: border-box;
         border: $beige-dark1 solid 1px;
         border-radius: 5px 0 0 5px;
         background-color: $beige-back-black;
         color: $beige-middle;
+        overflow: visible;
+        white-space: nowrap;
       }
 
       button {
+        max-width: 46px;
+        min-width: 46px;
+        max-height: 32px;
+        min-height: 32px;
         padding: 3px;
         box-sizing: border-box;
         border: $beige-dark1 solid 1px;
@@ -278,6 +318,8 @@
         font-size: 16px;
         padding-left: 6px;
         padding-right: 6px;
+        overflow: visible;
+        white-space: nowrap;
       }
 
       button:hover {

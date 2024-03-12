@@ -18,11 +18,8 @@ export interface TimerState {
   resume: () => void;
   pause: () => void;
   set: (minutes?: number, seconds?: number) => void;
+  adjustTimeSink: (sec: number) => void;
   isRunning: boolean;
-  /**
-   * milliseconds: number;
-   * updateMiliseconds: (milliseconds: number) => void;
-   */
   mils: TimerMilliseconds;
 }
 
@@ -162,6 +159,10 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     setMilliseconds(milliseconds);
   };
 
+  const adjustTimeSink = useCallback((sec: number) => {
+    setTotalSeconds((prev) => (prev + sec > 0 ? prev + sec : 0));
+  }, []);
+
   return [
     {
       time: { min: Math.floor(totalSeconds / 60), sec: totalSeconds % 60 },
@@ -170,6 +171,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
       resume,
       pause,
       set,
+      adjustTimeSink,
       isRunning,
       mils: { milliseconds, updateMiliseconds },
     },

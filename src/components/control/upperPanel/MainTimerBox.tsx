@@ -1,14 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faPlus,
-  faMinus,
   faPlay,
   faPause,
   faReply,
-  faCircleArrowUp,
   faCaretUp,
-  faCaretSquareUp,
   faCaretDown,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,6 +18,8 @@ export type MainTimerBoxProps = {
   startMainTimer: () => void;
   toggleMainTimerRunning: () => void;
   isRunning: boolean;
+  handleSinkPlus1sec: () => void;
+  handleSinkMinus1sec: () => void;
 };
 
 const MainTimerBox: React.FC<MainTimerBoxProps> = ({
@@ -34,6 +32,8 @@ const MainTimerBox: React.FC<MainTimerBoxProps> = ({
   startMainTimer,
   toggleMainTimerRunning,
   isRunning,
+  handleSinkPlus1sec,
+  handleSinkMinus1sec,
 }) => {
   return (
     <div className='main-timer-box'>
@@ -115,6 +115,14 @@ const MainTimerBox: React.FC<MainTimerBoxProps> = ({
             )}
           </button>
         </div>
+      </div>
+      <div className='time-sink-btn-box'>
+        <button className='time-plus-sink-btn' onClick={handleSinkPlus1sec}>
+          +1
+        </button>
+        <button className='time-minus-sink-btn' onClick={handleSinkMinus1sec}>
+          -1
+        </button>
       </div>
     </div>
   );

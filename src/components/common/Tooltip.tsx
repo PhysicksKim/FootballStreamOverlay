@@ -9,6 +9,8 @@ export interface TooltipProps {
   className?: string;
   position?: 'top' | 'bottom';
   align?: 'left' | 'center';
+  timeout?: number;
+  color?: 'error' | 'success';
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -17,10 +19,17 @@ const Tooltip: React.FC<TooltipProps> = ({
   className,
   position,
   align = 'left',
+  timeout = 3000,
+  color = 'error',
 }) => {
   return (
-    <CSSTransition in={show} timeout={3000} classNames='tooltip' unmountOnExit>
-      <div className={`tooltip ${position} ${align}`}>{message}</div>
+    <CSSTransition
+      in={show}
+      timeout={timeout}
+      classNames='tooltip'
+      unmountOnExit
+    >
+      <div className={`tooltip ${position} ${align} ${color}`}>{message}</div>
     </CSSTransition>
   );
 };

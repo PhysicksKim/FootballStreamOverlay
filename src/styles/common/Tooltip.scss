@@ -3,7 +3,6 @@
 .tooltip {
   position: absolute;
   background-color: $beige-black;
-  color: $warning-red;
   text-align: center;
   border-radius: 5px;
   border: $beige-bright2 1px solid;
@@ -63,4 +62,12 @@
   left: 50%;
   transform: translateX(-50%);
   flex-wrap: nowrap;
+}
+
+.tooltip.error {
+  color: $warning-red;
+}
+
+.tooltip.success {
+  color: $success-blue;
 }

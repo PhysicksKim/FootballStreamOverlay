@@ -3,6 +3,7 @@ import React from 'react';
 import { useInjuryTimeInfo } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
+import { useRemoteClient } from '@src/contexts/stomp/RemoteClientContext';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +17,8 @@ const ScoreInjuryBox: React.FC<Record<string, never>> = () => {
   const { updateGivenInjuryTime } = useInjuryTimeInfo();
 
   const [givenInjuryInput, setGivenInjuryInput] = React.useState('' as string);
+
+  const { isRemoteConnected } = useRemoteClient();
 
   // Score Button Click
   const handleScoreChangeBtn = (operator: '+' | '-', team: 'A' | 'B') => {
@@ -58,7 +61,11 @@ const ScoreInjuryBox: React.FC<Record<string, never>> = () => {
 
   return (
     <div className='score-injury-contol-panel-box'>
-      <div className='score-injury-wrapper'>
+      <div
+        className={`score-injury-wrapper ${
+          isRemoteConnected ? 'score-injury-wrapper-active' : ''
+        }`}
+      >
         <div className='score-control-wrapper'>
           <div className='score-title'>스코어</div>
           <div className='score-control'>
@@ -122,6 +129,7 @@ const ScoreInjuryBox: React.FC<Record<string, never>> = () => {
           <div className='given-injury-title'>추가시간</div>
           <div className='given-injury-input-wrapper'>
             <input
+              id='given-injury-input'
               type='text'
               className='given-injury-input'
               placeholder='0'

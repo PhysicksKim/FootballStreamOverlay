@@ -12,12 +12,14 @@ import {
   StompClientRef,
   RemoteInfos,
   RemoteCommonMessage,
+  ControlChannelMsg,
 } from '@src/types/stompTypes';
 import EventEmitter from 'events';
-import RemoteUtil from './StompInitializer';
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import { Urls } from '@src/classes/Utils';
+import RemoteUtil from './StompInitializer';
+import { cli } from 'webpack';
 
 export interface HostClient {
   connectAsHost: (nickname: string, isAutoRemote: boolean) => void;
@@ -36,28 +38,28 @@ export type RemoteConnectType = 'issue' | 'connect' | 'autoremote';
 // Provider 의 value 로 사용될 타입
 export interface RemoteClient {
   clientRef: StompClientRef;
-  remoteInfos: RemoteInfos;
-  remoteCode: string;
-  isConnected: boolean;
-  eventEmitterRef: React.MutableRefObject<EventEmitter>;
-  remoteConrolMsg: RemoteChannelMsg | undefined;
-  publishMessage: (pubStates: RemoteChannelMsg) => void;
-  emitRemoteControlMsg: () => void;
-  hostClient: HostClient;
-  memberClient: MemberClient;
-  doAutoReconnect: (nickname: string) => void;
-  autoRemote: {
-    nickname: string;
-    isAutoRemote: boolean;
-    updateNickname: (nickname: string) => void;
-    updateIsAutoRemote: (isAutoRemote: boolean) => void;
-  };
-  error: {
-    message: string;
-    updateMessage: (message: string) => void;
-  };
+  initStompClient: () => void;
+  clearAll: () => Promise<AxiosResponse<any>>;
+  setOnReceiveControlMessage: (cb: (data: ControlChannelMsg) => void) => void;
+  setRemotePubData: (data: RemoteChannelMsg) => void;
+  publishMessage: () => void;
+  connectAsHost: (nickname: string, isAutoRemote: boolean) => void;
+  connectAsMember: (
+    nickname: string,
+    remoteCode: string,
+    isAutoRemote: boolean,
+  ) => void;
+  isNotValidNickname: (nickname: string) => boolean;
+  updateNickname: (newNickname: string) => void;
+  updateIsAutoRemote: (newIsAutoRemote: boolean) => void;
+  getStoredInfos: () => { nickname: string; isAutoRemote: boolean };
   memberNicknames: string[];
-  clearAll: () => Promise<AxiosResponse<any, any>>;
+  remoteCode: string;
+  remoteInfos: RemoteInfos;
+  isBasicSubDone: boolean;
+  isRemoteConnected: boolean;
+  errorMsg: string;
+  cleanErrorMsg: (ms: number) => void;
 }
 
 const RemoteClientContext = createContext<RemoteClient | undefined>(undefined);
@@ -90,54 +92,288 @@ export const RemoteClientProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const clientRef = useRef<Client>();
-  const eventEmitterRef = useRef(new EventEmitter());
-  const [isConnected, setIsConnected] = useState<boolean>(false);
 
-  // 원격에 사용되는 각종 상태값들 (원격 코드, 원격 연결 path)
+  const subscriptionRef = useRef(null);
+  const onReceiveControlMsgCbRef = useRef<(data: ControlChannelMsg) => void>();
+  const remotePubDataRef = useRef<RemoteChannelMsg>();
+  const subPollingIntervalRef = useRef<any>();
+
+  const [isBasicSubDone, setIsBasicSubDone] = useState<boolean>(false);
+  const [isRemoteConnected, setIsRemoteConnected] = useState<boolean>(false);
+
   const [remoteCode, setRemoteCode] = useState<string>('');
   const [remoteInfos, setRemoteInfos] = useState<RemoteInfos>({
     subPath: '',
-    pubPath: '',
     subId: '',
+    pubPath: '',
   });
-  const remoteInfosRef = useRef(remoteInfos);
+  const remoteInfosRef = useRef<RemoteInfos>(remoteInfos);
 
-  // 원격 연결시 사용 (원격 코드 발급 or 코드 등록)
-  const [subCount, setSubCount] = useState(0);
-  const [remoteConnectMsg, setRemoteConnectMsg] =
-    useState<RemoteCommonMessage>();
-
-  // 원격 제어 채널 메세지
-  const [remoteChannelMsg, setRemoteChannelMsg] = useState<RemoteChannelMsg>();
-
-  // 원격 연결 방식
-  const [remoteConnectType, setRemoteConnectType] =
-    useState<RemoteConnectType>('issue');
-  const [nickname, setNickname] = useState<string>(
-    () => localStorage.getItem('nickname') || 'defaultNickname',
-  );
-  const [isAutoRemote, setIsAutoRemote] = useState<boolean>(() =>
-    JSON.parse(localStorage.getItem('isAutoRemote') || 'false'),
-  );
   const [errorMsg, setErrorMsg] = useState<string>('');
 
   // 채널 멤버 이름 channelMembers
   const [memberNicknames, setMemberNicknames] = useState<string[]>([]);
+  const [nickname, setNickname] = useState<string>(
+    () => localStorage.getItem('nickname') || '기본닉네임',
+  );
 
-  useEffect(() => {
+  // 원격 자동 연결
+  const [initalIsAutoRemote, _] = useState<boolean>(
+    JSON.parse(localStorage.getItem('isAutoRemote') || 'false'),
+  );
+  const [isAutoRemote, setIsAutoRemote] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem('isAutoRemote') || 'false'),
+  );
+
+  // ------------------
+  const initStompClient = () => {
     if (!clientRef.current) {
-      try {
-        clientRef.current = new Client(stompConfig);
-      } catch (e) {
-        console.log('stomp client initialize error ', e);
-      }
+      clientRef.current = new Client(stompConfig);
+      clientRef.current.activate();
+    } else if (!clientRef.current?.active) {
+      clientRef.current.activate();
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    console.log('Urls.apiUrl', Urls.apiUrl);
-    console.log('Urls.websocketUrl', Urls.websocketUrl);
-  }, []);
+  const stompConfig: StompConfig = {
+    brokerURL: Urls.websocketUrl,
+    onConnect: () => {
+      // Subscribe : /user/topic/remote
+      subscribeRemoteCommonChannel();
+    },
+    onDisconnect: () => {
+      setIsBasicSubDone(false);
+      setIsRemoteConnected(false);
+      clearSubCheckPolling();
+    },
+  };
+
+  // 기본 응답 수신에 사용되는 /user/topic/remote 채널을 구독합니다.
+  const subscribeRemoteCommonChannel = () => {
+    clientRef.current.subscribe(
+      '/user/topic/remote',
+      (message: IMessage) => {
+        updateBasicRemoteChannelMessage(message);
+      },
+      { id: 'remoteCommonMsg' },
+    );
+    pollingSubscribeDoneMessage();
+  };
+
+  /**
+   * clientSide 에서 원격 제어 채널 구독이 완료되었는지 확인하기 위해서 0.3초 마다 요청을 보냅니다.
+   * 구독에 성공했다면 서버에서 msg.type === sub 응답을 보내줍니다.
+   * 이 응답을 받으면 polling interval 을 중지해야 합니다.
+   */
+  const pollingSubscribeDoneMessage = () => {
+    if (subPollingIntervalRef.current) {
+      clearInterval(subPollingIntervalRef.current);
+      subPollingIntervalRef.current = null;
+    }
+
+    setTimeout(() => {
+      subPollingIntervalRef.current = setInterval(() => {
+        clientRef.current.publish({
+          destination: '/app/remote.subcheck',
+          body: JSON.stringify({}),
+        });
+      }, 300);
+    }, 100);
+  };
+
+  const clearSubCheckPolling = () => {
+    clearInterval(subPollingIntervalRef.current);
+    subPollingIntervalRef.current = null;
+  };
+
+  /**
+   * /user/topic/remote 채널의 메세지를 처리합니다.
+   * @param rawMessage
+   * @returns
+   */
+  const updateBasicRemoteChannelMessage: (
+    rawMessage: IMessage,
+  ) => RemoteCommonMessage = (rawMessage) => {
+    let remoteMsg: RemoteCommonMessage;
+    try {
+      remoteMsg = JSON.parse(rawMessage.body);
+    } catch (e) {
+      return;
+    }
+
+    switch (remoteMsg.type) {
+      case 'sub':
+        clearSubCheckPolling();
+        setIsBasicSubDone(true);
+        handleInitAutoRemote(nickname, isAutoRemote);
+        break;
+      case 'issue':
+      case 'connect':
+      case 'autoreconnect':
+        handleNewRemoteChannelMsg(remoteMsg);
+        break;
+      case 'error':
+        setErrorMsg(remoteMsg.message);
+        break;
+      default:
+        break;
+    }
+
+    // setRemoteConnectMsg(remoteMsg);
+    return remoteMsg;
+  };
+
+  /**
+   * 새롭게 발급받은 remote channel 을 구독합니다. 이전 채널 구독을 해제합니다.
+   * @param remoteMsg
+   */
+  const handleNewRemoteChannelMsg = (remoteMsg: RemoteCommonMessage) => {
+    unsubPrevRemoteChannel();
+    subRemoteControlChannel(remoteMsg);
+    updateRemoteInfos(remoteMsg);
+    setIsRemoteConnected(true);
+
+    if (remoteMsg.autoRemote) {
+      const cookieGetUrl = remoteMsg.cookieGetUrl;
+      getAutoRemoteCookie(cookieGetUrl);
+    }
+  };
+
+  /**
+   * 자동 재연결을 위한 쿠키를 요청합니다.
+   */
+  const getAutoRemoteCookie = (cookieGetUrl: string) => {
+    axios
+      .get(Urls.apiUrl + cookieGetUrl, { withCredentials: true })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  /**
+   * 이전에 구독 중이던 /user/topic/remote/{remotecode} 채널을 구독 해제합니다.
+   * @returns
+   */
+  const unsubPrevRemoteChannel = () => {
+    if (!subscriptionRef.current) {
+      return;
+    }
+    clientRef.current.unsubscribe(subscriptionRef.current);
+    subscriptionRef.current = null;
+  };
+
+  /**
+   * /user/topci/remote/{remotecode} 채널을 구독합니다.
+   * @param remoteMsg
+   */
+  const subRemoteControlChannel = (remoteMsg: RemoteCommonMessage) => {
+    // 새 채널 구독 아이디 설정
+    subscriptionRef.current = `remote-${remoteMsg.code}`;
+    clientRef.current.subscribe(
+      remoteMsg.subPath,
+      (message: IMessage) => {
+        callbackRemoteChannelMessage(message);
+      },
+      { id: subscriptionRef.current },
+    );
+  };
+
+  const updateRemoteInfos = (remoteMsg: RemoteCommonMessage) => {
+    const remoteCode = remoteMsg.remoteCode;
+    const remoteInfos: RemoteInfos = {
+      subPath: remoteMsg.subPath,
+      subId: subscriptionRef.current,
+      pubPath: remoteMsg.pubPath,
+    };
+    setRemoteCode(remoteCode);
+    setRemoteInfos(remoteInfos);
+  };
+
+  /**
+   * /user/topic/remote/{remotecode} 채널의 메세지를 처리합니다.
+   * @param rawMessage
+   * @returns
+   */
+  const callbackRemoteChannelMessage = (rawMessage: IMessage) => {
+    const message: RemoteChannelMsg = parseRemoteChannelMessage(rawMessage);
+    if (!message) {
+      return;
+    }
+
+    switch (message.type) {
+      case 'control':
+        // 제어 메세지 업데이트
+        if ('score' in message.data && 'givenInjury' in message.data) {
+          /**
+           * # Callback Ref 사용하는 이유 - loose coupling 을 위해서
+           * ContextProvider 가 state 를 직접 변경하면 provider 간 의존성 문제가 생길 수 있습니다.
+           * Provider 가 다른 Provider 의 state 를 참조하면 의존성이 복잡해지고 강한 결합이 생깁니다.
+           * 따라서 'control' 메세지에 대한 처리 callback 정의를 Provider 가 아니라 다른 하위 컴포넌트에서 하도록 하고,
+           * RemoteClientContext 에서는 callback 을 실행시키기만 합니다.
+           *
+           * # Provider 간 의존성 문제란
+           * Provider 에서 직접 다른 Provider 의 state 를 변경하도록 하면 Provider 간 순서가 중요해지는 문제가 발생합니다.
+           * 예를 들어 RemoteClientProvider 에서 직접 TeamProvider 의 Team state 를 변경하도록 코드를 작성하면
+           * 필수적으로 TeamProvider 안에 RemoteClientProvider 가 위치해야 합니다.
+           *
+           * <TeamProvider>
+           *  <RemoteClientProvider>
+           *    <TimerRoot />
+           *  </RemoteClientProvider>
+           * </TeamProvider>
+           *
+           * 이로 인해서 provider 간 강한 결합이 발생하므로, loose coupling 을 위해서 Provider 간 state 직접 변경을 지양해야 합니다.
+           *
+           * # 해결 방법 - onReceiveControlMsgCbRef 를 사용하여 callback 을 TimerRoot 이하의 컴포넌트에서 정의하도록 합니다.
+           * 예를 들어 <RemoteClientManager> 를 <TimerRoot> 아래에 위치시키고,
+           * <RemoteClientManager> 에서 각종 Provider 의 state 의존성을 받아옵니다.
+           * 그리고 <RemoteClientManager> 에서 onReceiveControlMsgCbRef 를 정의하도록 하고,
+           * <RemoteClientContext> 에서는 단지 callback 이 정의되어있다면 실행하기만 하면 됩니다.
+           * 이렇게 loose coupling 을 구현할 수 있습니다.
+           */
+          callOnReceiveControlMsgCb(message);
+        }
+        break;
+      case 'members':
+        // 멤버 목록 업데이트
+        if ('members' in message.data) {
+          setMemberNicknames(message.data.members);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  const parseRemoteChannelMessage = (message: IMessage) => {
+    let remoteChannelMsg: RemoteChannelMsg;
+    try {
+      remoteChannelMsg = JSON.parse(message.body);
+    } catch (e) {
+      return;
+    }
+    return remoteChannelMsg;
+  };
+
+  const callOnReceiveControlMsgCb = (msg: ControlChannelMsg) => {
+    if (onReceiveControlMsgCbRef.current) {
+      onReceiveControlMsgCbRef.current(msg);
+    }
+  };
+
+  const setOnReceiveControlMessage = (
+    cb: (data: ControlChannelMsg) => void,
+  ) => {
+    if (cb) {
+      onReceiveControlMsgCbRef.current = cb;
+    }
+  };
+
+  const setRemotePubData = (data: RemoteChannelMsg) => {
+    if (data) {
+      remotePubDataRef.current = data;
+    }
+  };
 
   // 새로운 원격 정보를 받으면
   // 원격 제어 정보 업데이트
@@ -147,86 +383,13 @@ export const RemoteClientProvider: React.FC<{
     requestMemberNicknames();
   }, [remoteInfos]);
 
-  useEffect(() => {
-    if (
-      remoteChannelMsg?.type === 'members' &&
-      'members' in remoteChannelMsg.data
-    ) {
-      setMemberNicknames(remoteChannelMsg.data.members);
-    }
-  }, [remoteChannelMsg]);
-
   /**
-   * 사용자가 원격 코드를 발급 또는 등록 후, 원격 채널을 등록합니다.
+   * RemoteCommon 채널 구독 완료 후에 동작해야 합니다.
+   * @param nickname
+   * @returns
    */
-  useEffect(() => {
-    console.log('useEffect _ remoteConnectMsg : ', remoteConnectMsg);
-    switch (remoteConnectMsg?.type) {
-      case 'autoreconnect':
-      case 'issue':
-      case 'connect':
-        console.log('remoteConnectMsg type : ', remoteConnectMsg.type);
-        if (
-          remoteConnectMsg &&
-          RemoteUtil.isValideRemoteCode(remoteConnectMsg.remoteCode)
-        ) {
-          subRemoteAndUpdateRemoteInfos();
-        }
-        if (remoteConnectMsg.autoRemote) {
-          // getUserCookie
-          axios
-            .get(Urls.apiUrl + remoteConnectMsg.cookieGetUrl, {
-              withCredentials: true,
-            })
-            .then((res) => {
-              console.log('getUserCookie res : ', res);
-            })
-            .catch((err) => {
-              console.log('getUserCookie err : ', err);
-            });
-        }
-
-        break;
-      case 'sub':
-        setTimeout(() => {
-          console.log('afterSub event emit');
-          eventEmitterRef.current.emit('afterSub');
-        }, 100);
-        break;
-      case 'error':
-        // 원격 연결 에러 시 자동 재연결 해제를 위한 localStorage autoRemote false 설정
-        saveToLocalStorage(nickname, false);
-        setErrorMsg(remoteConnectMsg.message);
-        break;
-      default:
-        console.log('remoteConnectMsg others :: ', remoteConnectMsg);
-    }
-  }, [remoteConnectMsg]);
-
-  /**
-   * 원격 코드 연결과 관련된 서버의 응답을 수신합니다.
-   * 단순히 sub 후 parsing 하여 state 변수 업데이트에 집중하고,
-   * 세부 사항별 분기 로직은 useEffect(,[remoteConnectMsg]) 에서 처리합니다.
-   */
-  const subRemoteCommonChannel = () => {
-    console.log('subRemoteCommonChannel');
-    setTimeout(() => {
-      clientRef.current.subscribe(
-        '/user/topic/remote',
-        (message: IMessage) => {
-          const _remoteCommonMsg: RemoteCommonMessage =
-            parseRemoteCommonMsg(message);
-          setRemoteConnectMsg(_remoteCommonMsg);
-        },
-        { id: 'remoteCommonMsg' },
-      );
-    }, 100);
-  };
-
-  const doAutoReconnect = (nickname: string) => {
-    console.log('doAutoReconnect');
+  const handleInitAutoRemote = (nickname: string, isAutoRemote: boolean) => {
     if (isNotValidNickname(nickname)) {
-      console.log(`nickname is not valid :: [${nickname}]`);
       return;
     }
 
@@ -238,168 +401,21 @@ export const RemoteClientProvider: React.FC<{
         {},
         { withCredentials: true },
       )
-      .catch((err) => {
-        console.log('auto reconnect 용 cookie 가 존재하지 않습니다');
+      .catch((e) => {
+        null;
       })
       .then((res) => {
-        // sub 완료 후 할 작업
-        eventEmitterRef.current.on('afterSub', () => {
-          clientRef.current.publish({
-            destination: '/app/remote.autoreconnect',
-            body: JSON.stringify({ nickname: nickname }),
-          });
+        // 자동 재연결 요청. 성공시 type:connect 응답을 받음
+        clientRef.current.publish({
+          destination: '/app/remote.autoreconnect',
+          body: JSON.stringify({ nickname: nickname }),
         });
-
-        // activate
-        clientRef.current.activate();
-        // subscribe 에서 setRemoteConnectMsg 하고,
-        // useEffect 에서 remoteConnectMsg 에서 type=autoreconnect 처리함
-        // autoreconnect 는 issue 나 connect 와 응답이 동일함
       });
   };
 
-  const expireRemoteInfos = () => {
-    setRemoteInfos({
-      subPath: '',
-      subId: '',
-      pubPath: '',
-    });
-  };
-
-  /**
-   * 원격 연결 메세지가 수신된 경우, 해당 메세지를 바탕으로 subPath, pubPath 를 업데이트합니다.
-   * subPath, pubPath 를 업데이트하면서, 이전 subId 를 unsubscribe 합니다.
-   */
-  const subRemoteAndUpdateRemoteInfos = () => {
-    const prevCount = subCount;
-    const prevSubId = `remoteMsg-${prevCount}`;
-    const nextSubId = `remoteMsg-${prevCount + 1}`;
-
-    updateRemoteInfosWithUnsub(prevCount, prevSubId, nextSubId);
-
-    setRemoteCode(remoteConnectMsg.remoteCode);
-    setRemoteInfos((_) => {
-      return {
-        subPath: remoteConnectMsg.subPath,
-        pubPath: remoteConnectMsg.pubPath,
-        subId: nextSubId,
-      };
-    });
-  };
-
-  const updateRemoteInfosWithUnsub = (
-    prevCount: number,
-    prevSubId: string,
-    nextSubId: string,
-  ) => {
-    if (prevCount > 0) {
-      clientRef.current.unsubscribe(prevSubId);
-    }
-    clientRef.current.subscribe(
-      remoteConnectMsg.subPath,
-      (message: IMessage) => {
-        try {
-          const msg: RemoteChannelMsg = JSON.parse(message.body);
-          if (msg) {
-            setRemoteChannelMsg(msg);
-          }
-        } catch (e) {
-          console.log('remoteControlMsg parse error : ', e);
-        }
-      },
-      { id: nextSubId },
-    );
-    setSubCount((prev) => prev + 1);
-  };
-
-  /**
-   * 원격 코드 발급(issue code), 원격 코드 연결(connect) 의 응답 메세지를 파싱합니다.
-   * @param message
-   * @returns
-   */
-  const parseRemoteCommonMsg: (message: IMessage) => RemoteCommonMessage = (
-    message,
-  ) => {
-    const remoteMsg: RemoteCommonMessage = JSON.parse(message.body);
-    return remoteMsg;
-  };
-
-  /**
-   * 코드 발급을 위한 요청을 서버로 전송합니다.
-   */
-  const connectAsHost = (nickname: string, isAutoRemote: boolean) => {
-    nickname = nickname.trim();
-    if (isNotValidNickname(nickname)) {
-      console.log(`nickname is not valid :: [${nickname}]`);
-      setErrorMsg('nickname:유효하지 않은 닉네임 입니다. 최대 30자');
-      return;
-    }
-
-    saveToLocalStorage(nickname, isAutoRemote);
-    eventEmitterRef.current.removeAllListeners('afterSub');
-    eventEmitterRef.current.on('afterSub', () => {
-      clientRef.current.publish({
-        destination: '/app/remote.issuecode',
-        body: JSON.stringify({ nickname: nickname, autoRemote: isAutoRemote }),
-      });
-    });
-
-    // TODO : afterSub 이벤트를 발생시키기 위해 deactivate 후에 activate 하는게 맞는지 확인 필요
-    // 오버헤드 생김 개선필요
-    if (!clientRef.current.active) {
-      clientRef.current.activate();
-    }
-  };
-
-  /**
-   * Member 로서 원격 제어 서버에 연결합니다.
-   * RemoteCode 를 바탕으로 Host 에 연결을 요청합니다.
-   * @param remoteCode
-   * @returns void
-   */
-  const connectAsMember: (
-    remoteCode: string,
-    nickname: string,
-    isAutoRemote: boolean,
-  ) => void = (remoteCode: string, nickname: string, isAutoRemote: boolean) => {
-    if (!RemoteUtil.isValideRemoteCode(remoteCode)) {
-      setErrorMsg('code:유효하지 않은 원격 코드입니다.');
-      console.log(`remoteCode is not valid :: [${remoteCode}]`);
-      return;
-    }
-    nickname = nickname.trim();
-    if (isNotValidNickname(nickname)) {
-      setErrorMsg('nickname:유효하지 않은 닉네임 입니다. 최대 30자');
-      console.log(`nickname is not valid :: [${nickname}]`);
-      return;
-    }
-
-    saveToLocalStorage(nickname, isAutoRemote);
-    eventEmitterRef.current.removeAllListeners('afterSub');
-    eventEmitterRef.current.on('afterSub', () => {
-      clientRef.current.publish({
-        destination: '/app/remote.connect',
-        body: JSON.stringify({
-          remoteCode: remoteCode,
-          nickname: nickname,
-          autoRemote: isAutoRemote,
-        }),
-      });
-    });
-
-    // TODO : connectAsMember 에서 activate 하는게 맞는지 확인 필요
-    // onConnect 에서 sub 명령이 전달되고, sub 명령이 전달되어야지 afterSub 로 connect 가 발생함
-    // 그래서 active 상태인 경우 onConnect 를 발생시키기 위해서 disConnect 후에 connect 를 발생시킴
-    // 이걸 나중에 개선해야 할 것 같음.
-    // 코드 입력 실패했다고 websocket close 후 재연결 하는건 좀 오버헤드가 생기니까
-    // onConnect 에서 subEvent 발생시키는 거 감지하는 방식 말고, 다른 방식이 어떨지 싶음
-    if (clientRef.current.active) {
-      clientRef.current.deactivate().then(() => {
-        clientRef.current.activate();
-      });
-    } else {
-      clientRef.current.activate();
-    }
+  const saveToLocalStorage = (nickname: string, isAutoRemote: boolean) => {
+    localStorage.setItem('nickname', nickname);
+    localStorage.setItem('isAutoRemote', JSON.stringify(isAutoRemote));
   };
 
   const isNotValidNickname = (nickname: string) => {
@@ -412,14 +428,55 @@ export const RemoteClientProvider: React.FC<{
     return _result;
   };
 
-  /**
-   * 현재 타이머의 상태들을 원격 제어 서버로 전송합니다.
-   * @param pubStates 원격 제어로 보낼 타이머의 상태값을 담고 있는 JSON 객체
-   */
-  const publishMessage = (pubStates: RemoteChannelMsg) => {
+  const connectAsHost = (nickname: string, isAutoRemote: boolean) => {
+    if (!clientRef.current?.connected || !isBasicSubDone) {
+      setErrorMsg('general:서버 연결 중입니다. 잠시만 기다려주세요.');
+      return;
+    }
+
+    nickname = nickname.trim();
+    if (isNotValidNickname(nickname)) {
+      setErrorMsg('nickname:유효하지 않은 닉네임 입니다. 최대 30자');
+      return;
+    }
+
+    saveToLocalStorage(nickname, isAutoRemote);
+    clientRef.current.publish({
+      destination: '/app/remote.issuecode',
+      body: JSON.stringify({ nickname: nickname, autoRemote: isAutoRemote }),
+    });
+  };
+
+  const connectAsMember = (
+    nickname: string,
+    remoteCode: string,
+    isAutoRemote: boolean,
+  ) => {
+    if (!RemoteUtil.isValideRemoteCode(remoteCode)) {
+      setErrorMsg('code:유효하지 않은 원격 코드입니다.');
+      return;
+    }
+    nickname = nickname.trim();
+    if (isNotValidNickname(nickname)) {
+      setErrorMsg('nickname:유효하지 않은 닉네임 입니다. 최대 30자');
+      return;
+    }
+
+    saveToLocalStorage(nickname, isAutoRemote);
+    clientRef.current.publish({
+      destination: '/app/remote.connect',
+      body: JSON.stringify({
+        remoteCode: remoteCode,
+        nickname: nickname,
+        autoRemote: isAutoRemote,
+      }),
+    });
+  };
+
+  const publishMessage = () => {
     clientRef.current.publish({
       destination: remoteInfosRef.current.pubPath,
-      body: JSON.stringify(pubStates),
+      body: JSON.stringify(remotePubDataRef.current),
     });
   };
 
@@ -434,56 +491,13 @@ export const RemoteClientProvider: React.FC<{
     }
   };
 
-  const emitRemoteControlMsg = () => {
-    eventEmitterRef.current.emit('publishRemoteControlMsg');
-  };
+  const cleanErrorMsg = (ms: number) => {
+    ms = Number.parseInt(ms.toString());
+    if (ms < 0) ms = 0;
 
-  const stompConfig: StompConfig = {
-    brokerURL: Urls.websocketUrl,
-    onConnect: () => {
-      console.log('onConnect');
-      setIsConnected(true);
-      expireRemoteInfos();
-      subRemoteCommonChannel();
-
-      eventEmitterRef.current.emit('afterConnect');
-    },
-    onDisconnect: () => {
-      console.log('onDisconnect');
-      expireRemoteInfos();
-      setIsConnected(false);
-
-      eventEmitterRef.current.emit('disconnect');
-    },
-    onWebSocketError: (error) => {
-      console.log('onWebSocketError', error);
-      setIsConnected(false);
-      expireRemoteInfos();
-
-      clientRef.current.deactivate();
-      eventEmitterRef.current.emit('disconnect');
-    },
-    onStompError: (frame) => {
-      console.log('onStompError', frame);
-      setIsConnected(false);
-      expireRemoteInfos();
-
-      clientRef.current.deactivate();
-      eventEmitterRef.current.emit('disconnect');
-    },
-    onWebSocketClose: () => {
-      console.log('onWebSocketClose');
-      setIsConnected(false);
-      expireRemoteInfos();
-
-      clientRef.current.deactivate();
-      eventEmitterRef.current.emit('disconnect');
-    },
-  };
-
-  const saveToLocalStorage = (nickname: string, isAutoRemote: boolean) => {
-    localStorage.setItem('nickname', nickname);
-    localStorage.setItem('isAutoRemote', JSON.stringify(isAutoRemote));
+    setTimeout(() => {
+      setErrorMsg('');
+    }, ms);
   };
 
   const updateNickname = (newNickname: string) => {
@@ -497,67 +511,68 @@ export const RemoteClientProvider: React.FC<{
   };
 
   const clearAll = async () => {
-    if (clientRef.current) {
-      clientRef.current.deactivate();
-    }
-    eventEmitterRef.current.removeAllListeners();
-    setRemoteCode('');
-    setRemoteInfos({
-      subPath: '',
-      subId: '',
-      pubPath: '',
-    });
-    setRemoteConnectMsg(undefined);
-    setRemoteChannelMsg(undefined);
-    setRemoteConnectType('issue');
-    setNickname('defaultNickname');
-    setIsAutoRemote(false);
-    setErrorMsg('');
-    localStorage.removeItem('nickname');
-    localStorage.removeItem('isAutoRemote');
-    setMemberNicknames([]);
-
-    return axios.post(
+    const _clearCookie = await axios.post(
       Urls.apiUrl + '/api/scoreboard/user/cookie/clear',
       {},
       {
         withCredentials: true,
       },
     );
+
+    localStorage.removeItem('nickname');
+    localStorage.removeItem('isAutoRemote');
+
+    if (clientRef.current) {
+      clientRef.current.deactivate();
+      setTimeout(() => {
+        initStompClient();
+      }, 100);
+    }
+
+    setRemoteCode('');
+    setRemoteInfos({
+      subPath: '',
+      subId: '',
+      pubPath: '',
+    });
+    setNickname('기본닉네임');
+    setIsAutoRemote(false);
+    setErrorMsg('');
+    setMemberNicknames([]);
+
+    return _clearCookie;
+  };
+
+  const getStoredInfos = () => {
+    const nick = localStorage.getItem('nickname') || '기본닉네임';
+    const isAutoRemote = JSON.parse(
+      localStorage.getItem('isAutoRemote') || 'false',
+    );
+    return { nickname: nick, isAutoRemote: isAutoRemote };
   };
 
   return (
     <RemoteClientContext.Provider
       value={{
         clientRef,
-        remoteInfos,
-        remoteCode,
-        isConnected,
-        eventEmitterRef,
-        remoteConrolMsg: remoteChannelMsg,
-        publishMessage,
-        emitRemoteControlMsg,
-        hostClient: {
-          connectAsHost,
-        },
-        memberClient: {
-          connectAsMember,
-        },
-        doAutoReconnect,
-        autoRemote: {
-          nickname,
-          isAutoRemote,
-          updateNickname,
-          updateIsAutoRemote,
-        },
-        error: {
-          message: errorMsg,
-          updateMessage: (message: string) => {
-            setErrorMsg(message);
-          },
-        },
+        initStompClient,
         clearAll,
+        setOnReceiveControlMessage,
+        setRemotePubData,
+        publishMessage,
+        connectAsHost,
+        connectAsMember,
+        isNotValidNickname,
+        updateNickname,
+        updateIsAutoRemote,
+        getStoredInfos,
         memberNicknames,
+        remoteCode,
+        remoteInfos,
+        isBasicSubDone,
+        isRemoteConnected,
+        errorMsg,
+        cleanErrorMsg,
       }}
     >
       {children}

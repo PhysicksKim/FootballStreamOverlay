@@ -5,16 +5,6 @@ import '@styles/remote/RemoteMembersBox.scss';
 
 const RemoteMembersBox = () => {
   const { memberNicknames } = useRemoteClient();
-  // const memberNicknames = [
-  //   'member1',
-  //   'member2',
-  //   'member3',
-  //   'member4',
-  //   'member5',
-  //   'member3',
-  //   'member4',
-  //   'member5',
-  // ];
 
   return (
     <div className='remote-members-container'>

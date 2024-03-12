@@ -176,6 +176,7 @@
     display: flex;
     flex-direction: column;
 
+    position: relative;
     border: $beige-dark1 5px solid;
     background-color: $beige-dark2;
     border-radius: 5px;
@@ -187,10 +188,58 @@
       height: 30px;
       border-radius: 5px;
       background-color: $beige-back-black;
+      color: $warning-red;
     }
     .remote-clear-all-btn:hover {
       background-color: $beige-bright1;
       color: $beige-back-black;
+    }
+    .remote-clear-all-btn:disabled {
+      background-color: $beige-black !important;
+      color: $beige-dark1 !important;
+      border-color: $beige-back-black;
+    }
+
+    .confirm-box {
+      position: absolute;
+      padding: 5px 10px;
+      top: 2px;
+      left: 82px;
+      background-color: $beige-back-black;
+      border-radius: 5px;
+      border: $beige-dark1 3px solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: $beige-bright2;
+
+      .confirm-btn-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5px;
+
+        .confirm-btn {
+          width: 70px;
+          height: 30px;
+          font-size: 16px;
+          border-radius: 5px;
+          background-color: $beige-dark2;
+          margin-right: 8px;
+          margin-left: 8px;
+        }
+        .confirm-btn:hover {
+          background-color: $beige-bright1;
+          color: $beige-back-black;
+        }
+        .confirm-yes-btn {
+          color: $warning-red;
+        }
+        .confirm-no-btn {
+          color: $beige-bright1;
+        }
+      }
     }
   }
 }

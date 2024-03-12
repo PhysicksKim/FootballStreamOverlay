@@ -85,22 +85,6 @@ export type GivenInjuryPayload = {
 
 export type RemoteMsgDataPayload = ScorePayload | GivenInjuryPayload;
 
-// export interface RemoteChannelMsg {
-//   code: number;
-//   type: 'control' | 'members';
-//   message: string;
-//   metadata: {
-//     date: Date;
-//   };
-//   data?:
-//     | {
-//         score: ScorePayload;
-//         givenInjury: GivenInjuryPayload;
-//       }
-//     | {
-//         members: string[];
-//       };
-// }
 export interface BaseRemoteChannelMsg {
   code: number;
   message: string;

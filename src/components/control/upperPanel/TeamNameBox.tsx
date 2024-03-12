@@ -50,15 +50,20 @@ const TeamNameBox = () => {
     <div className='team-name-change-box'>
       <div className='team-name-change-wrapper'>
         <div className='team-name-input-box team-a-name-box'>
-          <input type='text' required={true} onChange={handleTeamANameChange} />
-          <label htmlFor=''>Team A 이름 변경</label>
+          <input
+            id='change-team-a-name-input'
+            type='text'
+            required={true}
+            onChange={handleTeamANameChange}
+          />
+          <label htmlFor='change-team-a-name-input'>Team A 이름 변경</label>
         </div>
         <div className='font-is-black-wrapper'>
           <div>검은색 폰트</div>
           <input
             className='font-is-black-checkbox'
             type='checkbox'
-            id='font-is-black'
+            id='font-is-black-team-a'
             checked={teamAStyle.fontColor === 'black'}
             onChange={(e) => handleTeamAFontColorChange(e.target.checked)}
           />
@@ -66,15 +71,20 @@ const TeamNameBox = () => {
       </div>
       <div className='team-name-change-wrapper'>
         <div className='team-name-input-box team-b-name-box'>
-          <input type='text' required={true} onChange={handleTeamBNameChange} />
-          <label htmlFor=''>Team B 이름 변경</label>
+          <input
+            id='change-team-b-name-input'
+            type='text'
+            required={true}
+            onChange={handleTeamBNameChange}
+          />
+          <label htmlFor='change-team-b-name-input'>Team B 이름 변경</label>
         </div>
         <div className='font-is-black-wrapper'>
           <div>검은색 폰트</div>
           <input
             className='font-is-black-checkbox'
             type='checkbox'
-            id='font-is-black'
+            id='font-is-black-team-b'
             checked={teamBStyle.fontColor === 'black'}
             onChange={(e) => handleTeamBFontColorChange(e.target.checked)}
           />
