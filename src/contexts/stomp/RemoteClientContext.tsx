@@ -98,6 +98,9 @@ export const RemoteClientProvider: React.FC<{
   const remotePubDataRef = useRef<RemoteChannelMsg>();
   const subPollingIntervalRef = useRef<any>();
 
+  const [isCleaning, setIsCleaning] = useState<boolean>(false);
+  const cleaningIntervalRef = useRef<any>();
+
   const [isBasicSubDone, setIsBasicSubDone] = useState<boolean>(false);
   const [isRemoteConnected, setIsRemoteConnected] = useState<boolean>(false);
 
@@ -401,15 +404,16 @@ export const RemoteClientProvider: React.FC<{
         {},
         { withCredentials: true },
       )
-      .catch((e) => {
-        null;
-      })
       .then((res) => {
+        console.log('쿠키 캐싱 성공, 200 : ', res);
         // 자동 재연결 요청. 성공시 type:connect 응답을 받음
         clientRef.current.publish({
           destination: '/app/remote.autoreconnect',
           body: JSON.stringify({ nickname: nickname }),
         });
+      })
+      .catch((e) => {
+        console.log('쿠키 캐싱 실패, 400 : ', e);
       });
   };
 
@@ -511,36 +515,68 @@ export const RemoteClientProvider: React.FC<{
   };
 
   const clearAll = async () => {
-    const _clearCookie = await axios.post(
-      Urls.apiUrl + '/api/scoreboard/user/cookie/clear',
-      {},
-      {
-        withCredentials: true,
-      },
-    );
+    setIsCleaning(true);
 
-    localStorage.removeItem('nickname');
-    localStorage.removeItem('isAutoRemote');
-
-    if (clientRef.current) {
-      clientRef.current.deactivate();
-      setTimeout(() => {
-        initStompClient();
-      }, 100);
+    let response: AxiosResponse<any>;
+    try {
+      response = await axios.post(
+        `${Urls.apiUrl}/api/scoreboard/user/cookie/clear`,
+        {},
+        { withCredentials: true },
+      );
+    } catch (e) {
+      console.error(e);
     }
-
+    localStorage.setItem('nickname', '기본닉네임');
+    localStorage.setItem('isAutoRemote', 'false');
+    setNickname('기본닉네임');
+    setIsAutoRemote(false);
     setRemoteCode('');
     setRemoteInfos({
       subPath: '',
       subId: '',
       pubPath: '',
     });
-    setNickname('기본닉네임');
-    setIsAutoRemote(false);
     setErrorMsg('');
     setMemberNicknames([]);
 
-    return _clearCookie;
+    return response;
+  };
+
+  useEffect(() => {
+    if (isCleaning && isAllCleaned()) {
+      setIsCleaning(false);
+      restartClient();
+    }
+  }, [
+    nickname,
+    isAutoRemote,
+    remoteCode,
+    remoteInfos,
+    errorMsg,
+    memberNicknames,
+  ]); // 상태들을 의존성 배열에 포함
+
+  const restartClient = async () => {
+    if (clientRef.current) {
+      await clientRef.current.deactivate();
+    }
+    initStompClient();
+  };
+
+  const isAllCleaned = () => {
+    return (
+      localStorage.getItem('nickname') === '기본닉네임' &&
+      localStorage.getItem('isAutoRemote') === 'false' &&
+      nickname === '기본닉네임' &&
+      isAutoRemote === false &&
+      remoteCode === '' &&
+      remoteInfos.subPath === '' &&
+      remoteInfos.subId === '' &&
+      remoteInfos.pubPath === '' &&
+      errorMsg === '' &&
+      memberNicknames.length === 0
+    );
   };
 
   const getStoredInfos = () => {
