@@ -206,15 +206,17 @@ const RemoteClientBox = () => {
       </div>
       <div className='create-and-join-box'>
         <div className='create-box'>
+          <div className='create-group-title'>신규 그룹 생성</div>
           <button className='create-group-btn' onClick={issueCodeHandler}>
             생성
           </button>
           <div className='create-group-code-display'>
-            코드 : [ {remoteCode} ]
+            <div className='code-display-title'>코드</div>
+            <div className='code-display-content'>{remoteCode}</div>
           </div>
-          <div className='create-group-title'>신규 그룹 생성</div>
         </div>
         <div className='join-box'>
+          <div className='join-group-title'>코드로 참여</div>
           <button className='join-group-btn' onClick={codeConnectHandler}>
             참여
           </button>
@@ -233,7 +235,6 @@ const RemoteClientBox = () => {
               align='center'
             />
           </div>
-          <div className='join-group-title'>코드로 참여</div>
         </div>
       </div>
       <div className='remote-clear-all-box'>

@@ -144,13 +144,40 @@
 
       .create-group-title,
       .join-group-title {
-        margin-top: 5px;
-        font-size: 20px;
+        font-size: 14px;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 5px;
+        width: 80%;
+        margin-bottom: 5px;
+        background-color: $beige-back-black;
+        color: $beige-middle;
+        padding-top: 3px;
+        padding-bottom: 3px;
       }
 
       .create-group-code-display {
-        font-size: 16px;
-        height: 26px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $beige-back-black;
+        border: $beige-dark1 3px solid;
+        box-sizing: border-box;
+
+        .code-display-title {
+          width: 37px;
+          text-align: center;
+          padding-left: 5px;
+          color: $beige-middle;
+        }
+
+        .code-display-content {
+          width: 100px;
+          text-align: center;
+          font-size: 18px;
+          color: $beige-bright2;
+        }
       }
       .join-group-input-wrapper {
         display: flex;
@@ -159,15 +186,17 @@
 
         .join-group-code-input {
           box-sizing: border-box;
-          width: 70%;
+          width: 80%;
           font-size: 20px;
-          height: 26px;
+          height: 30px;
           background-color: $beige-black;
           color: $beige-bright2;
-          border-radius: 30px;
-          padding-left: 10px;
-          padding-right: 10px;
+          border-radius: 7px;
+          padding-left: 4px;
+          padding-right: 4px;
+          padding-bottom: 2px;
           overflow: hidden;
+          text-align: center;
         }
       }
     }
