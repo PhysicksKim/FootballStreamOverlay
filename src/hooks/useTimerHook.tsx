@@ -135,23 +135,26 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   }, []);
 
   // 하프 타임 도달한 경우 메인 타이머 멈춤
-  const checkForPauseTime = useCallback((nowSecs: number) => {
-    const index = pauseTimes.indexOf(nowSecs);
+  const checkForPauseTime = useCallback(
+    (nowSecs: number) => {
+      const index = pauseTimes.indexOf(nowSecs);
 
-    if (index !== -1) {
-      const events = [
-        'firstHalfStop',
-        'secondHalfStop',
-        'firstExtraTimeStop',
-        'secondExtraTimeStop',
-      ];
-      if (isRunning) {
-        eventEmitter.emit(events[index]);
-        eventEmitter.emit('halfTimeStop'); // 추가시간 표시는 halfTimeStop 이벤트로 인식
-        pause();
+      if (index !== -1) {
+        const events = [
+          'firstHalfStop',
+          'secondHalfStop',
+          'firstExtraTimeStop',
+          'secondExtraTimeStop',
+        ];
+        if (isRunning) {
+          eventEmitter.emit(events[index]);
+          eventEmitter.emit('halfTimeStop'); // 추가시간 표시는 halfTimeStop 이벤트로 인식
+          pause();
+        }
       }
-    }
-  }, []);
+    },
+    [isRunning],
+  );
 
   const updateMiliseconds: (milliseconds: number) => void = (
     milliseconds: number,

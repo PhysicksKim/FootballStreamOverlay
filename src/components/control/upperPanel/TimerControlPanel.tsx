@@ -122,13 +122,11 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   // #region Injury Timer
   const toggleInjuryTimerRunning = () => {
-    // if (isInjuryTimerRunning) {
-    if (mainTimerManager.timer.isRunning) {
+    if (injuryTimerManager.timer.isRunning) {
       injuryTimerManager.pauseTimer();
     } else {
       injuryTimerManager.resumeTimer();
     }
-    // setIsInjuryTimerRunning(!isInjuryTimerRunning);
   };
 
   const toggleShowInjuryTimer = () => {
