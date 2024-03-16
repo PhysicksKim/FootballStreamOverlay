@@ -29,6 +29,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   const [eventEmitter] = useState(new EventEmitter());
   const [time, setTime] = useState<Time>({ min: 0, sec: 0 });
   const [isRunning, setIsRunning] = useState(false);
+  const [suppressHalfstop, setSuppressHalfstop] = useState(false);
 
   // eventListener 에서는 state 변수가 업데이트 안되니까, ref 로 넘겨줘야함
   const totalSecondsRef = useRef(totalSeconds);
@@ -103,7 +104,9 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
 
   const start = useCallback(
     (minutes = 0, seconds = 0) => {
+      setSuppressHalfstop(true);
       setTotalSeconds(minutes * 60 + seconds);
+      setMilliseconds(0);
       timer.start();
     },
     [timer],
@@ -112,6 +115,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   const set = useCallback(
     (minutes: number, seconds: number) => {
       setTotalSeconds(minutes * 60 + seconds);
+      setMilliseconds(0);
     },
     [timer],
   );
@@ -137,6 +141,11 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   // 하프 타임 도달한 경우 메인 타이머 멈춤
   const checkForPauseTime = useCallback(
     (nowSecs: number) => {
+      if (suppressHalfstop) {
+        setSuppressHalfstop(false);
+        return;
+      }
+
       const index = pauseTimes.indexOf(nowSecs);
 
       if (index !== -1) {
@@ -153,7 +162,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
         }
       }
     },
-    [isRunning],
+    [isRunning, suppressHalfstop],
   );
 
   const updateMiliseconds: (milliseconds: number) => void = (
