@@ -1,6 +1,6 @@
 import { TeamCodesAndNames } from '@src/types/types';
 
-const AsiancupCodes: TeamCodesAndNames = {
+const NationCodes: TeamCodesAndNames = {
   대한민국: { code: 'kr', name: '대한민국' },
   바레인: { code: 'bh', name: '바레인' },
   요르단: { code: 'jo', name: '요르단' },
@@ -11,4 +11,4 @@ const AsiancupCodes: TeamCodesAndNames = {
   이란: { code: 'ir', name: '이란' },
 };
 
-export default AsiancupCodes;
+export default NationCodes;

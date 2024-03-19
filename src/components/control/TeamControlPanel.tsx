@@ -107,7 +107,7 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
             <>
               <option value='home'>홈</option>
               <option value='away'>어웨이</option>
-              {category !== Categories.Asiancup && (
+              {category !== Categories.Nation && (
                 <option value='third'>3rd</option>
               )}{' '}
             </>

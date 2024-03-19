@@ -1,35 +1,35 @@
 @use 'sass:color';
 
 $colors: (
-  'asiancup-kr': (
+  'nation-kr': (
     'home': rgb(209, 45, 33),
     'away': rgb(75, 72, 77),
   ),
-  'asiancup-bh': (
+  'nation-bh': (
     'home': rgb(195, 15, 16),
     'away': rgb(200, 185, 185),
   ),
-  'asiancup-my': (
+  'nation-my': (
     'home': rgb(160, 160, 50),
     'away': rgb(77, 77, 77),
   ),
-  'asiancup-jo': (
+  'nation-jo': (
     'home': rgb(236, 232, 232),
     'away': rgb(165, 0, 0),
   ),
-  'asiancup-sa': (
+  'nation-sa': (
     'home': rgb(252, 252, 252),
     'away': rgb(13, 141, 85),
   ),
-  'asiancup-au': (
+  'nation-au': (
     'home': rgb(203, 151, 27),
     'away': rgb(33, 14, 77),
   ),
-  'asiancup-jp': (
+  'nation-jp': (
     'home': rgb(22, 75, 233),
     'away': rgb(224, 224, 225),
   ),
-  'asiancup-ir': (
+  'nation-ir': (
     'home': rgb(227, 227, 227),
     'away': rgb(231, 22, 22),
   ),

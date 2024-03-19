@@ -299,7 +299,7 @@ import wlvFlag from '@assets/flags/epl2324/wolves.svg';
 export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
   team: Team,
 ) => {
-  if (team.category === 'asiancup') {
+  if (team.category === 'nation') {
     switch (team.code) {
       case 'ad':
         return adFlag;

@@ -28,75 +28,75 @@
 }
 
 // 한국 kr
-.team-a-asiancup-kr-home {
-  @include teamAColor('asiancup-kr');
+.team-a-nation-kr-home {
+  @include teamAColor('nation-kr');
 }
-.team-a-asiancup-kr-away,
-.team-a-asiancup-kr-third {
-  @include teamAColor('asiancup-kr', 'away');
+.team-a-nation-kr-away,
+.team-a-nation-kr-third {
+  @include teamAColor('nation-kr', 'away');
 }
 
 // 바레인 bh
-.team-a-asiancup-bh-home {
-  @include teamAColor('asiancup-bh');
+.team-a-nation-bh-home {
+  @include teamAColor('nation-bh');
 }
-.team-a-asiancup-bh-away,
-.team-a-asiancup-bh-third {
-  @include teamAColor('asiancup-bh', 'away');
+.team-a-nation-bh-away,
+.team-a-nation-bh-third {
+  @include teamAColor('nation-bh', 'away');
 }
 
 // 요르단 jo
-.team-a-asiancup-jo-home {
-  @include teamAColor('asiancup-jo');
+.team-a-nation-jo-home {
+  @include teamAColor('nation-jo');
 }
-.team-a-asiancup-jo-away,
-.team-a-asiancup-jo-third {
-  @include teamAColor('asiancup-jo', 'away');
+.team-a-nation-jo-away,
+.team-a-nation-jo-third {
+  @include teamAColor('nation-jo', 'away');
 }
 
 // 말레이시아 my
-.team-a-asiancup-my-home {
-  @include teamAColor('asiancup-my');
+.team-a-nation-my-home {
+  @include teamAColor('nation-my');
 }
-.team-a-asiancup-my-away,
-.team-a-asiancup-my-third {
-  @include teamAColor('asiancup-my', 'away');
+.team-a-nation-my-away,
+.team-a-nation-my-third {
+  @include teamAColor('nation-my', 'away');
 }
 
 // 사우디아라비아 sa
-.team-a-asiancup-sa-home {
-  @include teamAColor('asiancup-sa');
+.team-a-nation-sa-home {
+  @include teamAColor('nation-sa');
 }
-.team-a-asiancup-sa-away,
-.team-a-asiancup-sa-third {
-  @include teamAColor('asiancup-sa', 'away');
+.team-a-nation-sa-away,
+.team-a-nation-sa-third {
+  @include teamAColor('nation-sa', 'away');
 }
 
 // 호주 au
-.team-a-asiancup-au-home {
-  @include teamAColor('asiancup-au');
+.team-a-nation-au-home {
+  @include teamAColor('nation-au');
 }
-.team-a-asiancup-au-away,
-.team-a-asiancup-au-third {
-  @include teamAColor('asiancup-au', 'away');
+.team-a-nation-au-away,
+.team-a-nation-au-third {
+  @include teamAColor('nation-au', 'away');
 }
 
 // 일본 jp
-.team-a-asiancup-jp-home {
-  @include teamAColor('asiancup-jp');
+.team-a-nation-jp-home {
+  @include teamAColor('nation-jp');
 }
-.team-a-asiancup-jp-away,
-.team-a-asiancup-jp-third {
-  @include teamAColor('asiancup-jp', 'away');
+.team-a-nation-jp-away,
+.team-a-nation-jp-third {
+  @include teamAColor('nation-jp', 'away');
 }
 
 // 이란 ir
-.team-a-asiancup-ir-home {
-  @include teamAColor('asiancup-ir');
+.team-a-nation-ir-home {
+  @include teamAColor('nation-ir');
 }
-.team-a-asiancup-ir-away,
-.team-a-asiancup-ir-third {
-  @include teamAColor('asiancup-ir', 'away');
+.team-a-nation-ir-away,
+.team-a-nation-ir-third {
+  @include teamAColor('nation-ir', 'away');
 }
 
 // ----- EPL -----

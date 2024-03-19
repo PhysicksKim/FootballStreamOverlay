@@ -1,16 +1,16 @@
-import AsiancupCodes from './AsiancupCodes';
+import NationCodes from './AsiancupCodes';
 import EPL2324Codes from './EPLCodes';
 import EtcTeamCodes from './EtcTeamCodes';
 
 export const Categories = {
   EPL2324: 'epl2324',
-  Asiancup: 'asiancup',
+  Nation: 'nation',
   EtcTeam: 'etc',
 };
 
 export const CategoryCodes = {
   EPL2324: EPL2324Codes,
-  Asiancup: AsiancupCodes,
+  Nation: NationCodes,
   EtcTeam: EtcTeamCodes,
 };
 
@@ -27,8 +27,8 @@ export const categoryStringToTitle = (category: string) => {
   switch (category) {
     case Categories.EPL2324:
       return 'EPL 23/24';
-    case Categories.Asiancup:
-      return '아시안컵';
+    case Categories.Nation:
+      return '국가대표';
     case Categories.EtcTeam:
       return '기타';
     default:
@@ -40,8 +40,8 @@ export const categoryStringToTeamCodes = (category: string) => {
   switch (category) {
     case Categories.EPL2324:
       return CategoryCodes.EPL2324;
-    case Categories.Asiancup:
-      return CategoryCodes.Asiancup;
+    case Categories.Nation:
+      return CategoryCodes.Nation;
     case Categories.EtcTeam:
       return CategoryCodes.EtcTeam;
     default:
