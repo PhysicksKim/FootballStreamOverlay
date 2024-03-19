@@ -7,6 +7,10 @@ import EventEmitter from 'events';
 
 const InjuryTimerContext = createContext<TimerManager | undefined>(undefined);
 
+/**
+ *
+ * @returns injuryTimerManager : { timer, startTimer, pauseTimer, resumeTimer, setTimer, eventEmitter }
+ */
 export const useInjuryTimerManager = () => {
   const context = useContext(InjuryTimerContext);
   if (!context) {

@@ -1,23 +1,26 @@
 import React, { createContext, useContext, useState } from 'react';
-
-type Styles = {
-  fontColor: 'white' | 'black';
-  fontWeight: 'normal' | 'bold';
-};
+import { TeamStyles } from '@src/types/types';
 
 type TeamStyleContextType = {
-  teamBStyle: Styles;
-  updateTeamBStyle: <T extends keyof Styles>(type: T, value: Styles[T]) => void;
+  teamBStyle: TeamStyles;
+  updateTeamBStyle: <T extends keyof TeamStyles>(
+    type: T,
+    value: TeamStyles[T],
+  ) => void;
 };
 
 const TeamBStyleContext = createContext({} as TeamStyleContextType);
 
+/**
+ *
+ * @returns TeamBStyleContext { teamBStyle, updateTeamBStyle }
+ */
 export const useTeamBStyle = () => useContext(TeamBStyleContext);
 
 export const TeamBStyleProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [teamBStyle, setTeamBStyle] = useState<Styles>({
+  const [teamBStyle, setTeamBStyle] = useState<TeamStyles>({
     fontColor: 'white',
     fontWeight: 'normal',
   });

@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
 
@@ -11,7 +12,13 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },
-  plugins: require('./webpack.plugins'),
+  plugins: [
+    ...require('./webpack.plugins'),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://localhost:8083'),
+      'process.env.WEBSOCKET_URL': JSON.stringify('wss://localhost:8083'),
+    }),
+  ],
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.scss'],
     alias: require('./webpack.aliases'),

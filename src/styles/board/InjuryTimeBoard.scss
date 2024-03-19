@@ -1,3 +1,5 @@
+@import '@styles/FontVariables.scss';
+
 @keyframes slideDown {
   from {
     transform: translateY(-100%); // 시작 위치를 화면 위로 설정
@@ -37,34 +39,74 @@
   margin: 0px;
   width: 130px;
   z-index: -999; // MainTimeBoard보다 낮은 z-index 설정
-  background-color: white;
+  background-color: none;
+
+  > * {
+    box-sizing: border-box;
+  }
 
   .injury-time-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-grow: 1;
     margin: 0;
     padding: 0;
     background-color: white;
+    width: 130px;
+    max-height: 38px;
+    overflow: hidden;
 
-    .injury-timer {
+    .injury-timer-box {
+      display: inline-block;
+      overflow: hidden;
+      box-sizing: border-box;
+
       background-color: #d9cdb5;
-      font-size: 20px;
-      color: rgb(41, 33, 33);
-
-      width: 65%;
+      width: 83px;
+      height: 100%;
       padding-top: 10px;
       padding-bottom: 6px;
-      padding-left: 3px;
-      text-align: center;
+      margin: 0;
+      z-index: 999;
+
+      .injury-timer {
+        box-sizing: border-box;
+        > div {
+          box-sizing: border-box;
+          display: inline-block;
+          font-size: 20px;
+          color: rgb(41, 33, 33);
+          text-align: center;
+        }
+
+        .injury-timer-1,
+        .injury-timer-2,
+        .injury-timer-4,
+        .injury-timer-5 {
+          width: 13px;
+        }
+        .injury-timer-3 {
+          width: 7px;
+        }
+
+        .injury-timer-1 {
+          margin-left: 13px;
+          text-align: right;
+        }
+        .injury-timer-5 {
+          margin-right: 11px;
+          text-align: left;
+        }
+      }
     }
+
     .given-injury-time {
+      display: inline-block;
+      overflow: hidden;
       background-color: rgb(71, 71, 71);
       font-size: 20px;
       color: rgb(238, 238, 238);
 
-      width: 35%;
+      box-sizing: border-box;
+      width: 47px;
+      height: 100%;
       padding-top: 10px;
       padding-bottom: 6px;
       padding-right: 2px;

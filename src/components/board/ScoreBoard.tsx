@@ -71,7 +71,7 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
     <div className='score-board-container'>
       <div className='score-board-wrapper'>
         <div className='team-a-flag-wrapper team-flag-wrapper'>
-          <Flag team={teamA} className='team-a-flag'></Flag>
+          <Flag $team={teamA} className='team-a-flag'></Flag>
         </div>
         {/* 팀 A */}
         <div className={`team-section team-a-format ${teamAStyleClassName}`}>
@@ -116,7 +116,7 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
           </div>
         </div>
         <div className='team-b-flag-wrapper team-flag-wrapper'>
-          <Flag team={teamB} className='team-b-flag'></Flag>
+          <Flag $team={teamB} className='team-b-flag'></Flag>
         </div>
       </div>
     </div>

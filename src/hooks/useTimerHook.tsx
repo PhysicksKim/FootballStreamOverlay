@@ -3,6 +3,11 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EventEmitter } from 'events';
 import { Time } from '@src/types/types';
 
+export interface TimerMilliseconds {
+  milliseconds: number;
+  updateMiliseconds: (milliseconds: number) => void;
+}
+
 export interface TimerState {
   time: {
     min: number;
@@ -13,12 +18,19 @@ export interface TimerState {
   resume: () => void;
   pause: () => void;
   set: (minutes?: number, seconds?: number) => void;
+  adjustTimeSink: (sec: number) => void;
+  isRunning: boolean;
+  mils: TimerMilliseconds;
 }
 
 const useTimerHook = (): [TimerState, EventEmitter] => {
   const [totalSeconds, setTotalSeconds] = useState(0);
+  const [milliseconds, setMilliseconds] = useState(0);
   const [eventEmitter] = useState(new EventEmitter());
   const [time, setTime] = useState<Time>({ min: 0, sec: 0 });
+  const [isRunning, setIsRunning] = useState(false);
+  const [suppressHalfstop, setSuppressHalfstop] = useState(false);
+
   // eventListener 에서는 state 변수가 업데이트 안되니까, ref 로 넘겨줘야함
   const totalSecondsRef = useRef(totalSeconds);
 
@@ -26,31 +38,51 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   const pauseTimes: number[] = [45 * 60, 90 * 60, 105 * 60, 120 * 60];
 
   const tick = useCallback(() => {
-    setTotalSeconds((prevSeconds) => {
-      const newSeconds = prevSeconds + 1;
+    let isRoundUp = false;
 
-      eventEmitter.emit('secondsUpdated');
-      checkForPauseTime(newSeconds);
-
-      if (newSeconds > 120 * 60) {
-        eventEmitter.emit('timeExceeded');
-        return 120 * 60;
+    setMilliseconds((prevMilliseconds) => {
+      if (prevMilliseconds >= 900) {
+        isRoundUp = true;
+        return prevMilliseconds - 900;
+      } else {
+        return prevMilliseconds + 100;
       }
-      return newSeconds;
     });
+
+    if (isRoundUp) {
+      setTotalSeconds((prevSeconds) => {
+        const newSeconds = prevSeconds + 1;
+
+        eventEmitter.emit('secondsUpdated');
+        return newSeconds;
+      });
+    }
   }, [eventEmitter]);
 
+  useEffect(() => {
+    checkForPauseTime(totalSeconds);
+
+    if (totalSeconds > 120 * 60) {
+      eventEmitter.emit('timeExceeded');
+      setTotalSeconds(120 * 60);
+    }
+  }, [totalSeconds]);
+
   /**
-   * Precision-Timer 라이브러리를 사용해서 1초마다 tick 함수 실행
+   * Precision-Timer 라이브러리를 사용해서 0.1초마다 tick 함수 실행
    */
   const timer = useTimer(
     {
-      delay: 1000,
+      delay: 100,
       // fireOnStart: true,
       startImmediately: false,
     },
     tick,
   );
+
+  useEffect(() => {
+    setIsRunning(timer.isRunning());
+  }, [timer.isRunning()]);
 
   useEffect(() => {
     totalSecondsRef.current = totalSeconds;
@@ -72,7 +104,9 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
 
   const start = useCallback(
     (minutes = 0, seconds = 0) => {
+      setSuppressHalfstop(true);
       setTotalSeconds(minutes * 60 + seconds);
+      setMilliseconds(0);
       timer.start();
     },
     [timer],
@@ -81,6 +115,7 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   const set = useCallback(
     (minutes: number, seconds: number) => {
       setTotalSeconds(minutes * 60 + seconds);
+      setMilliseconds(0);
     },
     [timer],
   );
@@ -104,22 +139,41 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   }, []);
 
   // 하프 타임 도달한 경우 메인 타이머 멈춤
-  const checkForPauseTime = (nowSecs: number) => {
-    const index = pauseTimes.indexOf(nowSecs);
+  const checkForPauseTime = useCallback(
+    (nowSecs: number) => {
+      if (suppressHalfstop) {
+        setSuppressHalfstop(false);
+        return;
+      }
 
-    if (index !== -1) {
-      const events = [
-        'firstHalfStop',
-        'secondHalfStop',
-        'firstExtraTimeStop',
-        'secondExtraTimeStop',
-      ];
-      eventEmitter.emit(events[index]);
-      eventEmitter.emit('halfTimeStop'); // 추가시간 표시는 halfTimeStop 이벤트로 인식
+      const index = pauseTimes.indexOf(nowSecs);
 
-      pause();
-    }
+      if (index !== -1) {
+        const events = [
+          'firstHalfStop',
+          'secondHalfStop',
+          'firstExtraTimeStop',
+          'secondExtraTimeStop',
+        ];
+        if (isRunning) {
+          eventEmitter.emit(events[index]);
+          eventEmitter.emit('halfTimeStop'); // 추가시간 표시는 halfTimeStop 이벤트로 인식
+          pause();
+        }
+      }
+    },
+    [isRunning, suppressHalfstop],
+  );
+
+  const updateMiliseconds: (milliseconds: number) => void = (
+    milliseconds: number,
+  ) => {
+    setMilliseconds(milliseconds);
   };
+
+  const adjustTimeSink = useCallback((sec: number) => {
+    setTotalSeconds((prev) => (prev + sec > 0 ? prev + sec : 0));
+  }, []);
 
   return [
     {
@@ -129,6 +183,9 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
       resume,
       pause,
       set,
+      adjustTimeSink,
+      isRunning,
+      mils: { milliseconds, updateMiliseconds },
     },
     eventEmitter,
   ];

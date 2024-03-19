@@ -8,8 +8,8 @@ import EventEmitter from 'events';
 const MainTimerContext = createContext<TimerManager | undefined>(undefined);
 
 /**
- * { Timer, startTimer, pauseTimer, resumeTimer, setTimer, eventEmitter? }
- * @returns { Timer, startTimer, pauseTimer, resumeTimer, setTimer, eventEmitter? }
+ * { timer, startTimer, pauseTimer, resumeTimer, setTimer, eventEmitter }
+ * @returns TimerManager : { timer, startTimer, pauseTimer, resumeTimer, setTimer, eventEmitter }
  */
 export const useMainTimerManager = () => {
   const context = useContext(MainTimerContext);

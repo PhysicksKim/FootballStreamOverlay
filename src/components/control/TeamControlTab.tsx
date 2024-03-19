@@ -1,7 +1,7 @@
 import React from 'react';
+import { Team } from '@src/types/types';
 import TeamControlPanel from './TeamControlPanel';
 import '@styles/control/TeamControlTab.scss';
-import { Team } from '@src/types/types';
 
 interface TeamControlTabProps {
   team: Team;

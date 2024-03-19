@@ -1,3 +1,5 @@
+@import '@styles/Themes.scss';
+
 .team-control-container {
   box-sizing: border-box;
   min-height: 300px;
@@ -8,10 +10,13 @@
 
   display: flex;
   flex-direction: row;
+  background-color: $beige-dark1;
+  border-radius: 10px;
+  margin-top: 5px;
 
   > * {
     flex: 1;
-    border: 1px solid black;
+    // border: 1px solid black;
     padding: 10px;
     border-radius: 10px;
     margin: 10px;
@@ -26,42 +31,55 @@
 
     .select-box-title {
       flex-grow: 0;
-      background-color: rgb(247, 247, 194);
+      background-color: $beige-black;
+      color: $beige-bright1;
       font-size: 16px;
       padding: 10px;
       padding-left: 20px;
       margin-bottom: 3px;
-      border: 1px solid rgba(152, 152, 135, 0.456);
+      border: 1px solid $beige-middle;
       border-radius: 3px;
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.278);
     }
 
-    > select {
+    > select,
+    > select > option {
+      outline: none;
+      background-color: none;
+      -webkit-tap-highlight-color: none;
+    }
+
+    > select,
+    > select:focus,
+    > select:active {
       flex: 1;
       box-sizing: border-box;
       width: 100%;
-      background-color: rgb(243, 243, 226);
+      background-color: $background-box;
       padding: 5px;
       border-radius: 5px 0 0 5px;
       border: 1px solid rgba(152, 152, 135, 0.456);
 
       > option {
-        padding: 5px;
+        border-radius: 5px;
+        color: $beige-middle;
         font-size: 18px;
+        padding: 3px;
+        padding-top: 7px;
+        padding-left: 15px;
         margin: 10px;
         margin-left: 5px;
-        padding-left: 15px;
-        border-radius: 5px;
       }
 
       > option:hover {
         transition: 0.1s ease-in-out background-color;
-        background-color: rgb(156, 194, 236);
+        background-color: $beige-dark1;
+        color: $beige-bright2;
       }
 
       > option:checked {
         transition: 0.1s ease-in-out background-color;
-        background-color: rgb(156, 194, 236);
+        background-color: $beige-dark1;
+        color: $beige-bright2;
       }
     }
   }

@@ -9,6 +9,10 @@ const MainTimeDisplayContext = createContext<MainTimeDisplay | undefined>(
   undefined,
 );
 
+/**
+ *
+ * @returns MainTimeDisplay { mainTimeDisplay, setMainTimeDisplay }
+ */
 export const useMainTimeDisplay = () => {
   const context = useContext(MainTimeDisplayContext);
   if (!context) {

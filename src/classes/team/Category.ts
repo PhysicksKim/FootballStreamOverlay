@@ -5,12 +5,14 @@ import EtcTeamCodes from './EtcTeamCodes';
 export const Categories = {
   EPL2324: 'epl2324',
   Nation: 'nation',
+  // Asiancup: 'asiancup',
   EtcTeam: 'etc',
 };
 
 export const CategoryCodes = {
   EPL2324: EPL2324Codes,
   Nation: NationCodes,
+  // Asiancup: AsiancupCodes,
   EtcTeam: EtcTeamCodes,
 };
 

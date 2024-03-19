@@ -8,6 +8,10 @@ interface FontContextProps {
 
 const FontContext = createContext<FontContextProps | undefined>(undefined);
 
+/**
+ * { fontInfo, updateGlobalFont }
+ * @returns FontContextProps : { fontInfo, updateGlobalFont }
+ */
 export const useFont = () => {
   const context = useContext(FontContext);
   if (!context) {

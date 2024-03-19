@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import '@styles/RouteControlPanels.scss';
+import '@styles/RouteTabs.scss';
 
-const RouteControlPanels: React.FC<Record<string, never>> = () => {
+const RouteTabs: React.FC<Record<string, never>> = () => {
   return (
     <>
       <div className='control-links-container'>
@@ -30,9 +30,34 @@ const RouteControlPanels: React.FC<Record<string, never>> = () => {
         >
           <div className='link-title'>팀 B</div>
         </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            'remote-link ' + (isActive ? 'active-link' : 'not-active-link')
+          }
+          to={'/remote'}
+        >
+          <div className='link-title'>원격제어</div>
+        </NavLink>
+
+        {/* <NavLink
+          className={({ isActive }) =>
+            'teams-link ' + (isActive ? 'active-link' : 'not-active-link')
+          }
+          to={'/remotereceive'}
+        >
+          <div className='link-title'>원격수신</div>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            'teams-link ' + (isActive ? 'active-link' : 'not-active-link')
+          }
+          to={'/remotecontrol'}
+        >
+          <div className='link-title'>원격송신</div>
+        </NavLink> */}
       </div>
     </>
   );
 };
 
-export default RouteControlPanels;
+export default RouteTabs;

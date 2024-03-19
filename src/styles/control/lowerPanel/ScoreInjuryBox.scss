@@ -1,0 +1,204 @@
+@import '@styles/Themes.scss';
+
+.score-injury-contol-panel-box {
+  display: flex;
+  flex-direction: row;
+  border-radius: 7px;
+  align-items: stretch;
+
+  flex-grow: 1;
+
+  > div {
+    margin-right: 5px;
+  }
+}
+
+.score-injury-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+
+  height: 125px;
+  width: $panel-width-first;
+
+  padding: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background: $background-box;
+  box-shadow: $beige-back-black 0px 0px 2px 1px;
+
+  // 나머지 공간을 모두 채우도록 함
+  .score-control-wrapper,
+  .injury-control-wrapper {
+    flex-grow: 1;
+  }
+
+  .score-control-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .score-title {
+      font-size: 14px;
+      text-align: start;
+      box-sizing: border-box;
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 5px;
+      padding-left: 10px;
+      background-color: $beige-back-black;
+      color: $beige-bright2;
+      padding-top: 3px;
+      padding-bottom: 3px;
+    }
+
+    .score-control {
+      display: flex;
+      flex-direction: row;
+      margin-top: 17px;
+    }
+
+    .team-a-wrapper,
+    .team-b-wrapper {
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3px;
+
+      .score-team-text {
+        position: absolute;
+        background-color: $beige-dark1;
+        color: $beige-middle;
+        top: 0;
+        font-size: 14px;
+        transform: translateY(calc(-100% + 4px));
+        z-index: 1;
+        padding-left: 4px;
+        padding-right: 3px;
+        padding-bottom: 2px;
+        padding-top: 4px;
+        width: 75px;
+        overflow: hidden;
+        box-sizing: border-box;
+        text-align: center;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+
+      .input-box {
+        position: relative;
+
+        > input {
+          box-sizing: border-box;
+          width: 75px;
+          height: 50px;
+
+          text-align: center;
+          padding-left: 26px;
+          font-size: 20px;
+
+          background-color: $beige-dark1;
+          color: $beige-bright2;
+          border: 1px solid $beige-dark2;
+
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
+
+        .input-box-btn-wrapper {
+          position: absolute;
+          height: 100%;
+          box-sizing: border-box;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          > button {
+            box-sizing: border-box;
+            width: 26px;
+            height: 50%;
+            font-size: 18px;
+            background-color: $btn-updown;
+            border: 2px solid $beige-dark2;
+            border-radius: 5px;
+          }
+
+          > button:first-child {
+            margin-top: 5px;
+          }
+          > button:last-child {
+            margin-bottom: 5px;
+          }
+
+          > button:hover {
+            box-sizing: border-box;
+            background-color: $beige-bright1;
+            color: $beige-bright2;
+            border: $beige-dark2 solid 2px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .injury-contorl-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 65px;
+    flex-grow: 1;
+    margin-left: 3px;
+
+    .given-injury-title {
+      font-size: 14px;
+      text-align: center;
+      box-sizing: border-box;
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 5px;
+      background-color: $beige-back-black;
+      color: $beige-bright2;
+      padding-top: 3px;
+      padding-bottom: 3px;
+    }
+
+    .given-injury-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      padding-left: 2px;
+      padding-right: 2px;
+
+      .given-injury-input {
+        box-sizing: border-box;
+        width: 100%;
+        height: 50px;
+        border-radius: 5px;
+        border: $beige-dark2 2px solid;
+        background-color: $beige-dark1;
+
+        padding-top: 4px;
+        font-size: 24px;
+        text-align: center;
+        color: $beige-bright2;
+
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.score-injury-wrapper-active {
+  box-shadow: inset rgb(117, 117, 237) 0px 0px 3px 1px,
+    rgb(117, 117, 237) 0px 0px 3px 1px;
+}

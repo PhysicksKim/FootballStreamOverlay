@@ -1,7 +1,7 @@
 import React from 'react';
 import '@styles/control/ControlPanel.scss';
-import TimerControlPanel from './TimerControlPanel';
-import BoardControlPanel from './BoardControlPanel';
+import TimerControlPanel from './upperPanel/TimerControlPanel';
+import BoardControlPanel from './lowerPanel/BoardControlPanel';
 
 interface LiveControlTabProps {
   showInjuryTimer: () => void;
@@ -29,6 +29,7 @@ const LiveControlTab: React.FC<LiveControlTabProps> = ({
           updateMatchName={updateMatchName}
         />
       </div>
+      {/* <BoardControlPanel /> */}
       <div className='board-control-wrapper'>
         <BoardControlPanel />
       </div>

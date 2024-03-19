@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import '@styles/control/TeamControlPanel.scss';
 import {
   Categories,
   categoryStringToTitle,
@@ -8,6 +7,7 @@ import {
   isValidCategoryAndTeamCode,
 } from '@src/classes/team/Category';
 import { Team } from '@src/types/types';
+import '@styles/control/TeamControlPanel.scss';
 
 interface TeamControlPanelProps {
   team: Team;
