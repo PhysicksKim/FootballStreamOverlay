@@ -9,6 +9,7 @@ const epl2324WhiteUniform = [
   'shu-third',
   'tot-home',
   'whu-away',
+  'ars-away',
 ];
 
 const etcWhiteUniform = ['cup-away', 'cup-third', 'ety-away', 'ety-third'];

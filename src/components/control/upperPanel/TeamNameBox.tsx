@@ -5,6 +5,7 @@ import { useTeamAStyle } from '@src/contexts/teams/TeamAStyleProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useTeamBStyle } from '@src/contexts/teams/TeamBStyleProvider';
 import { teamCodeToTeamName } from '@src/classes/team/Category';
+import { FONT_COLOR } from '@src/classes/FontEnum';
 
 import '@styles/control/upperPanel/TeamNameBox.scss';
 
@@ -40,10 +41,10 @@ const TeamNameBox = () => {
   };
 
   const handleTeamAFontColorChange = (isChecked: boolean) => {
-    updateTeamAStyle('fontColor', isChecked ? 'black' : 'white');
+    updateTeamAStyle('fontColor', isChecked ? FONT_COLOR.BLACK : 'white');
   };
   const handleTeamBFontColorChange = (isChecked: boolean) => {
-    updateTeamBStyle('fontColor', isChecked ? 'black' : 'white');
+    updateTeamBStyle('fontColor', isChecked ? FONT_COLOR.BLACK : 'white');
   };
 
   return (
@@ -64,7 +65,7 @@ const TeamNameBox = () => {
             className='font-is-black-checkbox'
             type='checkbox'
             id='font-is-black-team-a'
-            checked={teamAStyle.fontColor === 'black'}
+            checked={teamAStyle.fontColor === FONT_COLOR.BLACK}
             onChange={(e) => handleTeamAFontColorChange(e.target.checked)}
           />
         </div>
@@ -85,7 +86,7 @@ const TeamNameBox = () => {
             className='font-is-black-checkbox'
             type='checkbox'
             id='font-is-black-team-b'
-            checked={teamBStyle.fontColor === 'black'}
+            checked={teamBStyle.fontColor === FONT_COLOR.BLACK}
             onChange={(e) => handleTeamBFontColorChange(e.target.checked)}
           />
         </div>

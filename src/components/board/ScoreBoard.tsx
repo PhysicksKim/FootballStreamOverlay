@@ -10,6 +10,7 @@ import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useTeamAStyle } from '@src/contexts/teams/TeamAStyleProvider';
 import { useTeamBStyle } from '@src/contexts/teams/TeamBStyleProvider';
 import isNeedToBlackFontColor from '@src/classes/team/TeamFontColorNeedToChange';
+import { FONT_COLOR } from '@src/classes/FontEnum';
 
 const calculateSpace = (name: string) => {
   const singleSpaceChars = /^[a-zA-Z0-9 !^*()[\]{}.,/|]$/;
@@ -56,12 +57,12 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
 
   useEffect(() => {
     if (isNeedToBlackFontColor(teamA)) {
-      updateTeamAStyle('fontColor', 'black');
+      updateTeamAStyle('fontColor', FONT_COLOR.BLACK);
     } else {
       updateTeamAStyle('fontColor', 'white');
     }
     if (isNeedToBlackFontColor(teamB)) {
-      updateTeamBStyle('fontColor', 'black');
+      updateTeamBStyle('fontColor', FONT_COLOR.BLACK);
     } else {
       updateTeamBStyle('fontColor', 'white');
     }
@@ -100,7 +101,9 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
             <div
               className='score-text score-text-b text-outstroke'
               data-text={teamB.score}
-              style={{ color: teamBStyle.fontColor }}
+              style={{
+                color: teamBStyle.fontColor,
+              }}
             >
               {teamB.score}
             </div>

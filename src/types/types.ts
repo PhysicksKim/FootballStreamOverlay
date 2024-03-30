@@ -78,7 +78,7 @@ export interface WsGivenInjuryMessage extends WsBaseMessage {
 }
 
 export type TeamStyles = {
-  fontColor: 'white' | 'black';
+  fontColor: string;
   fontWeight: 'normal' | 'bold';
 };
 

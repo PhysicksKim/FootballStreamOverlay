@@ -28,3 +28,5 @@ export const fontInfos: Record<FontEnum, FontInfo> = {
   },
   [FontEnum.TAEBEAK]: { code: FontEnum.TAEBEAK, name: '태백체' },
 };
+
+export const FONT_COLOR = { BLACK: '#1d1e1b' };
