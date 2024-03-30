@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --config tools/webpack/webpack.config.prod.js",
     "serve": "cross-env NODE_ENV=production webpack --config tools/webpack/webpack.config.prod.js && cross-env serve dist/",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src/",
-    "aws-build": "cross-env PUBLIC_URL=https://static.gyechunsik.site/scoreboard/admin/ NODE_ENV=production SAME_ORIGIN=true webpack --config tools/webpack/webpack.config.prod.js",
+    "aws-build": "cross-env PUBLIC_URL=https://static.gyechunsik.site/scoreboard/ NODE_ENV=production SAME_ORIGIN=true webpack --config tools/webpack/webpack.config.prod.js",
     "spring-dev-build": "cross-env PUBLIC_URL=./scoreboard/ NODE_ENV=production webpack --config tools/webpack/webpack.config.dev.sameorigin.js",
     "spring-build": "cross-env PUBLIC_URL=./scoreboard/ NODE_ENV=production SAME_ORIGIN=true webpack --config tools/webpack/webpack.config.prod.js"
   },
