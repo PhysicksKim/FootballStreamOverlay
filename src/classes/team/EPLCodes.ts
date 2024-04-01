@@ -2,7 +2,7 @@ import { TeamCodesAndNames } from '@src/types/types';
 
 const EPL2324Codes: TeamCodesAndNames = {
   노팅엄: { code: 'ntg', name: '노팅엄' },
-  뉴캐슬: { code: 'new', name: '뉴캐슬' },
+  뉴캐슬: { code: 'nwc', name: '뉴캐슬' },
   루턴타운: { code: 'lut', name: '루턴타운' },
   리버풀: { code: 'liv', name: '리버풀' },
   맨시티: { code: 'mci', name: '맨시티' },

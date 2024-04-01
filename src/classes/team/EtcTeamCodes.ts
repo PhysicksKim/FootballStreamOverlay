@@ -1,4 +1,5 @@
 import { TeamCodesAndNames } from '@src/types/types';
+
 /**
  * 컵, 기타 팀 대응을 위한 카테고리 입니다.
  */
