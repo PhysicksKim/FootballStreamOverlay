@@ -24,7 +24,8 @@ const calculateSpace = (name: string) => {
 };
 
 const spaceToFontSize = (space: number) => {
-  if (space <= 11.16) return '46px';
+  if (space <= 9.16) return '46px';
+  if (space <= 11.16) return '42px';
   if (space <= 13.16) return '38px';
   if (space <= 15.33) return '33px';
   if (space <= 17.33) return '28px';
@@ -34,6 +35,7 @@ const spaceToFontSize = (space: number) => {
 
 const getFontSize = (name: string) => {
   const space = calculateSpace(name);
+  // console.log(`name: ${name}, space: ${space}`);
   return spaceToFontSize(space);
 };
 
