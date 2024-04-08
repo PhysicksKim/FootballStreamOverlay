@@ -338,3 +338,14 @@
 .team-a-etc-ety-third {
   @include teamAColor('etc-ety', 'away');
 }
+
+// 기타 레알마드리드
+.team-a-etc-rmd-home {
+  @include teamAColor('etc-rmd');
+}
+.team-a-etc-rmd-away {
+  @include teamAColor('etc-rmd', 'away');
+}
+.team-a-etc-rmd-third {
+  @include teamAColor('etc-rmd', 'third');
+}

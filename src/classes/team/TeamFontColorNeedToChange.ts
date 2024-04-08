@@ -12,7 +12,13 @@ const epl2324WhiteUniform = [
   'ars-away',
 ];
 
-const etcWhiteUniform = ['cup-away', 'cup-third', 'ety-away', 'ety-third'];
+const etcWhiteUniform = [
+  'cup-away',
+  'cup-third',
+  'ety-away',
+  'ety-third',
+  'rmd-home',
+];
 
 const isEpl2324WhiteUniform = (code: string, uniform: string) => {
   const codeUniform = `${code}-${uniform}`;

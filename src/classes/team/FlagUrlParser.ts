@@ -296,6 +296,10 @@ import whuFlag from '@assets/flags/epl2324/westham.svg';
 import wlvFlag from '@assets/flags/epl2324/wolves.svg';
 // #endregion epl flags imports
 
+// #region etc flags imports
+import rmdFlag from '@assets/flags/etc/realmadrid.svg';
+// #endregion etc flags imports
+
 export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
   team: Team,
 ) => {
@@ -886,6 +890,12 @@ export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
       case 'wlv':
         return wlvFlag; // 울브스
       default:
+        break;
+    }
+  } else if (team.category === 'etc') {
+    switch (team.code) {
+      case 'rmd':
+        return rmdFlag; // 레알 마드리드
     }
   }
   return '/no/match/image.svg'; // 일치하는 국가 코드가 없는 경우

@@ -338,3 +338,14 @@
 .team-b-etc-ety-third {
   @include teamBColor('etc-ety', 'away');
 }
+
+// 레알마드리드
+.team-b-etc-rmd-home {
+  @include teamBColor('etc-rmd');
+}
+.team-b-etc-rmd-away {
+  @include teamBColor('etc-rmd', 'away');
+}
+.team-b-etc-rmd-third {
+  @include teamBColor('etc-rmd', 'third');
+}
