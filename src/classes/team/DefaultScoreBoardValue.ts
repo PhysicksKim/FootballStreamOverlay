@@ -11,7 +11,7 @@ export const defaultTeamA: Team = {
   code: EPL2324Codes.맨시티.code,
   name: EPL2324Codes.맨시티.name,
   score: 0,
-  uniform: 'third',
+  uniform: 'home',
 };
 
 export const defaultTeamB: Team = {
