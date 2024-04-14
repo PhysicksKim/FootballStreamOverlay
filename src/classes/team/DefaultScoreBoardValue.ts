@@ -4,7 +4,7 @@ import EtcTeamCodes from './EtcTeamCodes';
 
 // '2023-24 잉글랜드 프리미어리그 30R';
 // '2023-24 잉글랜드 FA컵 4강'
-export const defaultMatchName = '2023-24 UEFA 챔피언스리그 8강 1차전';
+export const defaultMatchName = '2023-24 UEFA 챔피언스리그 8강 2차전';
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
@@ -19,5 +19,5 @@ export const defaultTeamB: Team = {
   code: EtcTeamCodes.레알마드리드.code,
   name: EtcTeamCodes.레알마드리드.name,
   score: 0,
-  uniform: 'home',
+  uniform: 'third',
 };
