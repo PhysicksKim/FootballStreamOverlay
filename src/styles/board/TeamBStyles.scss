@@ -255,13 +255,13 @@
 }
 
 // 뉴캐슬
-.team-b-epl2324-new-home {
+.team-b-epl2324-nwc-home {
   @include teamBColor('epl2324-new');
 }
-.team-b-epl2324-new-away {
+.team-b-epl2324-nwc-away {
   @include teamBColor('epl2324-new', 'away');
 }
-.team-b-epl2324-new-third {
+.team-b-epl2324-nwc-third {
   @include teamBColor('epl2324-new', 'third');
 }
 

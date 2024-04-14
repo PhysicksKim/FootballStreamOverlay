@@ -877,7 +877,7 @@ export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
         return mciFlag; // 맨시티
       case 'mun':
         return munFlag; // 맨유
-      case 'new':
+      case 'nwc':
         return newFlag; // 뉴캐슬
       case 'ntg':
         return ntgFlag; // 노팅엄
