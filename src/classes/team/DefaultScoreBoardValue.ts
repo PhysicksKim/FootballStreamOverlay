@@ -37,5 +37,5 @@ export const defaultTeamB: Team = {
   code: EPL2324Codes.아스톤빌라.code,
   name: EPL2324Codes.아스톤빌라.name,
   score: 0,
-  uniform: 'away',
+  uniform: 'third',
 };
