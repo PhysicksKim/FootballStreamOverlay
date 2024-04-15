@@ -57,4 +57,35 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  .match-title-input-box {
+    display: flex;
+    flex-direction: row;
+
+    input[type='button'] {
+      max-width: 36px;
+      min-width: 36px;
+      padding: 1px;
+      box-sizing: border-box;
+      border: $beige-dark1 solid 1px;
+      border-radius: 6px;
+      margin-left: 2px;
+      background-color: $beige-dark1;
+      border: $beige-dark2 solid 2px;
+      border-right: $beige-dark2 solid 2px;
+      color: $beige-bright2;
+      font-size: 12px;
+      padding-left: 1px;
+      padding-right: 1px;
+      overflow: visible;
+      white-space: nowrap;
+    }
+
+    input[type='button']:hover {
+      background-color: rgb(178, 177, 177);
+      color: $beige-dark1;
+      border: $beige-bright2 solid 2px;
+      cursor: pointer;
+    }
+  }
 }
