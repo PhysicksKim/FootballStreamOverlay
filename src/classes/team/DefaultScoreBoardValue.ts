@@ -6,25 +6,24 @@ import EtcTeamCodes from './EtcTeamCodes';
 // '2023-24 잉글랜드 FA컵 4강'
 // '2023-24 UEFA 챔피언스리그 8강 2차전'
 
-export const defaultMatchName = '2023-24 잉글랜드 FA컵 4강';
+export const defaultMatchName = '2023-24 잉글랜드 프리미어리그 29R';
+// export const defaultMatchName = '2023-24 잉글랜드 FA컵 4강';
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
   code: EPL2324Codes.맨시티.code,
   name: EPL2324Codes.맨시티.name,
   score: 0,
-  uniform: 'home',
+  uniform: 'away',
 };
 
 export const defaultTeamB: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.첼시.code,
-  name: EPL2324Codes.첼시.name,
+  code: EPL2324Codes.브라이튼.code,
+  name: EPL2324Codes.브라이튼.name,
   score: 0,
-  uniform: 'away',
+  uniform: 'home',
 };
-
-// export const defaultMatchName = '2023-24 잉글랜드 프리미어리그 33R';
 
 // export const defaultTeamA: Team = {
 //   category: 'epl2324',
