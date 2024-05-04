@@ -10,6 +10,7 @@ const epl2324WhiteUniform = [
   'tot-home',
   'whu-away',
   'ars-away',
+  'wlv-home',
 ];
 
 const etcWhiteUniform = [
