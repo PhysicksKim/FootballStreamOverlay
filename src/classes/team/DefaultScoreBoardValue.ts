@@ -11,18 +11,18 @@ export const defaultMatchName = '2023-24 잉글랜드 프리미어리그 36R';
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.맨시티.code,
-  name: EPL2324Codes.맨시티.name,
+  code: EPL2324Codes.리버풀.code,
+  name: EPL2324Codes.리버풀.name,
   score: 0,
   uniform: 'home',
 };
 
 export const defaultTeamB: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.울버햄튼.code,
-  name: EPL2324Codes.울버햄튼.name,
+  code: EPL2324Codes.토트넘.code,
+  name: EPL2324Codes.토트넘.name,
   score: 0,
-  uniform: 'home',
+  uniform: 'away',
 };
 
 // export const defaultTeamA: Team = {
