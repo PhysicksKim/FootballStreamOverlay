@@ -20,12 +20,6 @@ export interface TimerManager {
   eventEmitter?: EventEmitter;
 }
 
-export enum UniformEnum {
-  HOME = 'HOME',
-  AWAY = 'AWAY',
-  THIRD = 'THIRD',
-}
-
 /**
  * ```typescript
  * category: string;
@@ -42,7 +36,7 @@ export interface Team {
   name: string;
   score: number;
   // isAway?: boolean;
-  uniform: string;
+  uniform: UniformTypes;
 }
 
 export interface TeamCodesAndNames {
@@ -64,10 +58,12 @@ export interface WsScoreMessage extends WsBaseMessage {
   };
 }
 
+export type UniformTypes = 'home' | 'away' | 'third';
+
 export interface WsUniformMessage extends WsBaseMessage {
   data: {
-    teamA: 'HOME' | 'AWAY' | 'THIRD';
-    teamB: 'HOME' | 'AWAY' | 'THIRD';
+    teamA: UniformTypes;
+    teamB: UniformTypes;
   };
 }
 

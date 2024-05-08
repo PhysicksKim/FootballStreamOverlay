@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Team } from '@src/types/types';
 import { defaultTeamA } from '@src/classes/team/DefaultScoreBoardValue';
 
@@ -20,6 +20,7 @@ export const TeamAProvider: React.FC<{ children: React.ReactNode }> = ({
   const updateTeamA = <K extends keyof Team>(key: K, value: Team[K]) => {
     setTeamA((prevTeam: Team) => ({ ...prevTeam, [key]: value }));
   };
+
   return (
     <TeamAContext.Provider value={{ teamA, updateTeamA }}>
       {children}

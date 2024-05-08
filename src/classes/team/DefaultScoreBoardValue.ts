@@ -14,7 +14,7 @@ export const defaultTeamA: Team = {
   code: EPL2324Codes.맨시티.code,
   name: EPL2324Codes.맨시티.name,
   score: 0,
-  uniform: 'home',
+  uniform: 'away',
 };
 
 export const defaultTeamB: Team = {
@@ -22,7 +22,7 @@ export const defaultTeamB: Team = {
   code: EPL2324Codes.풀럼.code,
   name: EPL2324Codes.풀럼.name,
   score: 0,
-  uniform: 'home',
+  uniform: 'away',
 };
 
 // export const defaultTeamA: Team = {

@@ -1,6 +1,12 @@
 import { FontInfo } from '@src/classes/FontEnum';
 import { Client } from '@stomp/stompjs';
-import { FontColorOptions, Team, TeamFontColor, TeamStyles } from './types';
+import {
+  FontColorOptions,
+  Team,
+  TeamFontColor,
+  TeamStyles,
+  UniformTypes,
+} from './types';
 import { UUID } from 'crypto';
 
 export type RemoteCodeIssueMsg = {
@@ -83,6 +89,11 @@ export type GivenInjuryPayload = {
   givenInjuryTime: number;
 };
 
+export interface UniformPayload {
+  teamAUniform: UniformTypes;
+  teamBUniform: UniformTypes;
+}
+
 export type RemoteMsgDataPayload = ScorePayload | GivenInjuryPayload;
 
 export interface BaseRemoteChannelMsg {
@@ -98,6 +109,7 @@ export interface ControlChannelMsg extends BaseRemoteChannelMsg {
   data: {
     score: ScorePayload;
     givenInjury: GivenInjuryPayload;
+    uniform: UniformPayload;
   };
 }
 

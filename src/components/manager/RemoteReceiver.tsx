@@ -26,8 +26,8 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
   updateGivenInjuryTime,
   updateMatchName,
 }) => {
-  const { updateTeamA } = useTeamA();
-  const { updateTeamB } = useTeamB();
+  const { teamA, updateTeamA } = useTeamA();
+  const { teamB, updateTeamB } = useTeamB();
   const { setOnReceiveControlMessage } = useRemoteClient();
 
   useEffect(() => {
@@ -42,6 +42,9 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
 
     const score = data.score;
     const givneInjury = data.givenInjury;
+    const uniform = data.uniform;
+    updateTeamA('uniform', uniform.teamAUniform);
+    updateTeamB('uniform', uniform.teamBUniform);
     updateTeamA('score', score.teamAScore);
     updateTeamB('score', score.teamBScore);
     updateGivenInjuryTime(givneInjury.givenInjuryTime);
@@ -51,7 +54,8 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
     return (
       type !== 'control' ||
       'score' in data === false ||
-      'givenInjury' in data === false
+      'givenInjury' in data === false ||
+      'uniform' in data === false
     );
   };
 

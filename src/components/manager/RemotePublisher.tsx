@@ -36,10 +36,15 @@ const RemotePublisher: React.FC<RemotePublisherProps> = ({
         givenInjury: {
           givenInjuryTime: givenInjuryTime,
         },
+        uniform: {
+          teamAUniform: teamA.uniform,
+          teamBUniform: teamB.uniform,
+        },
       },
     };
     setRemotePubData(pubState);
-  }, [teamA.score, teamB.score, givenInjuryTime]);
+    console.log('pub state updated : ', pubState);
+  }, [teamA.score, teamB.score, givenInjuryTime, teamA.uniform, teamB.uniform]);
 
   return (
     <>

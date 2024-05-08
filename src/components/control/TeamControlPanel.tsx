@@ -6,7 +6,7 @@ import {
   teamCodeToTeamName,
   isValidCategoryAndTeamCode,
 } from '@src/classes/team/Category';
-import { Team } from '@src/types/types';
+import { Team, UniformTypes } from '@src/types/types';
 import '@styles/control/TeamControlPanel.scss';
 
 interface TeamControlPanelProps {
@@ -21,7 +21,9 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
   const [category, setCategory] = React.useState<string>(team.category);
   const [teamCode, setTeamCode] = React.useState<string>(team.code);
   const [teamName, setTeamName] = React.useState<string>(team.name);
-  const [uniformType, setUniformType] = React.useState<string>(team.uniform);
+  const [uniformType, setUniformType] = React.useState<UniformTypes>(
+    team.uniform,
+  );
   const [isShowUniform, setIsShowUniform] = React.useState<boolean>(true);
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const TeamControlPanel: React.FC<TeamControlPanelProps> = ({
           id='uniform-select'
           size={2}
           value={uniformType}
-          onChange={(e) => setUniformType(e.target.value)}
+          onChange={(e) => setUniformType(e.target.value as UniformTypes)}
         >
           {isShowUniform ? (
             <>
