@@ -67,4 +67,4 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
   );
 };
 
-export default TimerTitleBox;
+export default React.memo(TimerTitleBox);

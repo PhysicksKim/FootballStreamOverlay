@@ -65,4 +65,4 @@ const TimerPresetButtons: React.FC<TimerPresetProps> = ({ presets }) => {
   );
 };
 
-export default TimerPresetButtons;
+export default React.memo(TimerPresetButtons);

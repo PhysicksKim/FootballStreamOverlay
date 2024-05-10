@@ -95,4 +95,4 @@ const TeamNameBox = () => {
   );
 };
 
-export default TeamNameBox;
+export default React.memo(TeamNameBox);

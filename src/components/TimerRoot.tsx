@@ -1,41 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Route, Routes, HashRouter } from 'react-router-dom';
 
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 import MainTimeBoard from './board/MainTimeBoard';
 import ScoreBoard from './board/ScoreBoard';
-import LiveControlTab from './control/LiveControlTab';
 import InjuryTimeBoard from './board/InjuryTimeBoard';
 import MatchNameBoard from './board/MatchNameBoard';
+
+import LiveControlTab from './control/LiveControlTab';
+import RouteTabs from './RouteControlPanels';
+import RemoteTab from './remote/RemoteTab';
 import TeamControlTab from './control/TeamControlTab';
 
 import GlobalStyle from './styledcomponents/GlobalStyle';
 import '@styles/TimerRoot.scss';
 import '@styles/TimerRootTransition.scss';
 
+import RemoteMessageManager from './manager/RemoteMessageManager';
+
 import { useFont } from '@src/contexts/FontContext';
-import { useMainTimerManager } from '@src/contexts/timers/main/MainTimerManagerProvider';
-import { useInjuryTimerManager } from '@src/contexts/timers/injury/InjuryTimerManagerProvider';
-import RouteTabs from './RouteControlPanels';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
-import RemoteMessageManager from './manager/RemoteMessageManager';
-import RemoteTab from './remote/RemoteTab';
 import { useMatchName } from '@src/contexts/MatchNameContext';
 import { useInjuryTimeInfo } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
+import TimerStop from './TimerStop';
 
 const TimerRoot = () => {
   // 글로벌 폰트
-  const { fontInfo, updateGlobalFont } = useFont();
+  const { fontInfo } = useFont();
 
   // 대회 종류
   // TODO : [MERGE] matchName 초기값 설정 방법 다시 분석
   const { matchName, updateMatchName } = useMatchName();
-
-  // 타이머
-  const mainTimerManager = useMainTimerManager();
-  const injuryTimerManager = useInjuryTimerManager();
 
   // 추가시간 타이머
   const {
@@ -50,15 +47,9 @@ const TimerRoot = () => {
   const { teamA, updateTeamA } = useTeamA();
   const { teamB, updateTeamB } = useTeamB();
 
-  useEffect(() => {
-    mainTimerManager.eventEmitter.on('halfTimeStop', () => {
-      showInjuryTimer();
-      injuryTimerManager.startTimer({ min: 0, sec: 0 });
-    });
-  }, []);
-
   return (
     <div className='timer-context-root'>
+      <TimerStop />
       <RemoteMessageManager
         givenInjuryTime={givenInjuryTime}
         isShowInjuryTimer={isShowInjuryTimer}

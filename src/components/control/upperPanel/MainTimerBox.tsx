@@ -10,28 +10,28 @@ import {
 
 export type MainTimerBoxProps = {
   mainMinutes: number;
+  mainSeconds: number;
+  isRunning: boolean;
   setMainMinutes: React.Dispatch<React.SetStateAction<number>>;
   updateMainMinutes: (input: string) => void;
-  mainSeconds: number;
   setMainSeconds: React.Dispatch<React.SetStateAction<number>>;
   updateMainSeconds: (input: string) => void;
   startMainTimer: () => void;
-  toggleMainTimerRunning: () => void;
-  isRunning: boolean;
+  toggleMainTimerRunning: (isRunning: boolean) => void;
   handleSinkPlus1sec: () => void;
   handleSinkMinus1sec: () => void;
 };
 
 const MainTimerBox: React.FC<MainTimerBoxProps> = ({
   mainMinutes,
+  mainSeconds,
+  isRunning,
   setMainMinutes,
   updateMainMinutes,
-  mainSeconds,
   setMainSeconds,
   updateMainSeconds,
   startMainTimer,
   toggleMainTimerRunning,
-  isRunning,
   handleSinkPlus1sec,
   handleSinkMinus1sec,
 }) => {
@@ -107,7 +107,7 @@ const MainTimerBox: React.FC<MainTimerBoxProps> = ({
           <button onClick={startMainTimer}>
             <FontAwesomeIcon icon={faPlay} />
           </button>
-          <button onClick={toggleMainTimerRunning}>
+          <button onClick={() => toggleMainTimerRunning(isRunning)}>
             {isRunning ? (
               <FontAwesomeIcon icon={faPause} />
             ) : (
@@ -128,4 +128,10 @@ const MainTimerBox: React.FC<MainTimerBoxProps> = ({
   );
 };
 
-export default MainTimerBox;
+export default React.memo(MainTimerBox, (prev, next) => {
+  return (
+    prev.mainMinutes === next.mainMinutes &&
+    prev.mainSeconds === next.mainSeconds &&
+    prev.isRunning === next.isRunning
+  );
+});

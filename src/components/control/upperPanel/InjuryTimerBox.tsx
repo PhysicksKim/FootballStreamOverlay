@@ -14,30 +14,30 @@ import {
 
 export type InjuryTimerBoxProps = {
   injuryMinutes: number;
+  injurySeconds: number;
+  isRunning: boolean;
+  isShowInjuryTimer: boolean;
   setInjuryMinutes: React.Dispatch<React.SetStateAction<number>>;
   updateInjuryMinutes: (input: string) => void;
-  injurySeconds: number;
   setInjurySeconds: React.Dispatch<React.SetStateAction<number>>;
   updateInjurySeconds: (input: string) => void;
   startInjuryTimerWithTime: () => void;
   toggleInjuryTimerRunning: () => void;
-  isRunning: boolean;
   toggleShowInjuryTimer: () => void;
-  isShowInjuryTimer: boolean;
 };
 
 const InjuryTimerBox: React.FC<InjuryTimerBoxProps> = ({
   injuryMinutes,
+  injurySeconds,
+  isRunning,
+  isShowInjuryTimer,
   setInjuryMinutes,
   updateInjuryMinutes,
-  injurySeconds,
   setInjurySeconds,
   updateInjurySeconds,
   startInjuryTimerWithTime,
   toggleInjuryTimerRunning,
-  isRunning,
   toggleShowInjuryTimer,
-  isShowInjuryTimer,
 }) => {
   return (
     <div className='injury-timer-box'>
@@ -133,4 +133,11 @@ const InjuryTimerBox: React.FC<InjuryTimerBoxProps> = ({
   );
 };
 
-export default InjuryTimerBox;
+export default React.memo(
+  InjuryTimerBox,
+  (prev, next) =>
+    prev.isShowInjuryTimer === next.isShowInjuryTimer &&
+    prev.injuryMinutes === next.injuryMinutes &&
+    prev.injurySeconds === next.injurySeconds &&
+    prev.isRunning === next.isRunning,
+);
