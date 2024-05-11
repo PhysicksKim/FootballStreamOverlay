@@ -34,30 +34,33 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   // eventListener 에서는 state 변수가 업데이트 안되니까, ref 로 넘겨줘야함
   const totalSecondsRef = useRef(totalSeconds);
 
+  // WebWorker 사용한 타이머 틱
+  const workerRef = useRef<Worker | null>(null);
+
   // pauseTimes : 전반, 후반, 연장 전반, 연장 후반 시간(초 단위)
   const pauseTimes: number[] = [45 * 60, 90 * 60, 105 * 60, 120 * 60];
 
-  const tick = useCallback(() => {
-    let isRoundUp = false;
+  // const tick = useCallback(() => {
+  //   let isRoundUp = false;
 
-    setMilliseconds((prevMilliseconds) => {
-      if (prevMilliseconds >= 900) {
-        isRoundUp = true;
-        return prevMilliseconds - 900;
-      } else {
-        return prevMilliseconds + 100;
-      }
-    });
+  //   setMilliseconds((prevMilliseconds) => {
+  //     if (prevMilliseconds >= 900) {
+  //       isRoundUp = true;
+  //       return prevMilliseconds - 900;
+  //     } else {
+  //       return prevMilliseconds + 100;
+  //     }
+  //   });
 
-    if (isRoundUp) {
-      setTotalSeconds((prevSeconds) => {
-        const newSeconds = prevSeconds + 1;
+  //   if (isRoundUp) {
+  //     setTotalSeconds((prevSeconds) => {
+  //       const newSeconds = prevSeconds + 1;
 
-        eventEmitter.emit('secondsUpdated');
-        return newSeconds;
-      });
-    }
-  }, [eventEmitter]);
+  //       eventEmitter.emit('secondsUpdated');
+  //       return newSeconds;
+  //     });
+  //   }
+  // }, [eventEmitter]);
 
   useEffect(() => {
     checkForPauseTime(totalSeconds);
@@ -68,30 +71,18 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     }
   }, [totalSeconds]);
 
-  /**
-   * Precision-Timer 라이브러리를 사용해서 0.1초마다 tick 함수 실행
-   */
-  const timer = useTimer(
-    {
-      delay: 100,
-      // fireOnStart: true,
-      startImmediately: false,
-    },
-    tick,
-  );
-
-  useEffect(() => {
-    setIsRunning(timer.isRunning());
-  }, [timer.isRunning()]);
-
   useEffect(() => {
     totalSecondsRef.current = totalSeconds;
+    const time = parseToTime(totalSecondsRef.current);
+    setTime(time);
+
+    // console.log('totalSeconds:', totalSecondsRef.current);
+    // console.log('secondsUpdated:', time);
   }, [totalSeconds]);
 
   useEffect(() => {
     eventEmitter.on('secondsUpdated', () => {
-      const time = parseToTime(totalSecondsRef.current);
-      setTime(time);
+      setTotalSeconds((prev) => prev + 1);
     });
 
     eventEmitter.on('timeExceeded', () => {
@@ -101,36 +92,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
       setTime(time);
     });
   }, []);
-
-  const start = useCallback(
-    (minutes = 0, seconds = 0) => {
-      setSuppressHalfstop(true);
-      setTotalSeconds(minutes * 60 + seconds);
-      setMilliseconds(0);
-      timer.start();
-    },
-    [timer],
-  );
-
-  const set = useCallback(
-    (minutes: number, seconds: number) => {
-      setTotalSeconds(minutes * 60 + seconds);
-      setMilliseconds(0);
-    },
-    [timer],
-  );
-
-  const resume = useCallback(() => {
-    timer.resume();
-  }, [timer]);
-
-  const stop = useCallback(() => {
-    timer.stop();
-  }, [timer]);
-
-  const pause = useCallback(() => {
-    timer.pause();
-  }, [timer]);
 
   const parseToTime = useCallback((nowSec: number): Time => {
     const minutes = Math.floor(nowSec / 60);
@@ -173,6 +134,71 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
 
   const adjustTimeSink = useCallback((sec: number) => {
     setTotalSeconds((prev) => (prev + sec > 0 ? prev + sec : 0));
+  }, []);
+
+  // ------ Web Worker Timer Refactoring ------
+  // tick 마다 0.1초씩 증가. 1초가 되면 secondsUpdated 이벤트 발생
+  const tickWebWorker = () => {
+    setMilliseconds((prevMils) => {
+      if (prevMils >= 900) {
+        // console.log('tickWebWorker secondsUpdated');
+        eventEmitter.emit('secondsUpdated');
+        return prevMils - 900;
+      } else {
+        return prevMils + 100;
+      }
+    });
+  };
+
+  useEffect(() => {
+    workerRef.current = new Worker(
+      new URL('../hooks/TimerWebWorker.js', import.meta.url),
+    );
+    // 워커에서 tick 을 수신할 때마다(0.1초마다) tickWebWorker 함수 실행
+    workerRef.current.onmessage = (e) => {
+      if (e.data === 'tick') {
+        tickWebWorker();
+      }
+    };
+    return () => {
+      workerRef.current?.postMessage('stop');
+      workerRef.current?.terminate();
+    };
+  }, []);
+
+  const start = useCallback((minutes = 0, seconds = 0) => {
+    console.log('start called');
+    setSuppressHalfstop(true);
+    setTotalSeconds(minutes * 60 + seconds);
+    setMilliseconds(0);
+    setIsRunning(true);
+    workerRef.current?.postMessage('start');
+  }, []);
+
+  const set = useCallback((minutes: number, seconds: number) => {
+    console.log('set called');
+    setTotalSeconds(minutes * 60 + seconds);
+    setMilliseconds(0);
+    setIsRunning(false);
+    workerRef.current?.postMessage('stop');
+  }, []);
+
+  const resume = useCallback(() => {
+    console.log('resume called');
+    setIsRunning(true);
+    workerRef.current?.postMessage('start');
+  }, []);
+
+  const stop = useCallback(() => {
+    console.log('stop called');
+    setIsRunning(false);
+    workerRef.current?.postMessage('stop');
+  }, []);
+
+  const pause = useCallback(() => {
+    console.log('pause called');
+    setIsRunning(false);
+    workerRef.current?.postMessage('stop');
   }, []);
 
   return [
