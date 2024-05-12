@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { defaultMatchName } from '@src/classes/team/DefaultScoreBoardValue';
+import {
+  defaultMatchName,
+  defaultMatchNameTemplate,
+} from '@src/classes/team/DefaultScoreBoardValue';
 import TeamNameBox from './TeamNameBox';
 
 import '@styles/control/upperPanel/TimerTitleBox.scss';
@@ -12,11 +15,15 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
   const matchTitleTestInputRef = useRef(null);
 
   const handleEPLPreset = () => {
-    handleMatchName('2023-24 잉글랜드 프리미어리그 34R');
+    handleMatchName(defaultMatchNameTemplate.EPL);
   };
 
   const handleUEFAPreset = () => {
-    handleMatchName('2023-24 UEFA 챔피언스리그 8강 2차전');
+    handleMatchName(defaultMatchNameTemplate.UCL);
+  };
+
+  const handleFAPreset = () => {
+    handleMatchName(defaultMatchNameTemplate.FA);
   };
 
   const handleMatchName = (matchName: string) => {
@@ -58,6 +65,13 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
             value='UEFA'
             className='match-title-preset-button uefa-preset'
             onClick={handleUEFAPreset}
+          />
+          <input
+            id='match-title-uefa-preset-button'
+            type='button'
+            value='FA'
+            className='match-title-preset-button uefa-preset'
+            onClick={handleFAPreset}
           />
         </div>
       </div>
