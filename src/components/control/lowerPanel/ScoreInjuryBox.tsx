@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useInjuryTimeInfo } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useRemoteClient } from '@src/contexts/stomp/RemoteClientContext';
@@ -8,13 +7,14 @@ import { useRemoteClient } from '@src/contexts/stomp/RemoteClientContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
+import { updateGivenInjuryTime } from '@src/redux/slices/InjuryTimeInfoSlice';
+
 import '@styles/control/lowerPanel/ScoreInjuryBox.scss';
+import { useDispatch } from 'react-redux';
 
 const ScoreInjuryBox: React.FC<Record<string, never>> = () => {
   const { teamA, updateTeamA } = useTeamA();
   const { teamB, updateTeamB } = useTeamB();
-
-  const { updateGivenInjuryTime } = useInjuryTimeInfo();
 
   const [givenInjuryInput, setGivenInjuryInput] = React.useState('' as string);
 
@@ -34,6 +34,8 @@ const ScoreInjuryBox: React.FC<Record<string, never>> = () => {
     }
   };
 
+  const dispatch = useDispatch();
+
   // Given Injury Time Input Change
   const handleGivenInjuryTimeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -43,9 +45,9 @@ const ScoreInjuryBox: React.FC<Record<string, never>> = () => {
 
     const parsedMin = parseInt(numbers);
     if (!parsedMin) {
-      updateGivenInjuryTime(0);
+      dispatch(updateGivenInjuryTime(0));
     } else {
-      updateGivenInjuryTime(parsedMin);
+      dispatch(updateGivenInjuryTime(parsedMin));
     }
   };
 

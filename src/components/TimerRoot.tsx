@@ -19,32 +19,31 @@ import '@styles/TimerRootTransition.scss';
 
 import RemoteMessageManager from './manager/RemoteMessageManager';
 
-import { useFont } from '@src/contexts/FontContext';
 import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { useMatchName } from '@src/contexts/MatchNameContext';
-import { useInjuryTimeInfo } from '@src/contexts/timers/injury/InjuryTimeInfoProvider';
 import TimerStop from './TimerStop';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@src/redux/Store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@src/redux/Store';
+import {
+  InjuryTimeInfoState,
+  updateGivenInjuryTime,
+  showInjuryTimer,
+  disappearInjuryTimer,
+} from '@src/redux/slices/InjuryTimeInfoSlice';
 
 const TimerRoot = () => {
   // 글로벌 폰트
-  // const { fontInfo } = useFont();
   const fontInfo = useSelector((state: RootState) => state.font);
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
 
   // 대회 종류
   const { matchName, updateMatchName } = useMatchName();
 
   // 추가시간 타이머
-  const {
-    givenInjuryTime,
-    isShowInjuryTimer,
-    updateGivenInjuryTime,
-    showInjuryTimer,
-    disappearInjuryTimer,
-  } = useInjuryTimeInfo();
+  const injuryTimeInfo: InjuryTimeInfoState = useSelector(
+    (state: RootState) => state.injuryTimeInfo,
+  );
 
   // Team 속성
   const { teamA, updateTeamA } = useTeamA();
@@ -54,11 +53,11 @@ const TimerRoot = () => {
     <div className='timer-context-root'>
       <TimerStop />
       <RemoteMessageManager
-        givenInjuryTime={givenInjuryTime}
-        isShowInjuryTimer={isShowInjuryTimer}
-        updateGivenInjuryTime={updateGivenInjuryTime}
-        showInjuryTimer={showInjuryTimer}
-        disappearInjuryTimer={disappearInjuryTimer}
+        // givenInjuryTime={injuryTimeInfo.givenInjuryTime}
+        // isShowInjuryTimer={injuryTimeInfo.isShowInjuryTimer}
+        // updateGivenInjuryTime={() => dispatch(updateGivenInjuryTime())}
+        // showInjuryTimer={() => dispatch(showInjuryTimer())}
+        // disappearInjuryTimer={() => dispatch(disappearInjuryTimer())}
         matchName={matchName}
         updateMatchName={updateMatchName}
       />
@@ -69,13 +68,13 @@ const TimerRoot = () => {
           <ScoreBoard />
           <MainTimeBoard />
           <CSSTransition
-            in={isShowInjuryTimer}
+            in={injuryTimeInfo.isShowInjuryTimer}
             timeout={1000}
             classNames='injury-time'
             unmountOnExit
           >
             <InjuryTimeBoard
-              givenInjuryTime={givenInjuryTime}
+              givenInjuryTime={injuryTimeInfo.givenInjuryTime}
             ></InjuryTimeBoard>
           </CSSTransition>
         </div>
@@ -90,10 +89,9 @@ const TimerRoot = () => {
               element={
                 <LiveControlTab
                   key='livetab'
-                  disappearInjuryTimer={disappearInjuryTimer}
-                  showInjuryTimer={showInjuryTimer}
-                  isShowInjuryTimer={isShowInjuryTimer}
-                  updateGivenInjuryTime={updateGivenInjuryTime}
+                  updateGivenInjuryTime={() =>
+                    dispatch(updateGivenInjuryTime())
+                  }
                   updateMatchName={updateMatchName}
                 ></LiveControlTab>
               }

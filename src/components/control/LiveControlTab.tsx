@@ -4,17 +4,11 @@ import TimerControlPanel from './upperPanel/TimerControlPanel';
 import BoardControlPanel from './lowerPanel/BoardControlPanel';
 
 interface LiveControlTabProps {
-  isShowInjuryTimer: boolean;
-  showInjuryTimer: () => void;
-  disappearInjuryTimer: () => void;
   updateGivenInjuryTime: (min: number) => void;
   updateMatchName: (matchName: string) => void;
 }
 
 const LiveControlTab: React.FC<LiveControlTabProps> = ({
-  isShowInjuryTimer,
-  showInjuryTimer,
-  disappearInjuryTimer,
   updateGivenInjuryTime,
   updateMatchName,
 }) => {
@@ -22,9 +16,6 @@ const LiveControlTab: React.FC<LiveControlTabProps> = ({
     <div className='control-panel-container'>
       <div className='timer-control-wrapper'>
         <TimerControlPanel
-          isShowInjuryTimer={isShowInjuryTimer}
-          showInjuryTimer={showInjuryTimer}
-          disappearInjuryTimer={disappearInjuryTimer}
           updateGivenInjuryTime={updateGivenInjuryTime}
           updateMatchName={updateMatchName}
         />
@@ -37,7 +28,4 @@ const LiveControlTab: React.FC<LiveControlTabProps> = ({
   );
 };
 
-export default React.memo(
-  LiveControlTab,
-  (prev, next) => prev.isShowInjuryTimer === next.isShowInjuryTimer,
-);
+export default React.memo(LiveControlTab);

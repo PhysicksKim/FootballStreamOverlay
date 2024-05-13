@@ -3,13 +3,11 @@ import { useTeamA } from '@src/contexts/teams/TeamAProvider';
 import { useTeamB } from '@src/contexts/teams/TeamBProvider';
 import { ControlChannelMsg } from '@src/types/stompTypes';
 import { Time } from '@src/types/types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateGivenInjuryTime } from '@src/redux/slices/InjuryTimeInfoSlice';
 
 export interface RemoteReceiverProps {
-  isShowInjuryTimer: boolean;
-  disappearInjuryTimer: () => void;
-  showInjuryTimer: () => void;
-  updateGivenInjuryTime: (min: number) => void;
   updateMatchName: (matchName: string) => void;
 }
 
@@ -19,13 +17,7 @@ export type GetSyncedTimeType = (
   deltaTime: number,
 ) => { min: number; sec: number; mil: number };
 
-const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
-  isShowInjuryTimer,
-  disappearInjuryTimer,
-  showInjuryTimer,
-  updateGivenInjuryTime,
-  updateMatchName,
-}) => {
+const RemoteReceiver: React.FC<RemoteReceiverProps> = ({ updateMatchName }) => {
   const { teamA, updateTeamA } = useTeamA();
   const { teamB, updateTeamB } = useTeamB();
   const { setOnReceiveControlMessage } = useRemoteClient();
@@ -33,6 +25,8 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
   useEffect(() => {
     setOnReceiveControlMessage(handleControlMessage);
   }, []);
+
+  const dispatch = useDispatch();
 
   const handleControlMessage = (remoteControlMsg: ControlChannelMsg) => {
     const { data, type } = remoteControlMsg;
@@ -47,7 +41,7 @@ const RemoteReceiver: React.FC<RemoteReceiverProps> = ({
     updateTeamB('uniform', uniform.teamBUniform);
     updateTeamA('score', score.teamAScore);
     updateTeamB('score', score.teamBScore);
-    updateGivenInjuryTime(givneInjury.givenInjuryTime);
+    dispatch(updateGivenInjuryTime(givneInjury.givenInjuryTime));
   };
 
   const isNotValidMessage = (data: any, type: any) => {

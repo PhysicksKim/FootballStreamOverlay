@@ -9,8 +9,14 @@ import InjuryTimerBox from './InjuryTimerBox';
 import TimerTitleBox from './TimerTitleBox';
 
 import { Time } from '@src/types/types';
+import {
+  showInjuryTimer,
+  disappearInjuryTimer,
+} from '@src/redux/slices/InjuryTimeInfoSlice';
 
 import '@styles/control/upperPanel/TimerControlPanel.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@src/redux/Store';
 
 export interface TimerPresets {
   wait: {
@@ -34,20 +40,21 @@ export interface TimerPresets {
 }
 
 interface TimerControlPanelProps {
-  showInjuryTimer: () => void;
-  disappearInjuryTimer: () => void;
-  isShowInjuryTimer: boolean;
   updateGivenInjuryTime: (min: number) => void;
   updateMatchName: (matchName: string) => void;
 }
 
 const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
-  showInjuryTimer,
-  disappearInjuryTimer,
-  isShowInjuryTimer,
   updateGivenInjuryTime,
   updateMatchName,
 }) => {
+  const dispatch = useDispatch();
+
+  // Injury Timer Info
+  const injuryTimerInfo = useSelector(
+    (state: RootState) => state.injuryTimeInfo,
+  );
+
   // Timer Contexts
   const mainTimerManager = useMainTimerManager();
   const injuryTimerManager = useInjuryTimerManager();
@@ -74,9 +81,12 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
     } else {
       mainTimerManager.startTimer({ min: mainMinutes, sec: mainSeconds });
     }
-    if (isShowInjuryTimer || injuryTimerManager.timer.isRunning) {
+    if (
+      injuryTimerInfo.isShowInjuryTimer ||
+      injuryTimerManager.timer.isRunning
+    ) {
       stopInjuryTimer();
-      disappearInjuryTimer();
+      dispatch(disappearInjuryTimer());
       setTimeout(() => {
         injuryTimerManager.setTimer({ min: 0, sec: 0 });
       }, 1000);
@@ -124,16 +134,20 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   };
 
   const toggleShowInjuryTimer = () => {
-    if (isShowInjuryTimer) {
-      disappearInjuryTimer();
+    console.log(
+      'toggle injury timer : isShowInjuryTimer',
+      injuryTimerInfo.isShowInjuryTimer,
+    );
+    if (injuryTimerInfo.isShowInjuryTimer) {
+      dispatch(disappearInjuryTimer());
     } else {
-      showInjuryTimer();
+      dispatch(showInjuryTimer());
     }
   };
 
   const startInjuryTimer = () => {
     // setIsInjuryTimerRunning(true);
-    showInjuryTimer();
+    dispatch(showInjuryTimer());
     injuryTimerManager.startTimer({ min: 0, sec: 0 });
   };
 
@@ -170,7 +184,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
 
   const stopInjuryTimer = () => {
     injuryTimerManager.timer.stop();
-    disappearInjuryTimer();
+    dispatch(disappearInjuryTimer());
   };
 
   const changeGivenInjuryTime = (value: string) => {
@@ -251,28 +265,28 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
           mainTimerManager.setTimer(time);
           mainTimerManager.pauseTimer();
           startInjuryTimer();
-          showInjuryTimer();
+          dispatch(showInjuryTimer());
         },
         SecondHalf: () => {
           const time: Time = { min: 90, sec: 0 };
           mainTimerManager.setTimer(time);
           mainTimerManager.pauseTimer();
           startInjuryTimer();
-          showInjuryTimer();
+          dispatch(showInjuryTimer());
         },
         OverFirstHalf: () => {
           const time: Time = { min: 105, sec: 0 };
           mainTimerManager.setTimer(time);
           mainTimerManager.pauseTimer();
           startInjuryTimer();
-          showInjuryTimer();
+          dispatch(showInjuryTimer());
         },
         OverSecondHalf: () => {
           const time: Time = { min: 120, sec: 0 };
           mainTimerManager.setTimer(time);
           mainTimerManager.pauseTimer();
           startInjuryTimer();
-          showInjuryTimer();
+          dispatch(showInjuryTimer());
         },
       },
     }),
@@ -309,7 +323,7 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
           injuryMinutes={injuryMinutes}
           injurySeconds={injurySeconds}
           isRunning={injuryTimerManager.timer.isRunning}
-          isShowInjuryTimer={isShowInjuryTimer}
+          isShowInjuryTimer={injuryTimerInfo.isShowInjuryTimer}
           setInjuryMinutes={setInjuryMinutes}
           updateInjuryMinutes={updateInjuryMinutes}
           setInjurySeconds={setInjurySeconds}
@@ -333,7 +347,4 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   );
 };
 
-export default React.memo(
-  TimerControlPanel,
-  (prev, next) => prev.isShowInjuryTimer === next.isShowInjuryTimer,
-);
+export default TimerControlPanel;

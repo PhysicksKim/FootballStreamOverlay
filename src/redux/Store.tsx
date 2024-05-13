@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './slices/CounterSlice';
-import fontReducer from './slices/FontSlice';
+import CounterReducer from './slices/CounterSlice';
+import FontReducer from './slices/FontSlice';
+import InjuryTimeInfoReducer from './slices/InjuryTimeInfoSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    font: fontReducer,
+    counter: CounterReducer,
+    font: FontReducer,
+    injuryTimeInfo: InjuryTimeInfoReducer,
   },
 });
 
