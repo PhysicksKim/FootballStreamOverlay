@@ -2,6 +2,7 @@ import { useTimer } from 'react-use-precision-timer';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EventEmitter } from 'events';
 import { Time } from '@src/types/types';
+import { CorsWorker } from './CorsWorker';
 
 export interface TimerMilliseconds {
   milliseconds: number;
@@ -141,7 +142,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   const tickWebWorker = () => {
     setMilliseconds((prevMils) => {
       if (prevMils >= 900) {
-        // console.log('tickWebWorker secondsUpdated');
         eventEmitter.emit('secondsUpdated');
         return prevMils - 900;
       } else {
@@ -151,18 +151,29 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   };
 
   useEffect(() => {
-    workerRef.current = new Worker(
-      new URL('../hooks/TimerWebWorker.js', import.meta.url),
-    );
-    // 워커에서 tick 을 수신할 때마다(0.1초마다) tickWebWorker 함수 실행
-    workerRef.current.onmessage = (e) => {
-      if (e.data === 'tick') {
-        tickWebWorker();
-      }
-    };
+    async function initializeWorker() {
+      const corsWorker = new CorsWorker(
+        new URL('./TimerWebWorker.js', import.meta.url),
+        { type: 'module', name: 'my-worker' },
+      );
+      workerRef.current = await corsWorker.createWorker();
+
+      workerRef.current.onmessage = (e) => {
+        if (e.data === 'tick') {
+          tickWebWorker(); // 0.1초마다 tickWebWorker 함수 실행
+        }
+      };
+    }
+
+    // 비동기 함수 실행
+    initializeWorker();
+
+    // cleanup 함수
     return () => {
-      workerRef.current?.postMessage('stop');
-      workerRef.current?.terminate();
+      if (workerRef.current) {
+        workerRef.current.postMessage('stop');
+        workerRef.current.terminate();
+      }
     };
   }, []);
 
