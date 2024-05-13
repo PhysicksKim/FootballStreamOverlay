@@ -35,7 +35,6 @@ const spaceToFontSize = (space: number) => {
 
 const getFontSize = (name: string) => {
   const space = calculateSpace(name);
-  // console.log(`name: ${name}, space: ${space}`);
   return spaceToFontSize(space);
 };
 

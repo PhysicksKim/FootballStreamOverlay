@@ -405,7 +405,6 @@ export const RemoteClientProvider: React.FC<{
         { withCredentials: true },
       )
       .then((res) => {
-        console.log('쿠키 캐싱 성공, 200 : ', res);
         // 자동 재연결 요청. 성공시 type:connect 응답을 받음
         clientRef.current.publish({
           destination: '/app/remote.autoreconnect',

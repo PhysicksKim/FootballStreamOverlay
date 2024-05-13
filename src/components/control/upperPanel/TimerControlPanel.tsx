@@ -134,10 +134,6 @@ const TimerControlPanel: React.FC<TimerControlPanelProps> = ({
   };
 
   const toggleShowInjuryTimer = () => {
-    console.log(
-      'toggle injury timer : isShowInjuryTimer',
-      injuryTimerInfo.isShowInjuryTimer,
-    );
     if (injuryTimerInfo.isShowInjuryTimer) {
       dispatch(disappearInjuryTimer());
     } else {

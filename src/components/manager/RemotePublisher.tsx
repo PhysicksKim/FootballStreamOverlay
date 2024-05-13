@@ -43,7 +43,6 @@ const RemotePublisher: React.FC<RemotePublisherProps> = ({ matchName }) => {
       },
     };
     setRemotePubData(pubState);
-    console.log('pub state updated : ', pubState);
   }, [
     teamA.score,
     teamB.score,

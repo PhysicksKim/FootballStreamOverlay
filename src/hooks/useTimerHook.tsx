@@ -76,9 +76,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
     totalSecondsRef.current = totalSeconds;
     const time = parseToTime(totalSecondsRef.current);
     setTime(time);
-
-    // console.log('totalSeconds:', totalSecondsRef.current);
-    // console.log('secondsUpdated:', time);
   }, [totalSeconds]);
 
   useEffect(() => {
@@ -178,7 +175,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   }, []);
 
   const start = useCallback((minutes = 0, seconds = 0) => {
-    console.log('start called');
     setSuppressHalfstop(true);
     setTotalSeconds(minutes * 60 + seconds);
     setMilliseconds(0);
@@ -187,7 +183,6 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   }, []);
 
   const set = useCallback((minutes: number, seconds: number) => {
-    console.log('set called');
     setTotalSeconds(minutes * 60 + seconds);
     setMilliseconds(0);
     setIsRunning(false);
@@ -195,19 +190,16 @@ const useTimerHook = (): [TimerState, EventEmitter] => {
   }, []);
 
   const resume = useCallback(() => {
-    console.log('resume called');
     setIsRunning(true);
     workerRef.current?.postMessage('start');
   }, []);
 
   const stop = useCallback(() => {
-    console.log('stop called');
     setIsRunning(false);
     workerRef.current?.postMessage('stop');
   }, []);
 
   const pause = useCallback(() => {
-    console.log('pause called');
     setIsRunning(false);
     workerRef.current?.postMessage('stop');
   }, []);

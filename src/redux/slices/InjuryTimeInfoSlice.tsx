@@ -25,11 +25,9 @@ const injuryTimeInfoSlice = createSlice({
       state.givenInjuryTime = action.payload;
     },
     showInjuryTimer: (state) => {
-      console.log('showInjuryTimer');
       state.isShowInjuryTimer = true;
     },
     disappearInjuryTimer: (state) => {
-      console.log('disappearInjuryTimer');
       state.isShowInjuryTimer = false;
     },
   },
