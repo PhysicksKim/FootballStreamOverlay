@@ -3,7 +3,7 @@ import EPL2324Codes from './EPLCodes';
 import EtcTeamCodes from './EtcTeamCodes';
 
 export const defaultMatchNameTemplate = {
-  EPL: '2023-24 잉글랜드 프리미어리그 34R',
+  EPL: '2023-24 잉글랜드 프리미어리그 38R',
   FA: '2023-24 잉글랜드 FA컵 결승전',
   UCL: '2023-24 UEFA 챔피언스리그 결승전',
 };
@@ -20,8 +20,8 @@ export const defaultTeamA: Team = {
 
 export const defaultTeamB: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.토트넘.code,
-  name: EPL2324Codes.토트넘.name,
+  code: EPL2324Codes.웨스트햄.code,
+  name: EPL2324Codes.웨스트햄.name,
   score: 0,
   uniform: 'home',
 };
