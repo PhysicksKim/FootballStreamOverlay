@@ -8,7 +8,7 @@ export const defaultMatchNameTemplate = {
   UCL: '2023-24 UEFA 챔피언스리그 결승전',
 };
 
-export const defaultMatchName = defaultMatchNameTemplate.EPL;
+export const defaultMatchName = defaultMatchNameTemplate.FA;
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
@@ -20,8 +20,8 @@ export const defaultTeamA: Team = {
 
 export const defaultTeamB: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.웨스트햄.code,
-  name: EPL2324Codes.웨스트햄.name,
+  code: EPL2324Codes.맨유.code,
+  name: EPL2324Codes.맨유.name,
   score: 0,
   uniform: 'home',
 };

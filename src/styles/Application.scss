@@ -1,4 +1,5 @@
 @import 'FontVariables';
+@import 'Themes';
 
 // 태백체
 @font-face {
@@ -28,7 +29,7 @@
 }
 
 body {
-  background-color: #696969;
+  background-color: $body-background;
   // background-image: url('/assets/testBackground.png');
   margin: 0;
   padding: 0;
