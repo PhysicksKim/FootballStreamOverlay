@@ -298,6 +298,7 @@ import wlvFlag from '@assets/flags/epl2324/wolves.svg';
 
 // #region etc flags imports
 import rmdFlag from '@assets/flags/etc/realmadrid.svg';
+import bvbFlag from '@assets/flags/etc/dortmund.svg';
 // #endregion etc flags imports
 
 export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
@@ -896,6 +897,8 @@ export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
     switch (team.code) {
       case 'rmd':
         return rmdFlag; // 레알 마드리드
+      case 'bvb':
+        return bvbFlag; // 도르트문트
     }
   }
   return '/no/match/image.svg'; // 일치하는 국가 코드가 없는 경우

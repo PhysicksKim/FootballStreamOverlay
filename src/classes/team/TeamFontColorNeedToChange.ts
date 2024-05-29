@@ -19,6 +19,7 @@ const etcWhiteUniform = [
   'ety-away',
   'ety-third',
   'rmd-home',
+  'bvb-home',
 ];
 
 const isEpl2324WhiteUniform = (code: string, uniform: string) => {

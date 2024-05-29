@@ -8,20 +8,20 @@ export const defaultMatchNameTemplate = {
   UCL: '2023-24 UEFA 챔피언스리그 결승전',
 };
 
-export const defaultMatchName = defaultMatchNameTemplate.FA;
+export const defaultMatchName = defaultMatchNameTemplate.UCL;
 
 export const defaultTeamA: Team = {
-  category: 'epl2324',
-  code: EPL2324Codes.맨시티.code,
-  name: EPL2324Codes.맨시티.name,
+  category: 'etc',
+  code: EtcTeamCodes.도르트문트.code,
+  name: EtcTeamCodes.도르트문트.name,
   score: 0,
   uniform: 'home',
 };
 
 export const defaultTeamB: Team = {
-  category: 'epl2324',
-  code: EPL2324Codes.맨유.code,
-  name: EPL2324Codes.맨유.name,
+  category: 'etc',
+  code: EtcTeamCodes.레알마드리드.code,
+  name: EtcTeamCodes.레알마드리드.name,
   score: 0,
   uniform: 'home',
 };

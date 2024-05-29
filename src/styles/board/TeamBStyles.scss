@@ -349,3 +349,14 @@
 .team-b-etc-rmd-third {
   @include teamBColor('etc-rmd', 'third');
 }
+
+// 기타 도르트문트
+.team-b-etc-bvb-home {
+  @include teamBColor('etc-bvb');
+}
+.team-b-etc-bvb-away {
+  @include teamBColor('etc-bvb', 'away');
+}
+.team-b-etc-bvb-third {
+  @include teamBColor('etc-bvb', 'third');
+}
