@@ -46,6 +46,9 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
   const [teamAFontSize, setTeamAFontSize] = useState(getFontSize(teamA.name));
   const [teamBFontSize, setTeamBFontSize] = useState(getFontSize(teamB.name));
 
+  const [isTeamAEuroFlag, setIsTeamAEuroFlag] = useState(false);
+  const [isTeamBEuroFlag, setIsTeamBEuroFlag] = useState(false);
+
   const teamAStyleClassName = `team-a-${teamA.category}-${teamA.code}-${teamA.uniform}`;
   const teamBStyleClassName = `team-b-${teamB.category}-${teamB.code}-${teamB.uniform}`;
 
@@ -55,6 +58,22 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
     setTeamAFontSize(teamAFontSize);
     setTeamBFontSize(teamBFontSize);
   }, [teamA, teamB]);
+
+  useEffect(() => {
+    if (teamA.category === 'euro2024') {
+      setIsTeamAEuroFlag(true);
+    } else {
+      setIsTeamAEuroFlag(false);
+    }
+  }, [teamA]);
+
+  useEffect(() => {
+    if (teamB.category === 'euro2024') {
+      setIsTeamBEuroFlag(true);
+    } else {
+      setIsTeamBEuroFlag(false);
+    }
+  }, [teamB]);
 
   useEffect(() => {
     if (isNeedToBlackFontColor(teamA)) {
@@ -73,7 +92,10 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
     <div className='score-board-container'>
       <div className='score-board-wrapper'>
         <div className='team-a-flag-wrapper team-flag-wrapper'>
-          <Flag $team={teamA} className='team-a-flag'></Flag>
+          <Flag
+            $team={teamA}
+            className={`team-a-flag ${isTeamAEuroFlag ? 'euro-flag' : ''}`}
+          ></Flag>
         </div>
         {/* 팀 A */}
         <div className={`team-section team-a-format ${teamAStyleClassName}`}>
@@ -120,7 +142,10 @@ const ScoreBoard: React.FC<Record<string, never>> = () => {
           </div>
         </div>
         <div className='team-b-flag-wrapper team-flag-wrapper'>
-          <Flag $team={teamB} className='team-b-flag'></Flag>
+          <Flag
+            $team={teamB}
+            className={`team-b-flag ${isTeamBEuroFlag ? 'euro-flag' : ''}`}
+          ></Flag>
         </div>
       </div>
     </div>

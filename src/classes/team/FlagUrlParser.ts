@@ -301,6 +301,33 @@ import rmdFlag from '@assets/flags/etc/realmadrid.svg';
 import bvbFlag from '@assets/flags/etc/dortmund.svg';
 // #endregion etc flags imports
 
+// #region euro2024 flags imports
+import a_gerFlag from '@assets/flags/euro2024/a_ger.svg';
+import a_hunFlag from '@assets/flags/euro2024/a_hun.svg';
+import a_scoFlag from '@assets/flags/euro2024/a_sco.svg';
+import a_suiFlag from '@assets/flags/euro2024/a_sui.svg';
+import b_espFlag from '@assets/flags/euro2024/b_esp.svg';
+import b_croFlag from '@assets/flags/euro2024/b_cro.svg';
+import b_itaFlag from '@assets/flags/euro2024/b_ita.svg';
+import b_albFlag from '@assets/flags/euro2024/b_alb.svg';
+import c_svnFlag from '@assets/flags/euro2024/c_svn.svg';
+import c_denFlag from '@assets/flags/euro2024/c_den.svg';
+import c_srbFlag from '@assets/flags/euro2024/c_srb.svg';
+import c_engFlag from '@assets/flags/euro2024/c_eng.svg';
+import d_polFlag from '@assets/flags/euro2024/d_pol.svg';
+import d_nedFlag from '@assets/flags/euro2024/d_ned.svg';
+import d_autFlag from '@assets/flags/euro2024/d_aut.svg';
+import d_fraFlag from '@assets/flags/euro2024/d_fra.svg';
+import e_belFlag from '@assets/flags/euro2024/e_bel.svg';
+import e_svkFlag from '@assets/flags/euro2024/e_svk.svg';
+import e_rouFlag from '@assets/flags/euro2024/e_rou.svg';
+import e_ukrFlag from '@assets/flags/euro2024/e_ukr.svg';
+import f_turFlag from '@assets/flags/euro2024/f_tur.svg';
+import f_geoFlag from '@assets/flags/euro2024/f_geo.svg';
+import f_porFlag from '@assets/flags/euro2024/f_por.svg';
+import f_czeFlag from '@assets/flags/euro2024/f_cze.svg';
+// #endregion euro2024 flags imports
+
 export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
   team: Team,
 ) => {
@@ -892,6 +919,57 @@ export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
         return wlvFlag; // 울브스
       default:
         break;
+    }
+  } else if (team.category === 'euro2024') {
+    switch (team.code) {
+      case 'ger':
+        return a_gerFlag; // 독일
+      case 'sco':
+        return a_scoFlag; // 스코틀랜드
+      case 'hun':
+        return a_hunFlag; // 헝가리
+      case 'sui':
+        return a_suiFlag; // 스위스
+      case 'esp':
+        return b_espFlag; // 스페인
+      case 'cro':
+        return b_croFlag; // 크로아티아
+      case 'ita':
+        return b_itaFlag; // 이탈리아
+      case 'alb':
+        return b_albFlag; // 알바니아
+      case 'svn':
+        return c_svnFlag; // 슬로베니아
+      case 'den':
+        return c_denFlag; // 덴마크
+      case 'srb':
+        return c_srbFlag; // 세르비아
+      case 'eng':
+        return c_engFlag; // 잉글랜드
+      case 'pol':
+        return d_polFlag; // 폴란드
+      case 'ned':
+        return d_nedFlag; // 네덜란드
+      case 'aut':
+        return d_autFlag; // 오스트리아
+      case 'fra':
+        return d_fraFlag; // 프랑스
+      case 'bel':
+        return e_belFlag; // 벨기에
+      case 'svk':
+        return e_svkFlag; // 슬로바키아
+      case 'rou':
+        return e_rouFlag; // 루마니아
+      case 'ukr':
+        return e_ukrFlag; // 우크라이나
+      case 'tur':
+        return f_turFlag; // 터키
+      case 'geo':
+        return f_geoFlag; // 조지아
+      case 'por':
+        return f_porFlag; // 포르투갈
+      case 'cze':
+        return f_czeFlag; // 체코
     }
   } else if (team.category === 'etc') {
     switch (team.code) {

@@ -18,8 +18,8 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
     handleMatchName(defaultMatchNameTemplate.EPL);
   };
 
-  const handleUEFAPreset = () => {
-    handleMatchName(defaultMatchNameTemplate.UCL);
+  const handleEuroPrest = () => {
+    handleMatchName(defaultMatchNameTemplate.EURO);
   };
 
   const handleFAPreset = () => {
@@ -62,17 +62,17 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
           <input
             id='match-title-uefa-preset-button'
             type='button'
-            value='UEFA'
+            value='Euro'
             className='match-title-preset-button uefa-preset'
-            onClick={handleUEFAPreset}
+            onClick={handleEuroPrest}
           />
-          <input
+          {/* <input
             id='match-title-uefa-preset-button'
             type='button'
             value='FA'
             className='match-title-preset-button uefa-preset'
             onClick={handleFAPreset}
-          />
+          /> */}
         </div>
       </div>
 

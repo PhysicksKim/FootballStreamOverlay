@@ -320,6 +320,223 @@
   @include teamAColor('epl2324-wlv', 'third');
 }
 
+// --- euro 2024 ---
+// 독일
+.team-a-euro2024-ger-home {
+  @include teamAColor('euro2024-ger');
+}
+.team-a-euro2024-ger-away,
+.team-a-euro2024-ger-third {
+  @include teamAColor('euro2024-ger', 'away');
+}
+
+// 스코틀랜드
+.team-a-euro2024-sco-home {
+  @include teamAColor('euro2024-sco');
+}
+.team-a-euro2024-sco-away,
+.team-a-euro2024-sco-third {
+  @include teamAColor('euro2024-sco', 'away');
+}
+
+// 헝가리
+.team-a-euro2024-hun-home {
+  @include teamAColor('euro2024-hun');
+}
+.team-a-euro2024-hun-away,
+.team-a-euro2024-hun-third {
+  @include teamAColor('euro2024-hun', 'away');
+}
+
+// 스위스
+.team-a-euro2024-sui-home {
+  @include teamAColor('euro2024-sui');
+}
+.team-a-euro2024-sui-away,
+.team-a-euro2024-sui-third {
+  @include teamAColor('euro2024-sui', 'away');
+}
+
+// 스페인
+.team-a-euro2024-esp-home {
+  @include teamAColor('euro2024-esp');
+}
+.team-a-euro2024-esp-away,
+.team-a-euro2024-esp-third {
+  @include teamAColor('euro2024-esp', 'away');
+}
+
+// 크로아티아
+.team-a-euro2024-cro-home {
+  @include teamAColor('euro2024-cro');
+}
+.team-a-euro2024-cro-away,
+.team-a-euro2024-cro-third {
+  @include teamAColor('euro2024-cro', 'away');
+}
+
+// 이탈리아
+.team-a-euro2024-ita-home {
+  @include teamAColor('euro2024-ita');
+}
+.team-a-euro2024-ita-away,
+.team-a-euro2024-ita-third {
+  @include teamAColor('euro2024-ita', 'away');
+}
+
+// 알바니아
+.team-a-euro2024-alb-home {
+  @include teamAColor('euro2024-alb');
+}
+.team-a-euro2024-alb-away,
+.team-a-euro2024-alb-third {
+  @include teamAColor('euro2024-alb', 'away');
+}
+
+// 슬로베니아
+.team-a-euro2024-svn-home {
+  @include teamAColor('euro2024-svn');
+}
+.team-a-euro2024-svn-away,
+.team-a-euro2024-svn-third {
+  @include teamAColor('euro2024-svn', 'away');
+}
+
+// 덴마크
+.team-a-euro2024-den-home {
+  @include teamAColor('euro2024-den');
+}
+.team-a-euro2024-den-away,
+.team-a-euro2024-den-third {
+  @include teamAColor('euro2024-den', 'away');
+}
+
+// 세르비아
+.team-a-euro2024-srb-home {
+  @include teamAColor('euro2024-srb');
+}
+.team-a-euro2024-srb-away,
+.team-a-euro2024-srb-third {
+  @include teamAColor('euro2024-srb', 'away');
+}
+
+// 잉글랜드
+.team-a-euro2024-eng-home {
+  @include teamAColor('euro2024-eng');
+}
+.team-a-euro2024-eng-away,
+.team-a-euro2024-eng-third {
+  @include teamAColor('euro2024-eng', 'away');
+}
+
+// 폴란드
+.team-a-euro2024-pol-home {
+  @include teamAColor('euro2024-pol');
+}
+.team-a-euro2024-pol-away,
+.team-a-euro2024-pol-third {
+  @include teamAColor('euro2024-pol', 'away');
+}
+
+// 네덜란드
+.team-a-euro2024-ned-home {
+  @include teamAColor('euro2024-ned');
+}
+.team-a-euro2024-ned-away,
+.team-a-euro2024-ned-third {
+  @include teamAColor('euro2024-ned', 'away');
+}
+
+// 오스트리아
+.team-a-euro2024-aut-home {
+  @include teamAColor('euro2024-aut');
+}
+.team-a-euro2024-aut-away,
+.team-a-euro2024-aut-third {
+  @include teamAColor('euro2024-aut', 'away');
+}
+
+// 프랑스
+.team-a-euro2024-fra-home {
+  @include teamAColor('euro2024-fra');
+}
+.team-a-euro2024-fra-away,
+.team-a-euro2024-fra-third {
+  @include teamAColor('euro2024-fra', 'away');
+}
+
+// 벨기에
+.team-a-euro2024-bel-home {
+  @include teamAColor('euro2024-bel');
+}
+.team-a-euro2024-bel-away,
+.team-a-euro2024-bel-third {
+  @include teamAColor('euro2024-bel', 'away');
+}
+
+// 슬로바키아
+.team-a-euro2024-svk-home {
+  @include teamAColor('euro2024-svk');
+}
+.team-a-euro2024-svk-away,
+.team-a-euro2024-svk-third {
+  @include teamAColor('euro2024-svk', 'away');
+}
+
+// 루마니아
+.team-a-euro2024-rou-home {
+  @include teamAColor('euro2024-rou');
+}
+.team-a-euro2024-rou-away,
+.team-a-euro2024-rou-third {
+  @include teamAColor('euro2024-rou', 'away');
+}
+
+// 우크라이나
+.team-a-euro2024-ukr-home {
+  @include teamAColor('euro2024-ukr');
+}
+.team-a-euro2024-ukr-away,
+.team-a-euro2024-ukr-third {
+  @include teamAColor('euro2024-ukr', 'away');
+}
+
+// 튀르키예
+.team-a-euro2024-tur-home {
+  @include teamAColor('euro2024-tur');
+}
+.team-a-euro2024-tur-away,
+.team-a-euro2024-tur-third {
+  @include teamAColor('euro2024-tur', 'away');
+}
+
+// 조지아
+.team-a-euro2024-geo-home {
+  @include teamAColor('euro2024-geo');
+}
+.team-a-euro2024-geo-away,
+.team-a-euro2024-geo-third {
+  @include teamAColor('euro2024-geo', 'away');
+}
+
+// 포르투갈
+.team-a-euro2024-por-home {
+  @include teamAColor('euro2024-por');
+}
+.team-a-euro2024-por-away,
+.team-a-euro2024-por-third {
+  @include teamAColor('euro2024-por', 'away');
+}
+
+// 체코
+.team-a-euro2024-cze-home {
+  @include teamAColor('euro2024-cze');
+}
+.team-a-euro2024-cze-away,
+.team-a-euro2024-cze-third {
+  @include teamAColor('euro2024-cze', 'away');
+}
+
 // --- 기타 ----
 // 컵팀
 .team-a-etc-cup-home {
