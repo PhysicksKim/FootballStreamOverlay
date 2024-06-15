@@ -22,10 +22,6 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
     handleMatchName(defaultMatchNameTemplate.EURO);
   };
 
-  const handleFAPreset = () => {
-    handleMatchName(defaultMatchNameTemplate.FA);
-  };
-
   const handleMatchName = (matchName: string) => {
     updateMatchName(matchName);
     matchTitleTestInputRef.current.value = matchName;
@@ -66,13 +62,6 @@ const TimerTitleBox: React.FC<TimerTitleBoxProps> = ({ updateMatchName }) => {
             className='match-title-preset-button uefa-preset'
             onClick={handleEuroPrest}
           />
-          {/* <input
-            id='match-title-uefa-preset-button'
-            type='button'
-            value='FA'
-            className='match-title-preset-button uefa-preset'
-            onClick={handleFAPreset}
-          /> */}
         </div>
       </div>
 
