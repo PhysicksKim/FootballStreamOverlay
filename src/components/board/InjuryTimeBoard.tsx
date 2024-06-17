@@ -16,7 +16,13 @@ const InjuryTimeBoard: React.FC<TimeBoardProps> = ({ givenInjuryTime = 0 }) => {
     <div className='injury-time-container'>
       <div className='injury-time-wrapper'>
         <div className='injury-timer-box'>
-          <div className='injury-timer'>
+          <div
+            className={`injury-timer ${
+              givenInjuryTime > 0
+                ? 'given-injury-filled'
+                : 'given-injury-not-filled'
+            }`}
+          >
             <div className='injury-timer-1'>{injury.substring(0, 1)}</div>
             <div className='injury-timer-2'>{injury.substring(1, 2)}</div>
             <div className='injury-timer-3'>{injury.substring(2, 3)}</div>
@@ -24,7 +30,15 @@ const InjuryTimeBoard: React.FC<TimeBoardProps> = ({ givenInjuryTime = 0 }) => {
             <div className='injury-timer-5'>{injury.substring(4, 5)}</div>
           </div>
         </div>
-        <div className='given-injury-time'>+{givenInjuryTime}</div>
+        <div
+          className={`given-injury-time ${
+            givenInjuryTime > 0
+              ? 'given-injury-filled'
+              : 'given-injury-not-filled'
+          }`}
+        >
+          {givenInjuryTime > 0 ? `+${givenInjuryTime}` : ''}
+        </div>
       </div>
     </div>
   );
