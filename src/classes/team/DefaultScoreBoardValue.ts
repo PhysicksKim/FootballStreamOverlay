@@ -20,8 +20,8 @@ export const defaultTeamA: Team = {
 
 export const defaultTeamB: Team = {
   category: 'euro2024',
-  code: Euro2024Codes.체코.code,
-  name: Euro2024Codes.체코.name,
+  code: Euro2024Codes.튀르키예.code,
+  name: Euro2024Codes.튀르키예.name,
   score: 0,
-  uniform: 'away',
+  uniform: 'home',
 };
