@@ -14,12 +14,10 @@ import {
   RemoteCommonMessage,
   ControlChannelMsg,
 } from '@src/types/stompTypes';
-import EventEmitter from 'events';
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import { Urls } from '@src/classes/Utils';
 import RemoteUtil from './StompInitializer';
-import { cli } from 'webpack';
 
 export interface HostClient {
   connectAsHost: (nickname: string, isAutoRemote: boolean) => void;
@@ -99,7 +97,6 @@ export const RemoteClientProvider: React.FC<{
   const subPollingIntervalRef = useRef<any>();
 
   const [isCleaning, setIsCleaning] = useState<boolean>(false);
-  const cleaningIntervalRef = useRef<any>();
 
   const [isBasicSubDone, setIsBasicSubDone] = useState<boolean>(false);
   const [isRemoteConnected, setIsRemoteConnected] = useState<boolean>(false);
