@@ -12,16 +12,16 @@ export const defaultMatchName = defaultMatchNameTemplate.EURO;
 
 export const defaultTeamA: Team = {
   category: 'euro2024',
-  code: Euro2024Codes.포르투갈.code,
-  name: Euro2024Codes.포르투갈.name,
+  code: Euro2024Codes.스페인.code,
+  name: Euro2024Codes.스페인.name,
   score: 0,
   uniform: 'home',
 };
 
 export const defaultTeamB: Team = {
   category: 'euro2024',
-  code: Euro2024Codes.프랑스.code,
-  name: Euro2024Codes.프랑스.name,
+  code: Euro2024Codes.독일.code,
+  name: Euro2024Codes.독일.name,
   score: 0,
   uniform: 'home',
 };
