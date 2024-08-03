@@ -328,6 +328,8 @@ import f_porFlag from '@assets/flags/euro2024/f_por.svg';
 import f_czeFlag from '@assets/flags/euro2024/f_cze.svg';
 // #endregion euro2024 flags imports
 
+import mhnFlag from '@assets/flags/etc/munchen.svg';
+
 export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
   team: Team,
 ) => {
@@ -977,6 +979,8 @@ export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
         return rmdFlag; // 레알 마드리드
       case 'bvb':
         return bvbFlag; // 도르트문트
+      case 'ety':
+        return mhnFlag; // 뮌헨
     }
   }
   return '/no/match/image.svg'; // 일치하는 국가 코드가 없는 경우
