@@ -5,24 +5,24 @@ import EtcTeamCodes from './EtcTeamCodes';
 
 export const defaultMatchNameTemplate = {
   EPL: '2023-24 잉글랜드 프리미어리그 38R',
-  // EURO: 'UEFA 유로 2024 결승전',
-  EURO: '쿠팡플레이 시리즈 친선',
+  EURO: 'UEFA EURO 2024',
+  ETC: '2024-25 FA 커뮤니티 실드',
 };
 
-export const defaultMatchName = defaultMatchNameTemplate.EURO;
+export const defaultMatchName = defaultMatchNameTemplate.ETC;
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.토트넘.code,
-  name: EPL2324Codes.토트넘.name,
+  code: EPL2324Codes.맨시티.code,
+  name: EPL2324Codes.맨시티.name,
   score: 0,
   uniform: 'home',
 };
 
 export const defaultTeamB: Team = {
-  category: 'etc',
-  code: EtcTeamCodes.빈팀.code,
-  name: EtcTeamCodes.빈팀.name,
+  category: 'epl2324',
+  code: EPL2324Codes.맨유.code,
+  name: EPL2324Codes.맨유.name,
   score: 0,
   uniform: 'home',
 };
