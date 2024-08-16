@@ -294,6 +294,9 @@ import shuFlag from '@assets/flags/epl2324/sheffield.svg';
 import totFlag from '@assets/flags/epl2324/tottenham.svg';
 import whuFlag from '@assets/flags/epl2324/westham.svg';
 import wlvFlag from '@assets/flags/epl2324/wolves.svg';
+import leiFlag from '@assets/flags/epl2324/leicestercity.svg';
+import ipsFlag from '@assets/flags/epl2324/ipswich.svg';
+import souFlag from '@assets/flags/epl2324/southampton.svg';
 // #endregion epl flags imports
 
 // #region etc flags imports
@@ -919,6 +922,12 @@ export const getFlagImageUrl: (team: Team) => string | '/no/match/image.svg' = (
         return whuFlag; // 웨스트햄유나이티드
       case 'wlv':
         return wlvFlag; // 울브스
+      case 'lei':
+        return leiFlag; // 레스터
+      case 'ips':
+        return ipsFlag; // 이프스위치
+      case 'sou':
+        return souFlag; // 사우샘프턴
       default:
         break;
     }

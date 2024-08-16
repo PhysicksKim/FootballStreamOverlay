@@ -86,8 +86,8 @@ $colors: (
   ),
   'epl2324-liv': (
     'home': rgb(228, 48, 48),
-    'away': rgb(114, 159, 114),
-    'third': rgb(161, 95, 197),
+    'away': rgb(43, 43, 70),
+    'third': rgb(231, 221, 222),
   ),
   'epl2324-lut': (
     'home': rgb(219, 60, 35),
@@ -96,8 +96,8 @@ $colors: (
   ),
   'epl2324-mci': (
     'home': rgb(90, 156, 200),
-    'away': rgb(238, 236, 238),
-    'third': rgb(14, 45, 72),
+    'away': rgb(215, 243, 138),
+    'third': rgb(139, 20, 60),
   ),
   'epl2324-mun': (
     'home': rgb(205, 18, 18),
@@ -133,6 +133,23 @@ $colors: (
     'home': rgb(197, 172, 63),
     'away': rgb(205, 53, 43),
     'third': rgb(22, 146, 199),
+  ),
+  // epl2425 승격 lei ips sou
+  'epl2324-lei':
+    (
+      'home': rgb(65, 35, 201),
+      'away': rgb(46, 44, 40),
+      'third': rgb(219, 221, 230),
+    ),
+  'epl2324-ips': (
+    'home': rgb(65, 63, 216),
+    'away': rgb(114, 20, 64),
+    'third': rgb(226, 59, 151),
+  ),
+  'epl2324-sou': (
+    'home': rgb(221, 47, 35),
+    'away': rgb(241, 239, 122),
+    'third': rgb(230, 71, 216),
   ),
 
   // 유로 2024

@@ -320,6 +320,38 @@
   @include teamAColor('epl2324-wlv', 'third');
 }
 
+// 2425 승격팀
+// 레스터
+.team-a-epl2324-lei-home {
+  @include teamAColor('epl2324-lei');
+}
+.team-a-epl2324-lei-away {
+  @include teamAColor('epl2324-lei', 'away');
+}
+.team-a-epl2324-lei-third {
+  @include teamAColor('epl2324-lei', 'third');
+}
+// 입스위치
+.team-a-epl2324-ips-home {
+  @include teamAColor('epl2324-ips');
+}
+.team-a-epl2324-ips-away {
+  @include teamAColor('epl2324-ips', 'away');
+}
+.team-a-epl2324-ips-third {
+  @include teamAColor('epl2324-ips', 'third');
+}
+// 사우스햄튼
+.team-a-epl2324-sou-home {
+  @include teamAColor('epl2324-sou');
+}
+.team-a-epl2324-sou-away {
+  @include teamAColor('epl2324-sou', 'away');
+}
+.team-a-epl2324-sou-third {
+  @include teamAColor('epl2324-sou', 'third');
+}
+
 // --- euro 2024 ---
 // 독일
 .team-a-euro2024-ger-home {

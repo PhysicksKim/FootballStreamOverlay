@@ -29,7 +29,7 @@ export const teamCodeToTeamName = (category: string, code: string) => {
 export const categoryStringToTitle = (category: string) => {
   switch (category) {
     case Categories.EPL2324:
-      return 'EPL 23/24';
+      return 'EPL 24/25';
     case Categories.Nation:
       return '국가대표';
     case Categories.Euro2024:
