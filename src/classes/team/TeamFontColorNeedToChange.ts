@@ -1,5 +1,12 @@
 import { Team } from '@src/types/types';
 const epl2324WhiteUniform = [
+  'bou-away',
+  'che-away',
+  'eve-third',
+  'nwc-third',
+  'ntg-away',
+  'whu-third',
+  // ------
   'ava-away',
   'cry-away',
   'ful-home',
@@ -8,8 +15,6 @@ const epl2324WhiteUniform = [
   'mun-third',
   'shu-third',
   'tot-home',
-  'whu-away',
-  'ars-away',
   'wlv-home',
   'lei-third',
   'liv-third',

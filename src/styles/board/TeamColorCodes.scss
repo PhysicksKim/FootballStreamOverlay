@@ -36,63 +36,84 @@ $colors: (
 
   'epl2324-ars': (
     'home': rgb(168, 25, 25),
-    'away': rgb(210, 240, 76),
-    'third': rgb(56, 103, 62),
+    'away': rgb(34, 31, 32),
+    'third': rgb(78, 177, 216),
   ),
   'epl2324-ava': (
     'home': rgb(151, 49, 90),
     'away': rgb(236, 235, 239),
-    'third': rgb(99, 124, 208),
+    'third': rgb(31, 50, 110),
   ),
   'epl2324-bou': (
     'home': rgb(160, 31, 31),
-    'away': rgb(72, 175, 212),
-    'third': rgb(211, 200, 37),
+    'away': rgb(216, 226, 230),
+    'third': rgb(47, 156, 189),
   ),
   'epl2324-bre': (
     'home': rgb(206, 16, 16),
-    'away': rgb(64, 171, 206),
-    'third': rgb(30, 28, 123),
+    'away': rgb(214, 114, 201),
+    'third': rgb(40, 82, 15),
   ),
   'epl2324-brh': (
     'home': rgb(40, 17, 215),
-    'away': rgb(47, 149, 93),
-    'third': rgb(225, 110, 33),
+    'away': rgb(223, 168, 18),
+    'third': rgb(14, 32, 7),
   ),
-  'epl2324-bur': (
-    'home': rgb(112, 39, 39),
-    'away': rgb(155, 160, 13),
-    'third': rgb(68, 89, 156),
-  ),
+  // 번리 2324 강등
+  'epl2324-bur':
+    (
+      'home': rgb(112, 39, 39),
+      'away': rgb(155, 160, 13),
+      'third': rgb(68, 89, 156),
+    ),
+  // 루턴타운 2324 강등
+  'epl2324-lut':
+    (
+      'home': rgb(219, 60, 35),
+      'away': rgb(236, 236, 236),
+      'third': rgb(42, 33, 93),
+    ),
+  // 셰필드유나이티드 2324 강등
+  'epl2324-shu':
+    (
+      'home': rgb(206, 68, 68),
+      'away': rgb(206, 203, 52),
+      'third': rgb(227, 227, 227),
+    ),
   'epl2324-che': (
     'home': rgb(25, 55, 163),
-    'away': rgb(212, 222, 241),
+    'away': rgb(235, 231, 247),
     'third': rgb(35, 11, 43),
   ),
   'epl2324-cry': (
-    'home': rgb(172, 69, 69),
-    'away': rgb(211, 224, 229),
+    'home': rgb(46, 73, 226),
+    'away': rgb(233, 230, 94),
     'third': rgb(75, 75, 79),
   ),
   'epl2324-eve': (
-    'home': rgb(54, 75, 142),
-    'away': rgb(238, 77, 71),
-    'third': rgb(130, 131, 156),
+    'home': rgb(25, 52, 141),
+    'away': rgb(54, 48, 63),
+    'third': rgb(225, 225, 235),
   ),
   'epl2324-ful': (
     'home': rgb(229, 226, 226),
-    'away': rgb(186, 16, 149),
-    'third': rgb(87, 62, 90),
+    'away': rgb(177, 41, 17),
+    'third': rgb(174, 74, 185),
+  ),
+  'epl2324-ips': (
+    'home': rgb(65, 63, 216),
+    'away': rgb(114, 20, 64),
+    'third': rgb(226, 59, 151),
+  ),
+  'epl2324-lei': (
+    'home': rgb(65, 35, 201),
+    'away': rgb(46, 44, 40),
+    'third': rgb(219, 221, 230),
   ),
   'epl2324-liv': (
-    'home': rgb(228, 48, 48),
+    'home': rgb(197, 64, 64),
     'away': rgb(43, 43, 70),
     'third': rgb(231, 221, 222),
-  ),
-  'epl2324-lut': (
-    'home': rgb(219, 60, 35),
-    'away': rgb(236, 236, 236),
-    'third': rgb(42, 33, 93),
   ),
   'epl2324-mci': (
     'home': rgb(90, 156, 200),
@@ -100,57 +121,49 @@ $colors: (
     'third': rgb(139, 20, 60),
   ),
   'epl2324-mun': (
-    'home': rgb(205, 18, 18),
-    'away': rgb(51, 102, 90),
+    'home': rgb(180, 45, 45),
+    'away': rgb(26, 24, 97),
     'third': rgb(230, 230, 230),
   ),
-  'epl2324-new': (
-    'home': rgb(59, 59, 59),
-    'away': rgb(26, 157, 148),
-    'third': rgb(39, 24, 180),
-  ),
-  'epl2324-ntg': (
-    'home': rgb(188, 25, 25),
-    'away': rgb(126, 153, 225),
-    'third': rgb(48, 40, 196),
-  ),
-  'epl2324-shu': (
-    'home': rgb(206, 68, 68),
-    'away': rgb(206, 203, 52),
-    'third': rgb(227, 227, 227),
-  ),
+  // TODO : new 캐슬 -> ncw 로 약자 바꿔야함
+  'epl2324-new':
+    (
+      'home': rgb(59, 59, 59),
+      'away': rgb(168, 44, 75),
+      'third': rgb(224, 228, 223),
+    ),
+  // TODO : 노팅엄 Third 가 없음
+  'epl2324-ntg':
+    (
+      'home': rgb(188, 25, 25),
+      'away': rgb(52, 20, 82),
+      'third': rgb(52, 20, 82),
+    ),
+
   'epl2324-tot': (
     'home': rgb(231, 231, 231),
-    'away': rgb(21, 26, 178),
-    'third': rgb(138, 112, 91),
+    'away': rgb(72, 132, 211),
+    'third': rgb(20, 129, 102),
   ),
   'epl2324-whu': (
-    'home': rgb(166, 54, 97),
-    'away': rgb(246, 243, 244),
-    'third': rgb(34, 54, 183),
+    'home': rgb(119, 14, 46),
+    'away': rgb(19, 2, 7),
+    'third': rgb(236, 233, 234),
   ),
-  'epl2324-wlv': (
-    'home': rgb(197, 172, 63),
-    'away': rgb(205, 53, 43),
-    'third': rgb(22, 146, 199),
-  ),
-  // epl2425 승격 lei ips sou
-  'epl2324-lei':
+  // TODO : 울브스 third 없음
+  'epl2324-wlv':
     (
-      'home': rgb(65, 35, 201),
-      'away': rgb(46, 44, 40),
-      'third': rgb(219, 221, 230),
+      'home': rgb(197, 172, 63),
+      'away': rgb(22, 21, 6),
+      'third': rgb(22, 21, 6),
     ),
-  'epl2324-ips': (
-    'home': rgb(65, 63, 216),
-    'away': rgb(114, 20, 64),
-    'third': rgb(226, 59, 151),
-  ),
-  'epl2324-sou': (
-    'home': rgb(221, 47, 35),
-    'away': rgb(241, 239, 122),
-    'third': rgb(230, 71, 216),
-  ),
+  // epl2425 승격 lei ips sou
+  'epl2324-sou':
+    (
+      'home': rgb(221, 47, 35),
+      'away': rgb(241, 239, 122),
+      'third': rgb(230, 71, 216),
+    ),
 
   // 유로 2024
   'euro2024-ger':
