@@ -1,7 +1,7 @@
 # 계춘회 ScoreBoard  
 스트리머 계춘회의 ScoreBoard FrontEnd repository 입니다.    
   
-# 라이센스  
+# 라이선스  
 아래 리포지토리와 동일한 추가 사항을 포함한 MIT License 를 따릅니다.    
    
 - 기본 : MIT License 를 따릅니다.  
