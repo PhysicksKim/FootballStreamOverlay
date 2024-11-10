@@ -13,16 +13,16 @@ export const defaultMatchName = defaultMatchNameTemplate.EPL;
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.맨시티.code,
-  name: EPL2324Codes.맨시티.name,
+  code: EPL2324Codes.첼시.code,
+  name: EPL2324Codes.첼시.name,
   score: 0,
   uniform: 'home',
 };
 
 export const defaultTeamB: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.브라이튼.code,
-  name: EPL2324Codes.브라이튼.name,
+  code: EPL2324Codes.아스널.code,
+  name: EPL2324Codes.아스널.name,
   score: 0,
   uniform: 'home',
 };

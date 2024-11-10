@@ -1,5 +1,7 @@
 import { TeamCodesAndNames } from '@src/types/types';
 
+const arsenal = { code: 'ars', name: '아스널' };
+
 const EPL2324Codes: TeamCodesAndNames = {
   노팅엄: { code: 'ntg', name: '노팅엄' },
   뉴캐슬: { code: 'nwc', name: '뉴캐슬' },
@@ -9,7 +11,8 @@ const EPL2324Codes: TeamCodesAndNames = {
   본머스: { code: 'bou', name: '본머스' },
   브라이튼: { code: 'brh', name: '브라이튼' },
   브렌트포드: { code: 'bre', name: '브렌트포드' },
-  아스널: { code: 'ars', name: '아스널' },
+  아스날: arsenal,
+  아스널: arsenal,
   아스톤빌라: { code: 'ava', name: '아스톤빌라' },
   에버튼: { code: 'eve', name: '에버튼' },
   울버햄튼: { code: 'wlv', name: '울버햄튼' },
