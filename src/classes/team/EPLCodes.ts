@@ -21,11 +21,11 @@ const EPL2324Codes: TeamCodesAndNames = {
   크리스탈팰리스: { code: 'cry', name: 'C.팰리스' },
   토트넘: { code: 'tot', name: '토트넘' },
   풀럼: { code: 'ful', name: '풀럼' },
-  // 2324 강등
+  // - 2324 강등
   // 루턴타운: { code: 'lut', name: '루턴타운' },
   // 번리: { code: 'bur', name: '번리' },
   // 셰필드: { code: 'shu', name: '셰필드' },
-  // 2425 승격
+  // - 2425 승격
   레스터시티: { code: 'lei', name: '레스터시티' },
   입스위치: { code: 'ips', name: '입스위치' },
   사우스햄튼: { code: 'sou', name: '사우스햄튼' },

@@ -4,7 +4,7 @@ import Euro2024Codes from './Euro2024Codes';
 import EtcTeamCodes from './EtcTeamCodes';
 
 export const defaultMatchNameTemplate = {
-  EPL: '2024-25 잉글랜드 프리미어리그 11R',
+  EPL: '2024-25 잉글랜드 프리미어리그 12R',
   EURO: 'UEFA EURO 2024',
   ETC: '2024-25 FA 커뮤니티 실드',
 };
@@ -13,16 +13,16 @@ export const defaultMatchName = defaultMatchNameTemplate.EPL;
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.첼시.code,
-  name: EPL2324Codes.첼시.name,
+  code: EPL2324Codes.맨시티.code,
+  name: EPL2324Codes.맨시티.name,
   score: 0,
   uniform: 'home',
 };
 
 export const defaultTeamB: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.아스널.code,
-  name: EPL2324Codes.아스널.name,
+  code: EPL2324Codes.토트넘.code,
+  name: EPL2324Codes.토트넘.name,
   score: 0,
   uniform: 'home',
 };
