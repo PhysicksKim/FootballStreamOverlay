@@ -4,7 +4,7 @@ import Euro2024Codes from './Euro2024Codes';
 import EtcTeamCodes from './EtcTeamCodes';
 
 export const defaultMatchNameTemplate = {
-  EPL: '2024-25 잉글랜드 프리미어리그 22R',
+  EPL: '2024-25 잉글랜드 프리미어리그 24R',
   EURO: 'UEFA EURO 2024',
   ETC: '2024-25 FA 커뮤니티 실드',
 };
@@ -21,8 +21,8 @@ export const defaultTeamA: Team = {
 
 export const defaultTeamB: Team = {
   category: 'epl2324',
-  code: EPL2324Codes.입스위치.code,
-  name: EPL2324Codes.입스위치.name,
+  code: EPL2324Codes.아스널.code,
+  name: EPL2324Codes.아스널.name,
   score: 0,
   uniform: 'home',
 };
