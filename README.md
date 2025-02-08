@@ -1,19 +1,22 @@
-# 계춘회 ScoreBoard  
-스트리머 계춘회의 ScoreBoard FrontEnd repository 입니다.    
-  
-# 라이선스  
-아래 리포지토리와 동일한 추가 사항을 포함한 MIT License 를 따릅니다.    
-   
-- 기본 : MIT License 를 따릅니다.  
-- 추가 사항 : 사용된 이미지 저작권으로 인하여 수정이 필요합니다. 상업적 이용 전 문의 바랍니다.    
-[PhysicksKim/FootballScoreBoard-gyechunhoe](https://github.com/PhysicksKim/FootballScoreBoard-gyechunhoe)    
-  
+# 계춘회 ScoreBoard
+
+스트리머 계춘회의 ScoreBoard FrontEnd repository 입니다.
+
+# 라이선스
+
+아래 리포지토리와 동일한 추가 사항을 포함한 MIT License 를 따릅니다.
+
+- 기본 : MIT License 를 따릅니다.
+- 추가 사항 : 사용된 이미지 저작권으로 인하여 수정이 필요합니다. 이용 전 문의 바랍니다.  
+  [PhysicksKim/FootballScoreBoard-gyechunhoe](https://github.com/PhysicksKim/FootballScoreBoard-gyechunhoe)  
+
+
 <br><br>
 
 ---
 
 <br><br>
-  
+
 # 개발용 인증 키 생성
 
 ## 프론트(React)용 .pem key 생성
