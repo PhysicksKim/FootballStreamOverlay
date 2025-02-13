@@ -9,7 +9,7 @@ export const defaultMatchNameTemplate = {
   ETC: '24-25 UEFA 챔피언스리그 녹아웃 PO 1차전',
 };
 
-export const defaultMatchName = defaultMatchNameTemplate.ETC;
+export const defaultMatchName = defaultMatchNameTemplate.EPL;
 
 export const defaultTeamA: Team = {
   category: 'epl2324',
@@ -20,9 +20,9 @@ export const defaultTeamA: Team = {
 };
 
 export const defaultTeamB: Team = {
-  category: 'etc',
-  code: EtcTeamCodes.레알마드리드.code,
-  name: EtcTeamCodes.레알마드리드.name,
+  category: 'epl2324',
+  code: EPL2324Codes.뉴캐슬.code,
+  name: EPL2324Codes.뉴캐슬.name,
   score: 0,
   uniform: 'home',
 };
